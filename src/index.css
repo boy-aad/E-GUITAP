@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-lora: 'Lora', Georgia, serif;
+
+  --color-marine: #102C50;
+  --color-marine-dark: #0A1C33;
+  --color-marine-light: #173A66;
+  --color-gold: #C6A15B;
+  --color-gold-hover: #B59048;
+  --color-gold-light: #E8D7B0;
+  --color-ivory: #F5F1E8;
+  --color-slate-text: #44505F;
+  --color-gn-red: #CE1126;
+  --color-gn-yellow: #FCD116;
+  --color-gn-green: #009460;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #102C50;
+  background-color: #FAFAF7;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-signature {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F1E8;
+}
+::-webkit-scrollbar-thumb {
+  background: #C6A15B;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B59048;
+}
