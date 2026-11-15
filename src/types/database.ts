@@ -392,6 +392,8 @@ export type Database = {
           internal_notes: string | null
           land_project_id: string | null
           message: string
+          notification_error: string | null
+          notified_at: string | null
           organization: string | null
           phone: string
           service_id: string | null
@@ -413,6 +415,8 @@ export type Database = {
           internal_notes?: string | null
           land_project_id?: string | null
           message: string
+          notification_error?: string | null
+          notified_at?: string | null
           organization?: string | null
           phone: string
           service_id?: string | null
@@ -434,6 +438,8 @@ export type Database = {
           internal_notes?: string | null
           land_project_id?: string | null
           message?: string
+          notification_error?: string | null
+          notified_at?: string | null
           organization?: string | null
           phone?: string
           service_id?: string | null

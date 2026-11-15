@@ -12,6 +12,7 @@ import { ContactPage } from '../pages/ContactPage';
 import { LegalNoticePage } from '../pages/LegalNoticePage';
 import { PrivacyPage } from '../pages/PrivacyPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
+import { adminRoutes } from '../admin/routes';
 
 // L'hébergeur devra renvoyer index.html pour toutes les routes (réécriture SPA).
 export const router = createBrowserRouter([
@@ -36,4 +37,6 @@ export const router = createBrowserRouter([
       { path: '*', element: <NotFoundPage /> },
     ],
   },
+  // Administration : arbre séparé, sans le loader du site public.
+  adminRoutes,
 ]);
