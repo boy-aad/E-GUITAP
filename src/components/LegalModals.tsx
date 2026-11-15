@@ -11,21 +11,21 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
   if (!type) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#102C50]/80 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-marine/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden border border-[#C6A15B]/30 max-h-[85vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden border border-gold/30 max-h-[85vh] flex flex-col"
         role="dialog"
         aria-modal="true"
       >
         {/* Modal Header */}
-        <div className="bg-[#102C50] text-white px-6 py-4 flex items-center justify-between border-b border-[#C6A15B]/40 shrink-0">
+        <div className="bg-marine text-white px-6 py-4 flex items-center justify-between border-b border-gold/40 shrink-0">
           <div className="flex items-center gap-2.5">
             {type === 'legal' ? (
-              <FileText className="w-5 h-5 text-[#C6A15B]" />
+              <FileText className="w-5 h-5 text-gold" />
             ) : (
-              <Shield className="w-5 h-5 text-[#C6A15B]" />
+              <Shield className="w-5 h-5 text-gold" />
             )}
-            <h3 className="text-lg font-bold font-['Poppins']">
+            <h3 className="text-lg font-bold font-poppins">
               {type === 'legal' ? 'Mentions Légales' : 'Politique de Confidentialité'}
             </h3>
           </div>
@@ -39,11 +39,11 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto text-xs text-[#44505F] space-y-4 leading-relaxed font-['Inter']">
+        <div className="p-6 overflow-y-auto text-xs text-slate-text space-y-4 leading-relaxed font-inter">
           {type === 'legal' ? (
             <>
               <div>
-                <h4 className="font-bold text-[#102C50] text-sm mb-1 font-['Poppins']">
+                <h4 className="font-bold text-marine text-sm mb-1 font-poppins">
                   1. Éditeur du site
                 </h4>
                 <p>
@@ -59,7 +59,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
               </div>
 
               <div>
-                <h4 className="font-bold text-[#102C50] text-sm mb-1 font-['Poppins']">
+                <h4 className="font-bold text-marine text-sm mb-1 font-poppins">
                   2. Propriété intellectuelle et charte graphique
                 </h4>
                 <p>
@@ -72,7 +72,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
               </div>
 
               <div>
-                <h4 className="font-bold text-[#102C50] text-sm mb-1 font-['Poppins']">
+                <h4 className="font-bold text-marine text-sm mb-1 font-poppins">
                   3. Nature institutionnelle & Démonstration
                 </h4>
                 <p>
@@ -86,7 +86,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
           ) : (
             <>
               <div>
-                <h4 className="font-bold text-[#102C50] text-sm mb-1 font-['Poppins']">
+                <h4 className="font-bold text-marine text-sm mb-1 font-poppins">
                   1. Collecte et finalité des données
                 </h4>
                 <p>
@@ -97,7 +97,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
               </div>
 
               <div>
-                <h4 className="font-bold text-[#102C50] text-sm mb-1 font-['Poppins']">
+                <h4 className="font-bold text-marine text-sm mb-1 font-poppins">
                   2. Confidentialité & Non-cession
                 </h4>
                 <p>
@@ -108,7 +108,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
               </div>
 
               <div>
-                <h4 className="font-bold text-[#102C50] text-sm mb-1 font-['Poppins']">
+                <h4 className="font-bold text-marine text-sm mb-1 font-poppins">
                   3. Vos droits
                 </h4>
                 <p>
@@ -123,7 +123,7 @@ export const LegalModals: React.FC<LegalModalProps> = ({ type, onClose }) => {
           <div className="pt-4 border-t border-slate-200 text-right">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-[#102C50] text-white rounded font-['Poppins'] text-xs font-bold uppercase tracking-wider hover:bg-[#0A1C33]"
+              className="px-4 py-2 bg-marine text-white rounded font-poppins text-xs font-bold uppercase tracking-wider hover:bg-marine-dark"
             >
               Compris
             </button>

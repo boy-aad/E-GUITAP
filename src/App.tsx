@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
@@ -104,7 +104,7 @@ export default function App() {
     : [];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF7] text-[#102C50] font-['Inter'] selection:bg-[#C6A15B]/30 selection:text-[#102C50]">
+    <div className="min-h-screen flex flex-col bg-paper text-marine font-inter selection:bg-gold/30 selection:text-marine">
       {/* Header */}
       <Header
         currentRoute={currentRoute}
@@ -163,23 +163,27 @@ export default function App() {
       <div className="fixed bottom-6 right-6 z-30">
         <button
           onClick={handleQuickWhatsApp}
-          className="group flex items-center gap-2.5 bg-[#009460] hover:bg-[#007a4f] text-white p-3 sm:px-4 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-white focus:outline-none focus:ring-2 focus:ring-[#009460] focus:ring-offset-2"
+          className="group flex items-center gap-2.5 bg-gn-green hover:bg-gn-green-hover text-white p-3 sm:px-4 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-white focus:outline-none focus:ring-2 focus:ring-gn-green focus:ring-offset-2"
           aria-label="Contacter E.GUITAP via WhatsApp"
         >
           <MessageSquare className="w-5 h-5" />
-          <span className="hidden sm:inline text-xs font-bold tracking-wide font-['Poppins']">
+          <span className="hidden sm:inline text-xs font-bold tracking-wide font-poppins">
             WhatsApp E.GUITAP
           </span>
         </button>
       </div>
 
       {/* Modals */}
-      <QuoteModal
-        isOpen={quoteModalOpen}
-        onClose={() => setQuoteModalOpen(false)}
-        initialDomain={quoteInitialDomain}
-        initialItemRef={quoteInitialRef}
-      />
+      {/* Monté uniquement à l'ouverture : l'état interne (domaine, champs) repart
+          des props à chaque ouverture au lieu de garder la première valeur. */}
+      {quoteModalOpen && (
+        <QuoteModal
+          isOpen
+          onClose={() => setQuoteModalOpen(false)}
+          initialDomain={quoteInitialDomain}
+          initialItemRef={quoteInitialRef}
+        />
+      )}
 
       <CatalogueDetailModal
         item={selectedCatalogueItem}

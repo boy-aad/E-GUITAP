@@ -1,3 +1,5 @@
+import { IMAGES } from '../assets/images';
+
 export interface ActivityDomain {
   id: string;
   slug: 'btp' | 'immobilier' | 'commerce' | 'import-export';
@@ -22,7 +24,7 @@ export const ACTIVITIES_DATA: ActivityDomain[] = [
       'Des activités liées au bâtiment et aux travaux publics, au service des projets de construction et d’infrastructure.',
     fullDescription:
       'E.GUITAP déploie une rigueur d’ingénierie et une gestion de chantier structurée pour concevoir et ériger des édifices institutionnels, des ouvrages de génie civil et des infrastructures fiables, adaptées aux contraintes climatiques et géographiques guinéennes.',
-    image: '/src/assets/images/btp_construction_site_1794150314495.jpg',
+    image: IMAGES.btpSite,
     keyServices: [
       'Gros œuvre et maçonnerie structurée',
       'Ouvrages de génie civil et terrassement',
@@ -52,7 +54,7 @@ export const ACTIVITIES_DATA: ActivityDomain[] = [
       'Des opportunités et solutions dans les domaines de l’immobilier et de l’aménagement à Conakry et en région.',
     fullDescription:
       'Nous accompagnons les particuliers, entreprises et investisseurs institutionnels dans la recherche, la valorisation foncière, la commercialisation et la gestion d’actifs immobiliers stratégiques en République de Guinée.',
-    image: '/src/assets/images/real_estate_residence_1794150314705.jpg',
+    image: IMAGES.realEstate,
     keyServices: [
       'Promotion et développement résidentiel de standing',
       'Commercialisation d’immeubles de bureaux et locaux professionnels',
@@ -82,7 +84,7 @@ export const ACTIVITIES_DATA: ActivityDomain[] = [
       'Une activité commerciale diversifiée répondant aux besoins d’approvisionnement de différents secteurs clés.',
     fullDescription:
       'E.GUITAP opère comme un distributeur fiable de fournitures industrielles, de matériaux de construction de première qualité et de biens d’équipement, garantissant des flux d’approvisionnement constants pour les chantiers et entreprises guinéennes.',
-    image: '/src/assets/images/general_commerce_distribution_1794150315331.jpg',
+    image: IMAGES.commerce,
     keyServices: [
       'Distribution de matériaux de construction (ciment, fer à béton, profilés)',
       'Fourniture de gros outillage et quincaillerie professionnelle',
@@ -112,7 +114,7 @@ export const ACTIVITIES_DATA: ActivityDomain[] = [
       'Une ouverture sur les échanges commerciaux mondiaux et la fluidification des opérations internationales.',
     fullDescription:
       'Grâce à notre proximité avec les terminaux portuaires de Conakry et un réseau de correspondants internationaux, nous pilotons l’importation de marchandises stratégiques et facilitons l’exportation de productions ouest-africaines.',
-    image: '/src/assets/images/import_export_port_containers_1794150316174.jpg',
+    image: IMAGES.importExport,
     keyServices: [
       'Acheminement maritime, conteneurisation FCL / LCL',
       'Formalités douanières, dédouanement et conformité réglementaire',

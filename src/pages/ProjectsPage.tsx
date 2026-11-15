@@ -18,16 +18,16 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
   return (
     <div className="w-full">
       {/* Header */}
-      <section className="bg-[#102C50] text-white py-14 lg:py-16 border-b border-[#C6A15B]/40">
+      <section className="bg-marine text-white py-14 lg:py-16 border-b border-gold/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-[#C6A15B] rounded text-xs font-bold uppercase tracking-wider font-['Poppins']">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-gold rounded text-xs font-bold uppercase tracking-wider font-poppins">
               <span>Références & Savoir-Faire</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-['Poppins']">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-poppins">
               Nos réalisations & Projets
             </h1>
-            <p className="text-sm sm:text-base text-white/80 leading-relaxed font-['Inter']">
+            <p className="text-sm sm:text-base text-white/80 leading-relaxed font-inter">
               Découvrez un panorama de nos interventions et chantiers types dans le BTP,
               l’aménagement résidentiel, les plateformes logistiques et les corridors maritimes
               en Guinée.
@@ -39,13 +39,13 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
       {/* Main Content Area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Important Disclaimer Notice (Section 7 & 10 of prompt) */}
-        <div className="mb-8 p-4 rounded-lg bg-[#F5F1E8] border border-[#C6A15B]/50 flex items-start gap-3">
-          <ShieldAlert className="w-5 h-5 text-[#C6A15B] shrink-0 mt-0.5" />
-          <div className="text-xs text-[#102C50] space-y-1">
-            <span className="font-bold font-['Poppins'] uppercase text-[11px]">
+        <div className="mb-8 p-4 rounded-lg bg-ivory border border-gold/50 flex items-start gap-3">
+          <ShieldAlert className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+          <div className="text-xs text-marine space-y-1">
+            <span className="font-bold font-poppins uppercase text-[11px]">
               Note d’information institutionnelle
             </span>
-            <p className="text-[#44505F] leading-relaxed">
+            <p className="text-slate-text leading-relaxed">
               Les fiches ci-dessous portent la mention <strong>« Exemple de présentation »</strong>.
               Elles illustrent la typologie d’ouvrages et de missions réalisables par les équipes et
               le parc matériel de E.GUITAP en République de Guinée dans l’attente de l’incorporation
@@ -68,8 +68,8 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-4 py-2 text-xs font-semibold rounded transition-all whitespace-nowrap ${
                 selectedCategory === cat.id
-                  ? 'bg-[#102C50] text-white shadow-sm'
-                  : 'bg-slate-100 text-[#44505F] hover:bg-slate-200 hover:text-[#102C50]'
+                  ? 'bg-marine text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-text hover:bg-slate-200 hover:text-marine'
               }`}
             >
               {cat.label}
@@ -94,40 +94,40 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#102C50]/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-marine/80 via-transparent to-transparent" />
 
                 {/* Explicit Required Badge */}
-                <div className="absolute top-3 left-3 bg-[#102C50]/90 text-[#C6A15B] px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider border border-[#C6A15B]/40 font-['Poppins']">
+                <div className="absolute top-3 left-3 bg-marine/90 text-gold px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider border border-gold/40 font-poppins">
                   Exemple de présentation
                 </div>
 
                 <div className="absolute bottom-3 left-3 text-white text-xs flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#C6A15B]" />
+                  <MapPin className="w-3.5 h-3.5 text-gold" />
                   <span>{proj.location}</span>
                 </div>
               </div>
 
               <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                 <div className="space-y-2">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-[#C6A15B] font-['Poppins']">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-gold font-poppins">
                     {proj.categoryLabel}
                   </div>
                   <h3
                     onClick={() => setSelectedProject(proj)}
-                    className="text-lg font-bold text-[#102C50] group-hover:text-[#C6A15B] transition-colors cursor-pointer font-['Poppins']"
+                    className="text-lg font-bold text-marine group-hover:text-gold transition-colors cursor-pointer font-poppins"
                   >
                     {proj.title}
                   </h3>
-                  <p className="text-xs text-[#44505F] leading-relaxed line-clamp-3">
+                  <p className="text-xs text-slate-text leading-relaxed line-clamp-3">
                     {proj.summary}
                   </p>
                 </div>
 
                 {/* Scope Preview */}
-                <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-[#102C50]">
+                <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-marine">
                   {proj.scope.slice(0, 2).map((s, idx) => (
                     <div key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#009460] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-gn-green shrink-0 mt-0.5" />
                       <span className="line-clamp-1">{s}</span>
                     </div>
                   ))}
@@ -136,7 +136,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                   <button
                     onClick={() => setSelectedProject(proj)}
-                    className="text-xs font-semibold text-[#102C50] hover:text-[#C6A15B] inline-flex items-center gap-1.5"
+                    className="text-xs font-semibold text-marine hover:text-gold inline-flex items-center gap-1.5"
                   >
                     <span>Fiche descriptive</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -144,7 +144,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
 
                   <button
                     onClick={() => onOpenQuoteModal(proj.category)}
-                    className="text-xs font-semibold text-[#C6A15B] hover:underline"
+                    className="text-xs font-semibold text-gold hover:underline"
                   >
                     Projet similaire
                   </button>
@@ -157,14 +157,14 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
 
       {/* Project Detail Modal */}
       {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#102C50]/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden border border-[#C6A15B]/30 max-h-[85vh] flex flex-col">
-            <div className="bg-[#102C50] text-white px-6 py-4 flex items-center justify-between border-b border-[#C6A15B]/40 shrink-0">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-marine/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden border border-gold/30 max-h-[85vh] flex flex-col">
+            <div className="bg-marine text-white px-6 py-4 flex items-center justify-between border-b border-gold/40 shrink-0">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#C6A15B] font-['Poppins']">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gold font-poppins">
                   {selectedProject.categoryLabel}
                 </span>
-                <h3 className="text-lg font-bold font-['Poppins']">
+                <h3 className="text-lg font-bold font-poppins">
                   {selectedProject.title}
                 </h3>
               </div>
@@ -183,35 +183,35 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
                   alt={selectedProject.title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-3 left-3 bg-[#102C50]/90 text-[#C6A15B] px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider border border-[#C6A15B]/40">
+                <div className="absolute top-3 left-3 bg-marine/90 text-gold px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider border border-gold/40">
                   Exemple de présentation
                 </div>
               </div>
 
               <div>
-                <h4 className="text-xs font-bold uppercase text-[#102C50] mb-1 font-['Poppins']">
+                <h4 className="text-xs font-bold uppercase text-marine mb-1 font-poppins">
                   Localisation & Cadre du projet
                 </h4>
-                <p className="text-xs text-[#44505F]">{selectedProject.location} — {selectedProject.year}</p>
+                <p className="text-xs text-slate-text">{selectedProject.location} — {selectedProject.year}</p>
               </div>
 
               <div>
-                <h4 className="text-xs font-bold uppercase text-[#102C50] mb-1 font-['Poppins']">
+                <h4 className="text-xs font-bold uppercase text-marine mb-1 font-poppins">
                   Descriptif technique
                 </h4>
-                <p className="text-xs text-[#44505F] leading-relaxed">
+                <p className="text-xs text-slate-text leading-relaxed">
                   {selectedProject.summary}
                 </p>
               </div>
 
               <div>
-                <h4 className="text-xs font-bold uppercase text-[#102C50] mb-2 font-['Poppins']">
+                <h4 className="text-xs font-bold uppercase text-marine mb-2 font-poppins">
                   Missions et livrables d’ingénierie
                 </h4>
-                <div className="space-y-1.5 text-xs text-[#102C50]">
+                <div className="space-y-1.5 text-xs text-marine">
                   {selectedProject.scope.map((s, idx) => (
                     <div key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#009460] shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-gn-green shrink-0 mt-0.5" />
                       <span>{s}</span>
                     </div>
                   ))}
@@ -221,7 +221,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
               <div className="pt-4 border-t border-slate-200 flex justify-end gap-3">
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="px-4 py-2 text-xs font-medium text-[#44505F] hover:bg-slate-100 rounded"
+                  className="px-4 py-2 text-xs font-medium text-slate-text hover:bg-slate-100 rounded"
                 >
                   Fermer
                 </button>
@@ -231,7 +231,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenQuoteModal }) 
                     setSelectedProject(null);
                     onOpenQuoteModal(cat);
                   }}
-                  className="px-5 py-2 bg-[#102C50] text-white rounded text-xs font-bold uppercase tracking-wider font-['Poppins'] hover:bg-[#0A1C33]"
+                  className="px-5 py-2 bg-marine text-white rounded text-xs font-bold uppercase tracking-wider font-poppins hover:bg-marine-dark"
                 >
                   Demander une cotation similaire
                 </button>

@@ -7,6 +7,52 @@ interface LogoProps {
   height?: number | string;
 }
 
+// Éléments du symbole (bouclier, étoiles, globe, grue, bâtiments), partagés par les variantes du logo.
+const SymbolElements = () => (
+  <g id="symbol-v1.1">
+    <g id="symbol">
+      <path
+        id="shield"
+        fill="#102C50"
+        d="M30 20H170V104C170 150 138 178 100 196C62 178 30 150 30 104Z"
+      />
+      <path
+        id="shield-line"
+        fill="#C6A15B"
+        fillRule="evenodd"
+        d="M35.75 25.75H164.25V103.19C164.25 145.97 133.86 171.39 100 188.53C66.14 171.39 35.75 145.97 35.75 103.19ZM38.25 28.25H161.75V102.84C161.75 144.22 132.06 168.51 100 185.28C67.94 168.51 38.25 144.22 38.25 102.84Z"
+      />
+      <path
+        id="buildings"
+        fill="#FFFFFF"
+        fillRule="evenodd"
+        d="M54 138V100H72V138ZM76 138V84L98 74V138ZM101 138V62H108V54H120V62H127V138ZM131 138V92H148V138ZM62 106h2.2v24h-2.2ZM83 90h2.2v38h-2.2ZM90 87h2.2v41h-2.2ZM106 70h2.2v58h-2.2ZM113 70h2.2v58h-2.2ZM120 70h2.2v58h-2.2ZM138 98h2.2v30h-2.2Z"
+      />
+      <path
+        id="crane"
+        fill="#C6A15B"
+        d="M88 40H109.2L113.6 31L118 40H140V43H137V49H130V43H115.2V54H112V43H95.6V57H94V43H88Z"
+      />
+      <path
+        id="globe"
+        fill="#C6A15B"
+        fillRule="evenodd"
+        d="M46.1 55A16.9 16.9 0 1 0 79.9 55A16.9 16.9 0 1 0 46.1 55ZM48.44 55A14.56 14.56 0 1 0 77.56 55A14.56 14.56 0 1 0 48.44 55ZM54.68 55A8.32 13.78 0 1 0 71.32 55A8.32 13.78 0 1 0 54.68 55ZM56.76 55A6.24 11.7 0 1 0 69.24 55A6.24 11.7 0 1 0 56.76 55ZM48.96 53.96H54.29V56.04H48.96ZM57.15 53.96H68.85V56.04H57.15ZM71.71 53.96H77.04V56.04H71.71Z"
+      />
+      <g id="flag-band">
+        <path fill="#CE1126" d="M58 146h25v6h-25Z" />
+        <path fill="#FCD116" d="M87.5 146h25v6h-25Z" />
+        <path fill="#009460" d="M117 146h25v6h-25Z" />
+      </g>
+    </g>
+    <path
+      id="stars"
+      fill="#C6A15B"
+      d="M100 -11L102.47 -3.4L110.46 -3.4L104 1.3L106.47 8.9L100 4.2L93.53 8.9L96 1.3L89.54 -3.4L97.53 -3.4ZM63.23 -1.31L66.32 4.03L72.36 2.75L68.23 7.34L71.32 12.69L65.68 10.18L61.54 14.77L62.19 8.62L56.55 6.11L62.59 4.83ZM136.77 -1.31L137.41 4.83L143.45 6.11L137.81 8.62L138.46 14.77L134.32 10.18L128.68 12.69L131.77 7.34L127.64 2.75L133.68 4.03Z"
+    />
+  </g>
+);
+
 /**
  * Official E.GUITAP v1.1 Logo Component
  * Derived directly from the official v1.1 vector SVGs:
@@ -22,51 +68,6 @@ export const Logo: React.FC<LogoProps> = ({
 }) => {
   const isDark = theme === 'dark';
   const textColor = isDark ? '#FFFFFF' : '#102C50';
-
-  const SymbolElements = () => (
-    <g id="symbol-v1.1">
-      <g id="symbol">
-        <path
-          id="shield"
-          fill="#102C50"
-          d="M30 20H170V104C170 150 138 178 100 196C62 178 30 150 30 104Z"
-        />
-        <path
-          id="shield-line"
-          fill="#C6A15B"
-          fillRule="evenodd"
-          d="M35.75 25.75H164.25V103.19C164.25 145.97 133.86 171.39 100 188.53C66.14 171.39 35.75 145.97 35.75 103.19ZM38.25 28.25H161.75V102.84C161.75 144.22 132.06 168.51 100 185.28C67.94 168.51 38.25 144.22 38.25 102.84Z"
-        />
-        <path
-          id="buildings"
-          fill="#FFFFFF"
-          fillRule="evenodd"
-          d="M54 138V100H72V138ZM76 138V84L98 74V138ZM101 138V62H108V54H120V62H127V138ZM131 138V92H148V138ZM62 106h2.2v24h-2.2ZM83 90h2.2v38h-2.2ZM90 87h2.2v41h-2.2ZM106 70h2.2v58h-2.2ZM113 70h2.2v58h-2.2ZM120 70h2.2v58h-2.2ZM138 98h2.2v30h-2.2Z"
-        />
-        <path
-          id="crane"
-          fill="#C6A15B"
-          d="M88 40H109.2L113.6 31L118 40H140V43H137V49H130V43H115.2V54H112V43H95.6V57H94V43H88Z"
-        />
-        <path
-          id="globe"
-          fill="#C6A15B"
-          fillRule="evenodd"
-          d="M46.1 55A16.9 16.9 0 1 0 79.9 55A16.9 16.9 0 1 0 46.1 55ZM48.44 55A14.56 14.56 0 1 0 77.56 55A14.56 14.56 0 1 0 48.44 55ZM54.68 55A8.32 13.78 0 1 0 71.32 55A8.32 13.78 0 1 0 54.68 55ZM56.76 55A6.24 11.7 0 1 0 69.24 55A6.24 11.7 0 1 0 56.76 55ZM48.96 53.96H54.29V56.04H48.96ZM57.15 53.96H68.85V56.04H57.15ZM71.71 53.96H77.04V56.04H71.71Z"
-        />
-        <g id="flag-band">
-          <path fill="#CE1126" d="M58 146h25v6h-25Z" />
-          <path fill="#FCD116" d="M87.5 146h25v6h-25Z" />
-          <path fill="#009460" d="M117 146h25v6h-25Z" />
-        </g>
-      </g>
-      <path
-        id="stars"
-        fill="#C6A15B"
-        d="M100 -11L102.47 -3.4L110.46 -3.4L104 1.3L106.47 8.9L100 4.2L93.53 8.9L96 1.3L89.54 -3.4L97.53 -3.4ZM63.23 -1.31L66.32 4.03L72.36 2.75L68.23 7.34L71.32 12.69L65.68 10.18L61.54 14.77L62.19 8.62L56.55 6.11L62.59 4.83ZM136.77 -1.31L137.41 4.83L143.45 6.11L137.81 8.62L138.46 14.77L134.32 10.18L128.68 12.69L131.77 7.34L127.64 2.75L133.68 4.03Z"
-      />
-    </g>
-  );
 
   if (variant === 'symbol') {
     return (

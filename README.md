@@ -1,20 +1,33 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# E.GUITAP
 
-# Run and deploy your AI Studio app
+Site institutionnel et catalogue de E.GUITAP — BTP, immobilier, commerce général et import-export à Conakry (Guinée).
 
-This contains everything you need to run your app locally.
+## Stack
 
-View your app in AI Studio: https://ai.studio/apps/eeada880-a926-4460-8ef2-bd9acdddbddc
+React 19 · TypeScript 7 · Vite 8 · Tailwind CSS 4 · Supabase (à venir)
 
-## Run Locally
+## Démarrer en local
 
-**Prerequisites:**  Node.js
+Prérequis : Node.js 22+
 
+```bash
+npm install
+cp .env.example .env.local   # puis renseigner les valeurs
+npm run dev                  # http://localhost:3000
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Scripts
+
+| Commande | Rôle |
+|---|---|
+| `npm run dev` | Serveur de développement |
+| `npm run build` | Build de production dans `dist/` |
+| `npm run preview` | Prévisualiser le build |
+| `npm run typecheck` | Vérification TypeScript (mode strict) |
+| `npm run lint` | Analyse du code (oxlint) |
+| `npm run check` | typecheck + lint |
+
+## Branches
+
+- `main` : version stable, modifiée uniquement par pull request depuis `develop`.
+- `develop` : branche de développement.

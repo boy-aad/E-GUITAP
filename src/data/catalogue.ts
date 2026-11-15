@@ -1,3 +1,5 @@
+import { IMAGES } from '../assets/images';
+
 export type CatalogueCategory = 'immobilier' | 'commerce' | 'btp' | 'import-export';
 export type CatalogueStatus = 'disponible' | 'sur-demande' | 'non-disponible';
 
@@ -40,10 +42,10 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Appartement 4 pièces moderne avec balcon panoramique, finitions soignées et groupe électrogène de secours.',
     fullDescription:
       'Situé dans le quartier résidentiel prisé de Kipé à Conakry, cet appartement de standing offre de généreux volumes baignés de lumière naturelle. Conçu selon les normes architecturales contemporaines, l’immeuble dispose d’un accès sécurisé 24h/24, d’une bâche à eau avec surpresseur et d’un groupe électrogène automatique.',
-    image: '/src/assets/images/real_estate_residence_1794150314705.jpg',
+    image: IMAGES.realEstate,
     gallery: [
-      '/src/assets/images/real_estate_residence_1794150314705.jpg',
-      '/src/assets/images/hero_conakry_architecture_1794150312428.jpg',
+      IMAGES.realEstate,
+      IMAGES.heroConakry,
     ],
     location: 'Conakry (Kipé, Ratoma)',
     priceDisplay: 'Prix sur demande',
@@ -76,10 +78,10 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Espace tertiaire modulable idéal pour siège d’entreprise, institution internationale ou cabinet conseil.',
     fullDescription:
       'Plateau de bureaux d’une superficie modulable situé au cœur économique et institutionnel de Kaloum. Le bâtiment dispose d’une double alimentation électrique secourue, d’un câblage réseau fibre optique, de salles de réunion partagées et d’un contrôle d’accès biométrique.',
-    image: '/src/assets/images/hero_conakry_architecture_1794150312428.jpg',
+    image: IMAGES.heroConakry,
     gallery: [
-      '/src/assets/images/hero_conakry_architecture_1794150312428.jpg',
-      '/src/assets/images/real_estate_residence_1794150314705.jpg',
+      IMAGES.heroConakry,
+      IMAGES.realEstate,
     ],
     location: 'Conakry (Kaloum)',
     priceDisplay: 'Prix sur demande',
@@ -111,8 +113,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Lots de terrains délimités et bornés avec voies d’accès tracées et réseau d’eau et d’électricité.',
     fullDescription:
       'E.GUITAP propose des parcelles viabilisées bénéficiant d’un plan de lotissement approuvé. Idéal pour construction de villas privées ou investissement locatif patrimonial en bordure des zones d’extension de l’agglomération de Conakry.',
-    image: '/src/assets/images/real_estate_residence_1794150314705.jpg',
-    gallery: ['/src/assets/images/real_estate_residence_1794150314705.jpg'],
+    image: IMAGES.realEstate,
+    gallery: [IMAGES.realEstate],
     location: 'Conakry (Sonfonia / Grand Conakry)',
     priceDisplay: 'Prix sur demande',
     status: 'disponible',
@@ -144,10 +146,10 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Réalisation d’ossatures béton armé, fondations spéciales et élévation de bâtiments industriels et tertiaires.',
     fullDescription:
       'Mobilisation de nos équipes de coffreurs, ferrailleurs et ingénieurs d’exécution pour la réalisation des structures porteuses de projets neufs. Contrôle rigoureux de la résistance des bétons et respect scrupuleux des normes parasismiques et géotechniques locales.',
-    image: '/src/assets/images/btp_construction_site_1794150314495.jpg',
+    image: IMAGES.btpSite,
     gallery: [
-      '/src/assets/images/btp_construction_site_1794150314495.jpg',
-      '/src/assets/images/hero_conakry_architecture_1794150312428.jpg',
+      IMAGES.btpSite,
+      IMAGES.heroConakry,
     ],
     location: 'Conakry & Toutes Régions de Guinée',
     priceDisplay: 'Étude & Devis sur cahier des charges',
@@ -179,8 +181,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Décapage, nivellement, remblaiement compacté, assainissement et réalisation de voiries bitumées ou pavées.',
     fullDescription:
       'Intervention rapide avec notre flotte de pelles hydrauliques, niveleuses et compacteurs lourds pour préparer vos emprises foncières et bâtir des réseaux d’assainissement pluvial pérennes capables de résister aux fortes pluies tropicales.',
-    image: '/src/assets/images/btp_construction_site_1794150314495.jpg',
-    gallery: ['/src/assets/images/btp_construction_site_1794150314495.jpg'],
+    image: IMAGES.btpSite,
+    gallery: [IMAGES.btpSite],
     location: 'Zone industrielle de Matoto / Grand Conakry',
     priceDisplay: 'Sur devis quantitatif estimatif (DQE)',
     status: 'disponible',
@@ -209,8 +211,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Diagnostic structurel, confortement de fondations, réfection de façades et modernisation technique complète.',
     fullDescription:
       'E.GUITAP prend en charge la remise à neuf intégrale de bâtiments existants : reprise en sous-œuvre, mise aux normes électriques et incendie, étanchéité de toitures-terrasses et modernisation des espaces intérieurs.',
-    image: '/src/assets/images/hero_conakry_architecture_1794150312428.jpg',
-    gallery: ['/src/assets/images/hero_conakry_architecture_1794150312428.jpg'],
+    image: IMAGES.heroConakry,
+    gallery: [IMAGES.heroConakry],
     location: 'Conakry (Kaloum & Dixinn)',
     priceDisplay: 'Sur diagnostic et cahier des charges',
     status: 'sur-demande',
@@ -240,8 +242,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Fourniture en gros et demi-gros de ciment pour béton armé, fondations et travaux de maçonnerie générale.',
     fullDescription:
       'Approvisionnement direct d’usines partenaires de renom. Sacs de 50 kg palettisés ou livraison en vrac par camions citernes pour centrales à béton. Conforme aux spécifications techniques nationales et internationales.',
-    image: '/src/assets/images/general_commerce_distribution_1794150315331.jpg',
-    gallery: ['/src/assets/images/general_commerce_distribution_1794150315331.jpg'],
+    image: IMAGES.commerce,
+    gallery: [IMAGES.commerce],
     location: 'Dépôts Conakry & Livraison sur chantiers',
     priceDisplay: 'Prix au tonnage sur demande',
     status: 'disponible',
@@ -272,8 +274,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Barres d’acier crénelé de 12 mètres du Ø 6 au Ø 32 mm pour armatures et structures en béton armé.',
     fullDescription:
       'Acier nervuré FeE 500 certifié pour ouvrages d’art et édifices à étages. Grande ductilité, excellente soudabilité et résistance à la traction éprouvée. Conditionné en fardeaux standard avec étiquetage de traçabilité d’aciérie.',
-    image: '/src/assets/images/general_commerce_distribution_1794150315331.jpg',
-    gallery: ['/src/assets/images/general_commerce_distribution_1794150315331.jpg'],
+    image: IMAGES.commerce,
+    gallery: [IMAGES.commerce],
     location: 'Magasins Conakry (Matoto & Enta)',
     priceDisplay: 'Prix au tonnage selon cours matière',
     status: 'disponible',
@@ -303,8 +305,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Équipements pour artisans, entrepreneurs et ateliers : découpe, perforation, fixations et mesure laser.',
     fullDescription:
       'Distribution de marques réputées d’outillage électroportatif de niveau professionnel (meuleuses industrielles, perforateurs-burineurs, scies sur table) ainsi que tous consommables (disques diamant, chevilles métalliques lourdes).',
-    image: '/src/assets/images/general_commerce_distribution_1794150315331.jpg',
-    gallery: ['/src/assets/images/general_commerce_distribution_1794150315331.jpg'],
+    image: IMAGES.commerce,
+    gallery: [IMAGES.commerce],
     location: 'Showroom Commercial Conakry',
     priceDisplay: 'Catalogue tarifaire sur demande',
     status: 'disponible',
@@ -334,8 +336,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Organisation de fret maritime depuis l’Asie, l’Europe et les Amériques à destination du Port Autonome de Conakry.',
     fullDescription:
       'E.GUITAP orchestre vos approvisionnements internationaux maritimes complets (FCL 20ft/40ft/High Cube) ou en groupage (LCL). Nous prenons en charge la réservation d’espace navire, l’émission des connaissements maritimes (Bill of Lading) et le suivi en temps réel jusqu’à quai.',
-    image: '/src/assets/images/import_export_port_containers_1794150316174.jpg',
-    gallery: ['/src/assets/images/import_export_port_containers_1794150316174.jpg'],
+    image: IMAGES.importExport,
+    gallery: [IMAGES.importExport],
     location: 'Port Autonome de Conakry (PAC) — Liaisons Mondiales',
     priceDisplay: 'Cotation selon cotations fret maritime en vigueur',
     status: 'disponible',
@@ -365,8 +367,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Gestion complète des formalités douanières d’importation et d’exportation pour éviter surestaries et surestaries portuaires.',
     fullDescription:
       'Prise en charge de la déclaration en douane électronique (SYDONIA World), paiement des droits et taxes, passage aux scanners, obtention des bons à enlever (BAE) et acheminement routier sécurisé de vos marchandises depuis le terminal portuaire.',
-    image: '/src/assets/images/import_export_port_containers_1794150316174.jpg',
-    gallery: ['/src/assets/images/import_export_port_containers_1794150316174.jpg'],
+    image: IMAGES.importExport,
+    gallery: [IMAGES.importExport],
     location: 'Guichet Unique du Port de Conakry',
     priceDisplay: 'Barème agréé selon nomenclature douanière',
     status: 'disponible',
@@ -394,8 +396,8 @@ export const CATALOGUE_DATA: CatalogueItem[] = [
       'Conditionnement et expédition internationale de denrées agricoles et ressources de la sous-région ouest-africaine.',
     fullDescription:
       'Accompagnement des producteurs et coopératives pour l’exportation de denrées conformes aux standards sanitaires et phytosanitaires internationaux : café, cacao, noix de cajou, et produits transformés vers les marchés européens et asiatiques.',
-    image: '/src/assets/images/import_export_port_containers_1794150316174.jpg',
-    gallery: ['/src/assets/images/import_export_port_containers_1794150316174.jpg'],
+    image: IMAGES.importExport,
+    gallery: [IMAGES.importExport],
     location: 'Conakry & Zones de production de l’intérieur',
     priceDisplay: 'Sur étude de cahier des charges d’export',
     status: 'sur-demande',

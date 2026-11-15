@@ -1,3 +1,5 @@
+import { IMAGES } from '../assets/images';
+
 export interface ProjectItem {
   id: string;
   slug: string;
@@ -28,7 +30,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Pose de murs rideaux en double vitrage isolant',
       'Réseaux fluides et double colonne montante électrique',
     ],
-    image: '/src/assets/images/hero_conakry_architecture_1794150312428.jpg',
+    image: IMAGES.heroConakry,
     isDemoPresentation: true,
   },
   {
@@ -46,7 +48,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Système solaire hybride pour l’éclairage des parties communes',
       'Commercialisation et remise des clés aux acquéreurs',
     ],
-    image: '/src/assets/images/real_estate_residence_1794150314705.jpg',
+    image: IMAGES.realEstate,
     isDemoPresentation: true,
   },
   {
@@ -64,7 +66,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Installation de rayonnages pour charges lourdes',
       'Système de gestion informatisée des stocks',
     ],
-    image: '/src/assets/images/general_commerce_distribution_1794150315331.jpg',
+    image: IMAGES.commerce,
     isDemoPresentation: true,
   },
   {
@@ -82,7 +84,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Gestion des autorisations spéciales de voirie',
       'Livraison sans incident sur le site d’exploitation',
     ],
-    image: '/src/assets/images/import_export_port_containers_1794150316174.jpg',
+    image: IMAGES.importExport,
     isDemoPresentation: true,
   },
   {
@@ -100,7 +102,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
       'Pose de dalots préfabriqués en béton armé',
       'Rétablissement des bordures et trottoirs piétons',
     ],
-    image: '/src/assets/images/btp_construction_site_1794150314495.jpg',
+    image: IMAGES.btpSite,
     isDemoPresentation: true,
   },
 ];

@@ -8,8 +8,6 @@ import {
   Send,
   CheckCircle2,
   AlertCircle,
-  Building2,
-  Clock,
 } from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
@@ -50,16 +48,16 @@ export const ContactPage: React.FC = () => {
   return (
     <div className="w-full">
       {/* Header */}
-      <section className="bg-[#102C50] text-white py-14 lg:py-16 border-b border-[#C6A15B]/40">
+      <section className="bg-marine text-white py-14 lg:py-16 border-b border-gold/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-[#C6A15B] rounded text-xs font-bold uppercase tracking-wider font-['Poppins']">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-gold rounded text-xs font-bold uppercase tracking-wider font-poppins">
               <span>Relation Partenaires & Clients</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-['Poppins']">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-poppins">
               Contactez E.GUITAP
             </h1>
-            <p className="text-sm sm:text-base text-white/80 leading-relaxed font-['Inter']">
+            <p className="text-sm sm:text-base text-white/80 leading-relaxed font-inter">
               Nos équipes se tiennent à votre disposition pour analyser vos projets dans le BTP,
               l’immobilier, l’approvisionnement commercial et le transit import-export.
             </p>
@@ -73,13 +71,13 @@ export const ContactPage: React.FC = () => {
           {/* Left Column: Institutional Information */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-3">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#C6A15B] font-['Poppins']">
+              <div className="text-xs font-bold uppercase tracking-wider text-gold font-poppins">
                 Siège & Représentation
               </div>
-              <h2 className="text-2xl font-bold text-[#102C50] font-['Poppins']">
+              <h2 className="text-2xl font-bold text-marine font-poppins">
                 Échangeons sur vos besoins
               </h2>
-              <p className="text-xs sm:text-sm text-[#44505F] leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-text leading-relaxed">
                 Une équipe commerciale et technique disponible pour vous orienter, préparer des devis
                 détaillés ou fixer un rendez-vous d'affaires.
               </p>
@@ -89,14 +87,14 @@ export const ContactPage: React.FC = () => {
             <div className="space-y-4">
               {/* Location */}
               <div className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-start gap-3.5">
-                <div className="p-2.5 rounded bg-[#102C50] text-[#C6A15B] shrink-0">
+                <div className="p-2.5 rounded bg-marine text-gold shrink-0">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div className="text-xs space-y-0.5">
-                  <span className="font-bold text-[#102C50] font-['Poppins'] block">
+                  <span className="font-bold text-marine font-poppins block">
                     Localisation Officielle
                   </span>
-                  <p className="text-[#102C50] font-medium">Conakry, République de Guinée</p>
+                  <p className="text-marine font-medium">Conakry, République de Guinée</p>
                   <p className="text-slate-400 text-[11px]">
                     (Adresse physique exacte du siège à renseigner dans la configuration)
                   </p>
@@ -105,47 +103,47 @@ export const ContactPage: React.FC = () => {
 
               {/* Phone */}
               <div className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-start gap-3.5">
-                <div className="p-2.5 rounded bg-[#102C50] text-[#C6A15B] shrink-0">
+                <div className="p-2.5 rounded bg-marine text-gold shrink-0">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div className="text-xs space-y-0.5">
-                  <span className="font-bold text-[#102C50] font-['Poppins'] block">
+                  <span className="font-bold text-marine font-poppins block">
                     Standard Téléphonique
                   </span>
-                  <p className="text-[#102C50] font-medium">{COMPANY_DATA.phonePlaceholder}</p>
+                  <p className="text-marine font-medium">{COMPANY_DATA.phonePlaceholder}</p>
                   <p className="text-slate-400 text-[11px]">Du lundi au vendredi : 08h30 – 17h30 GMT</p>
                 </div>
               </div>
 
               {/* Email */}
               <div className="p-4 bg-white rounded-lg border border-slate-200 shadow-sm flex items-start gap-3.5">
-                <div className="p-2.5 rounded bg-[#102C50] text-[#C6A15B] shrink-0">
+                <div className="p-2.5 rounded bg-marine text-gold shrink-0">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div className="text-xs space-y-0.5">
-                  <span className="font-bold text-[#102C50] font-['Poppins'] block">
+                  <span className="font-bold text-marine font-poppins block">
                     Courrier Électronique
                   </span>
-                  <p className="text-[#102C50] font-medium">{COMPANY_DATA.emailPlaceholder}</p>
+                  <p className="text-marine font-medium">{COMPANY_DATA.emailPlaceholder}</p>
                   <p className="text-slate-400 text-[11px]">Réponse garantie sous 24 à 48 heures ouvrées</p>
                 </div>
               </div>
 
               {/* WhatsApp Professional Direct */}
-              <div className="p-4 bg-[#009460]/10 rounded-lg border border-[#009460]/30 shadow-sm flex items-start gap-3.5">
-                <div className="p-2.5 rounded bg-[#009460] text-white shrink-0">
+              <div className="p-4 bg-gn-green/10 rounded-lg border border-gn-green/30 shadow-sm flex items-start gap-3.5">
+                <div className="p-2.5 rounded bg-gn-green text-white shrink-0">
                   <MessageSquare className="w-5 h-5" />
                 </div>
                 <div className="text-xs space-y-1">
-                  <span className="font-bold text-[#009460] font-['Poppins'] block">
+                  <span className="font-bold text-gn-green font-poppins block">
                     Canal WhatsApp Professionnel
                   </span>
-                  <p className="text-[#102C50]">
+                  <p className="text-marine">
                     Messagerie instantanée directe avec notre service d’orientation commerciale.
                   </p>
                   <button
                     onClick={handleWhatsAppDirect}
-                    className="inline-flex items-center gap-1.5 font-bold text-[#009460] hover:underline pt-1"
+                    className="inline-flex items-center gap-1.5 font-bold text-gn-green hover:underline pt-1"
                   >
                     <span>Démarrer un échange WhatsApp</span>
                     <span>→</span>
@@ -159,10 +157,10 @@ export const ContactPage: React.FC = () => {
           <div className="lg:col-span-7">
             <div className="bg-white p-8 rounded-lg border border-slate-200 shadow-sm">
               <div className="mb-6 pb-4 border-b border-slate-100">
-                <h3 className="text-xl font-bold text-[#102C50] font-['Poppins']">
+                <h3 className="text-xl font-bold text-marine font-poppins">
                   Formulaire de contact institutionnel
                 </h3>
-                <p className="text-xs text-[#44505F] mt-1">
+                <p className="text-xs text-slate-text mt-1">
                   Veuillez renseigner les champs ci-après. Tous les champs marqués d’un astérisque (*)
                   sont obligatoires.
                 </p>
@@ -174,24 +172,24 @@ export const ContactPage: React.FC = () => {
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
 
-                  <h4 className="text-xl font-bold text-[#102C50] font-['Poppins']">
+                  <h4 className="text-xl font-bold text-marine font-poppins">
                     Formulaire validé avec succès
                   </h4>
 
                   {/* Explicit Mandatory Demo Notice (Section 11) */}
-                  <div className="p-4 bg-[#F5F1E8] rounded border border-[#C6A15B]/40 max-w-lg mx-auto text-xs text-left space-y-2">
-                    <div className="flex items-start gap-2 text-[#102C50]">
-                      <AlertCircle className="w-4 h-4 text-[#C6A15B] shrink-0 mt-0.5" />
+                  <div className="p-4 bg-ivory rounded border border-gold/40 max-w-lg mx-auto text-xs text-left space-y-2">
+                    <div className="flex items-start gap-2 text-marine">
+                      <AlertCircle className="w-4 h-4 text-gold shrink-0 mt-0.5" />
                       <div>
                         <strong>Information de démonstration :</strong>
-                        <p className="text-[#44505F] mt-0.5">
+                        <p className="text-slate-text mt-0.5">
                           Ce formulaire fonctionne en mode simulation de prototype. Aucun service
                           backend réel n'étant connecté pour l'instant, le message n'a pas été
                           transmis par serveur de messagerie externe.
                         </p>
                       </div>
                     </div>
-                    <div className="pt-2 border-t border-slate-200/60 text-[11px] text-[#102C50]">
+                    <div className="pt-2 border-t border-slate-200/60 text-[11px] text-marine">
                       <div><strong>Expéditeur :</strong> {fullName} ({email})</div>
                       <div><strong>Domaine :</strong> {domain.toUpperCase()} — {subject}</div>
                     </div>
@@ -200,14 +198,14 @@ export const ContactPage: React.FC = () => {
                   <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
                     <button
                       onClick={handleWhatsAppDirect}
-                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#009460] hover:bg-[#007a4f] text-white rounded font-['Poppins'] text-xs font-bold uppercase tracking-wider transition-colors"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gn-green hover:bg-gn-green-hover text-white rounded font-poppins text-xs font-bold uppercase tracking-wider transition-colors"
                     >
                       <MessageSquare className="w-4 h-4" />
                       <span>Transmettre aussi sur WhatsApp</span>
                     </button>
                     <button
                       onClick={() => setIsSubmitted(false)}
-                      className="px-5 py-2.5 bg-[#102C50] text-white rounded font-['Poppins'] text-xs font-bold uppercase tracking-wider hover:bg-[#0A1C33]"
+                      className="px-5 py-2.5 bg-marine text-white rounded font-poppins text-xs font-bold uppercase tracking-wider hover:bg-marine-dark"
                     >
                       Nouveau message
                     </button>
@@ -217,7 +215,7 @@ export const ContactPage: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Nom complet */}
                   <div>
-                    <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                    <label className="block text-xs font-semibold text-marine mb-1">
                       Nom et prénom *
                     </label>
                     <input
@@ -225,7 +223,7 @@ export const ContactPage: React.FC = () => {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Ex: Mamadou Barry"
-                      className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                      className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                         errors.fullName ? 'border-red-500' : 'border-slate-300'
                       }`}
                     />
@@ -237,7 +235,7 @@ export const ContactPage: React.FC = () => {
                   {/* Email & Phone */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                      <label className="block text-xs font-semibold text-marine mb-1">
                         Adresse email *
                       </label>
                       <input
@@ -245,7 +243,7 @@ export const ContactPage: React.FC = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Ex: contact@organisation.com"
-                        className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                        className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                           errors.email ? 'border-red-500' : 'border-slate-300'
                         }`}
                       />
@@ -255,7 +253,7 @@ export const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                      <label className="block text-xs font-semibold text-marine mb-1">
                         Numéro de téléphone / WhatsApp *
                       </label>
                       <input
@@ -263,7 +261,7 @@ export const ContactPage: React.FC = () => {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="Ex: +224 620 00 00 00"
-                        className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                        className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                           errors.phone ? 'border-red-500' : 'border-slate-300'
                         }`}
                       />
@@ -276,13 +274,13 @@ export const ContactPage: React.FC = () => {
                   {/* Domain & Subject */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                      <label className="block text-xs font-semibold text-marine mb-1">
                         Domaine concerné *
                       </label>
                       <select
                         value={domain}
                         onChange={(e) => setDomain(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-xs rounded border border-slate-300 bg-white text-[#102C50] focus:outline-none focus:ring-1 focus:ring-[#C6A15B]"
+                        className="w-full px-3.5 py-2.5 text-xs rounded border border-slate-300 bg-white text-marine focus:outline-none focus:ring-1 focus:ring-gold"
                       >
                         <option value="btp">BTP & Travaux Publics</option>
                         <option value="immobilier">Immobilier & Aménagement</option>
@@ -293,7 +291,7 @@ export const ContactPage: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                      <label className="block text-xs font-semibold text-marine mb-1">
                         Objet de la demande *
                       </label>
                       <input
@@ -301,7 +299,7 @@ export const ContactPage: React.FC = () => {
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
                         placeholder="Ex: Renseignement foncier ou commande ciment"
-                        className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                        className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                           errors.subject ? 'border-red-500' : 'border-slate-300'
                         }`}
                       />
@@ -313,7 +311,7 @@ export const ContactPage: React.FC = () => {
 
                   {/* Message */}
                   <div>
-                    <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                    <label className="block text-xs font-semibold text-marine mb-1">
                       Votre message *
                     </label>
                     <textarea
@@ -321,7 +319,7 @@ export const ContactPage: React.FC = () => {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Détaillez votre besoin, le lieu d'intervention ou vos questions techniques..."
-                      className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                      className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                         errors.message ? 'border-red-500' : 'border-slate-300'
                       }`}
                     />
@@ -334,10 +332,10 @@ export const ContactPage: React.FC = () => {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#102C50] hover:bg-[#0A1C33] text-white font-['Poppins'] text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-sm"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-marine hover:bg-marine-dark text-white font-poppins text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-sm"
                     >
                       <span>Transmettre le message</span>
-                      <Send className="w-3.5 h-3.5 text-[#C6A15B]" />
+                      <Send className="w-3.5 h-3.5 text-gold" />
                     </button>
                   </div>
                 </form>

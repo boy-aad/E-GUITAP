@@ -102,16 +102,16 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
   return (
     <div className="w-full overflow-hidden">
       {/* Catalogue Page Header */}
-      <section className="bg-[#102C50] text-white py-12 sm:py-16 border-b border-[#C6A15B]/40">
+      <section className="bg-marine text-white py-12 sm:py-16 border-b border-gold/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-3 sm:space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-[#C6A15B] rounded text-xs font-bold uppercase tracking-wider font-['Poppins']">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-gold rounded text-xs font-bold uppercase tracking-wider font-poppins">
               <span>Plateforme Commerciale Institutionnelle</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-['Poppins']">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-poppins">
               Catalogue des opportunités
             </h1>
-            <p className="text-xs sm:text-sm lg:text-base text-white/80 leading-relaxed font-['Inter']">
+            <p className="text-xs sm:text-sm lg:text-base text-white/80 leading-relaxed font-inter">
               Explorez nos offres certifiées en immobilier, matériaux de construction, prestations BTP
               et logistique portuaire à Conakry et en Guinée.
             </p>
@@ -132,7 +132,7 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Rechercher (ex: Kaloum, ciment, transit, bureau)..."
-                className="w-full pl-10 pr-14 py-2.5 text-xs rounded border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#C6A15B] bg-slate-50/50"
+                className="w-full pl-10 pr-14 py-2.5 text-xs rounded border border-slate-300 focus:outline-none focus:ring-1 focus:ring-gold bg-slate-50/50"
               />
               {searchQuery && (
                 <button
@@ -150,7 +150,7 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="px-2.5 sm:px-3 py-2 text-xs rounded border border-slate-300 bg-white text-[#102C50] focus:outline-none focus:ring-1 focus:ring-[#C6A15B]"
+                className="px-2.5 sm:px-3 py-2 text-xs rounded border border-slate-300 bg-white text-marine focus:outline-none focus:ring-1 focus:ring-gold"
               >
                 <option value="all">Tous les statuts</option>
                 <option value="disponible">Disponible / En stock</option>
@@ -162,7 +162,7 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-2.5 sm:px-3 py-2 text-xs rounded border border-slate-300 bg-white text-[#102C50] focus:outline-none focus:ring-1 focus:ring-[#C6A15B]"
+                className="px-2.5 sm:px-3 py-2 text-xs rounded border border-slate-300 bg-white text-marine focus:outline-none focus:ring-1 focus:ring-gold"
               >
                 <option value="default">Tri par défaut</option>
                 <option value="title-asc">Nom (A → Z)</option>
@@ -198,8 +198,8 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
                   }}
                   className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 text-xs font-semibold rounded whitespace-nowrap shrink-0 transition-all ${
                     isActive
-                      ? 'bg-[#102C50] text-white shadow-sm'
-                      : 'bg-slate-100 text-[#44505F] hover:bg-slate-200 hover:text-[#102C50]'
+                      ? 'bg-marine text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-text hover:bg-slate-200 hover:text-marine'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -212,7 +212,7 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
           {/* Domain-specific Sub-Filters */}
           {selectedCategory === 'immobilier' && (
             <div className="pt-2 border-t border-slate-100 flex items-center gap-2 flex-wrap text-xs">
-              <span className="text-[#44505F] font-semibold text-[11px]">Type de bien :</span>
+              <span className="text-slate-text font-semibold text-[11px]">Type de bien :</span>
               {[
                 { id: 'all', label: 'Tous' },
                 { id: 'appartement', label: 'Appartements' },
@@ -224,8 +224,8 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
                   onClick={() => setRealEstateOpType(sub.id)}
                   className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
                     realEstateOpType === sub.id
-                      ? 'bg-[#C6A15B] text-[#102C50] font-bold'
-                      : 'bg-[#F5F1E8] text-[#44505F] hover:text-[#102C50]'
+                      ? 'bg-gold text-marine font-bold'
+                      : 'bg-ivory text-slate-text hover:text-marine'
                   }`}
                 >
                   {sub.label}
@@ -236,7 +236,7 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
 
           {selectedCategory === 'commerce' && (
             <div className="pt-2 border-t border-slate-100 flex items-center gap-2 flex-wrap text-xs">
-              <span className="text-[#44505F] font-semibold text-[11px]">Matériaux :</span>
+              <span className="text-slate-text font-semibold text-[11px]">Matériaux :</span>
               {[
                 { id: 'all', label: 'Tous les stocks' },
                 { id: 'ciment', label: 'Ciment CPJ' },
@@ -248,8 +248,8 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
                   onClick={() => setCommerceType(sub.id)}
                   className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
                     commerceType === sub.id
-                      ? 'bg-[#C6A15B] text-[#102C50] font-bold'
-                      : 'bg-[#F5F1E8] text-[#44505F] hover:text-[#102C50]'
+                      ? 'bg-gold text-marine font-bold'
+                      : 'bg-ivory text-slate-text hover:text-marine'
                   }`}
                 >
                   {sub.label}
@@ -260,7 +260,7 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
         </div>
 
         {/* Results Counter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2 text-xs text-[#44505F]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2 text-xs text-slate-text">
           <div>
             Affichage de <strong>{filteredItems.length}</strong> élément(s) disponible(s)
           </div>
@@ -279,32 +279,31 @@ export const CataloguePage: React.FC<CataloguePageProps> = ({
                 key={item.id}
                 item={item}
                 onSelect={onSelectItem}
-                onOpenQuote={(itm) => onOpenQuoteModal(itm.category, itm.refCode)}
               />
             ))}
           </div>
         ) : (
           <div className="text-center py-12 sm:py-16 bg-white rounded-lg border border-slate-200 p-6 sm:p-8 space-y-4">
-            <div className="w-12 h-12 bg-[#F5F1E8] text-[#C6A15B] rounded-full flex items-center justify-center mx-auto">
+            <div className="w-12 h-12 bg-ivory text-gold rounded-full flex items-center justify-center mx-auto">
               <Search className="w-6 h-6" />
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-[#102C50] font-['Poppins']">
+            <h3 className="text-base sm:text-lg font-bold text-marine font-poppins">
               Aucun résultat correspondant à votre recherche
             </h3>
-            <p className="text-xs text-[#44505F] max-w-md mx-auto">
+            <p className="text-xs text-slate-text max-w-md mx-auto">
               Aucune offre ne correspond aux critères sélectionnés. Vous pouvez réinitialiser vos
               filtres ou formuler une demande d’approvisionnement spécifique.
             </p>
             <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
               <button
                 onClick={handleResetFilters}
-                className="px-4 py-2 bg-[#102C50] text-white text-xs font-bold rounded uppercase tracking-wider font-['Poppins']"
+                className="px-4 py-2 bg-marine text-white text-xs font-bold rounded uppercase tracking-wider font-poppins"
               >
                 Réinitialiser les filtres
               </button>
               <button
                 onClick={() => onOpenQuoteModal()}
-                className="px-4 py-2 bg-[#C6A15B] text-[#102C50] text-xs font-bold rounded uppercase tracking-wider font-['Poppins']"
+                className="px-4 py-2 bg-gold text-marine text-xs font-bold rounded uppercase tracking-wider font-poppins"
               >
                 Demander un devis sur mesure
               </button>

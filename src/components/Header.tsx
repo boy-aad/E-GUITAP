@@ -56,13 +56,13 @@ export const Header: React.FC<HeaderProps> = ({
     <>
       {/* Lisière Tricolore Nationale Guinéenne (Charte p. 15 : 0.5% à 2% format) */}
       <div className="w-full h-[3.5px] flex shrink-0 z-50 relative" aria-hidden="true">
-        <div className="flex-1 bg-[#CE1126]" />
-        <div className="flex-1 bg-[#FCD116]" />
-        <div className="flex-1 bg-[#009460]" />
+        <div className="flex-1 bg-gn-red" />
+        <div className="flex-1 bg-gn-yellow" />
+        <div className="flex-1 bg-gn-green" />
       </div>
 
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-[#F5F1E8] ${
+        className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-ivory ${
           isScrolled ? 'shadow-md py-2.5' : 'py-3.5 sm:py-4'
         }`}
       >
@@ -71,7 +71,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Zone 1: Logo Officiel E.GUITAP Exact SVG */}
             <button
               onClick={() => handleNavClick('home')}
-              className="flex items-center text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C6A15B] rounded py-0.5 transition-transform active:scale-[0.99] shrink-0"
+              className="flex items-center text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded py-0.5 transition-transform active:scale-[0.99] shrink-0"
               aria-label="E.GUITAP — Retour à l'accueil"
             >
               {/* Responsive Logo height: 38px on small mobile, 44px on tablet, 50px on desktop */}
@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Zone 2: Navigation Links (Desktop & Large Screen) */}
-            <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs xl:text-sm font-semibold text-[#102C50] font-['Inter']">
+            <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs xl:text-sm font-semibold text-marine font-inter">
               {navItems.map((item) => {
                 const isActive = currentRoute === item.route;
                 return (
@@ -96,14 +96,14 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => handleNavClick(item.route)}
                     className={`relative py-1.5 whitespace-nowrap transition-colors duration-150 ${
                       isActive
-                        ? 'text-[#102C50] font-bold'
-                        : 'text-[#44505F] hover:text-[#102C50]'
+                        ? 'text-marine font-bold'
+                        : 'text-slate-text hover:text-marine'
                     }`}
                   >
                     <span>{item.label}</span>
                     {isActive && (
                       <span
-                        className="absolute bottom-0 left-0 w-full h-[2.5px] bg-[#C6A15B] rounded-full"
+                        className="absolute bottom-0 left-0 w-full h-[2.5px] bg-gold rounded-full"
                         aria-hidden="true"
                       />
                     )}
@@ -117,16 +117,16 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Desktop CTA Devis */}
               <button
                 onClick={onOpenQuoteModal}
-                className="hidden sm:inline-flex items-center gap-2 px-4 lg:px-5 py-2.5 text-xs font-bold tracking-wider uppercase text-white bg-[#102C50] hover:bg-[#0A1C33] border border-[#102C50] hover:border-[#C6A15B] rounded transition-all duration-200 shadow-sm whitespace-nowrap active:scale-[0.98] font-['Poppins']"
+                className="hidden sm:inline-flex items-center gap-2 px-4 lg:px-5 py-2.5 text-xs font-bold tracking-wider uppercase text-white bg-marine hover:bg-marine-dark border border-marine hover:border-gold rounded transition-all duration-200 shadow-sm whitespace-nowrap active:scale-[0.98] font-poppins"
               >
                 <span>Demander un devis</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#C6A15B]" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-gold" />
               </button>
 
               {/* Mobile CTA (Compact) */}
               <button
                 onClick={onOpenQuoteModal}
-                className="sm:hidden inline-flex items-center px-3 py-2 text-[11px] font-bold tracking-wide uppercase text-white bg-[#102C50] rounded font-['Poppins'] whitespace-nowrap"
+                className="sm:hidden inline-flex items-center px-3 py-2 text-[11px] font-bold tracking-wide uppercase text-white bg-marine rounded font-poppins whitespace-nowrap"
               >
                 <span>Devis</span>
               </button>
@@ -134,7 +134,7 @@ export const Header: React.FC<HeaderProps> = ({
               {/* Hamburger Button (Mobile / Tablet) */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded text-[#102C50] hover:bg-[#F5F1E8] focus:outline-none focus:ring-2 focus:ring-[#C6A15B]"
+                className="lg:hidden p-2 rounded text-marine hover:bg-ivory focus:outline-none focus:ring-2 focus:ring-gold"
                 aria-label={mobileMenuOpen ? 'Fermer le menu de navigation' : 'Ouvrir le menu de navigation'}
                 aria-expanded={mobileMenuOpen}
               >
@@ -148,7 +148,7 @@ export const Header: React.FC<HeaderProps> = ({
         {mobileMenuOpen && (
           <div className="lg:hidden fixed inset-x-0 top-[60px] bottom-0 z-50 bg-white/98 backdrop-blur-lg flex flex-col justify-between overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200 border-t border-slate-200">
             <div className="p-4 sm:p-6 space-y-4">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-[#C6A15B] font-['Poppins'] px-3">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-gold font-poppins px-3">
                 Navigation Principale
               </div>
 
@@ -159,17 +159,17 @@ export const Header: React.FC<HeaderProps> = ({
                     <button
                       key={item.route}
                       onClick={() => handleNavClick(item.route)}
-                      className={`flex items-center justify-between w-full px-4 py-3.5 rounded-lg text-left font-['Inter'] text-sm font-semibold transition-all ${
+                      className={`flex items-center justify-between w-full px-4 py-3.5 rounded-lg text-left font-inter text-sm font-semibold transition-all ${
                         isActive
-                          ? 'bg-[#102C50] text-white'
-                          : 'text-[#102C50] hover:bg-[#F5F1E8]'
+                          ? 'bg-marine text-white'
+                          : 'text-marine hover:bg-ivory'
                       }`}
                     >
                       <span>{item.label}</span>
                       {isActive ? (
-                        <span className="w-2 h-2 rounded-full bg-[#C6A15B]" />
+                        <span className="w-2 h-2 rounded-full bg-gold" />
                       ) : (
-                        <ArrowUpRight className="w-4 h-4 text-[#44505F]/50" />
+                        <ArrowUpRight className="w-4 h-4 text-slate-text/50" />
                       )}
                     </button>
                   );
@@ -178,31 +178,31 @@ export const Header: React.FC<HeaderProps> = ({
 
               {/* Mobile Quick Domain Shortcuts */}
               <div className="pt-3 border-t border-slate-100">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-[#44505F] font-['Poppins'] px-3 mb-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-text font-poppins px-3 mb-2">
                   Nos 4 Pôles d’Expertise
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-xs font-medium text-[#102C50]">
+                <div className="grid grid-cols-2 gap-2 text-xs font-medium text-marine">
                   <button
                     onClick={() => handleNavClick('activities')}
-                    className="p-2.5 rounded bg-[#F5F1E8]/70 hover:bg-[#F5F1E8] text-left truncate"
+                    className="p-2.5 rounded bg-ivory/70 hover:bg-ivory text-left truncate"
                   >
                     01. BTP & Travaux
                   </button>
                   <button
                     onClick={() => handleNavClick('activities')}
-                    className="p-2.5 rounded bg-[#F5F1E8]/70 hover:bg-[#F5F1E8] text-left truncate"
+                    className="p-2.5 rounded bg-ivory/70 hover:bg-ivory text-left truncate"
                   >
                     02. Immobilier
                   </button>
                   <button
                     onClick={() => handleNavClick('activities')}
-                    className="p-2.5 rounded bg-[#F5F1E8]/70 hover:bg-[#F5F1E8] text-left truncate"
+                    className="p-2.5 rounded bg-ivory/70 hover:bg-ivory text-left truncate"
                   >
                     03. Commerce Général
                   </button>
                   <button
                     onClick={() => handleNavClick('activities')}
-                    className="p-2.5 rounded bg-[#F5F1E8]/70 hover:bg-[#F5F1E8] text-left truncate"
+                    className="p-2.5 rounded bg-ivory/70 hover:bg-ivory text-left truncate"
                   >
                     04. Import-Export
                   </button>
@@ -211,27 +211,27 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             {/* Mobile Drawer Bottom Actions */}
-            <div className="p-4 sm:p-6 bg-[#FAFAF7] border-t border-slate-200 space-y-3">
+            <div className="p-4 sm:p-6 bg-paper border-t border-slate-200 space-y-3">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenQuoteModal();
                 }}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-[#102C50] hover:bg-[#0A1C33] text-white font-['Poppins'] text-xs font-bold uppercase tracking-wider rounded-lg shadow-sm"
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-marine hover:bg-marine-dark text-white font-poppins text-xs font-bold uppercase tracking-wider rounded-lg shadow-sm"
               >
                 <span>Demander un devis officiel</span>
-                <ArrowUpRight className="w-4 h-4 text-[#C6A15B]" />
+                <ArrowUpRight className="w-4 h-4 text-gold" />
               </button>
 
-              <div className="flex items-center justify-center gap-4 pt-1 text-xs text-[#44505F]">
+              <div className="flex items-center justify-center gap-4 pt-1 text-xs text-slate-text">
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
                     onNavigate('contact');
                   }}
-                  className="flex items-center gap-1.5 hover:text-[#102C50]"
+                  className="flex items-center gap-1.5 hover:text-marine"
                 >
-                  <Phone className="w-3.5 h-3.5 text-[#C6A15B]" />
+                  <Phone className="w-3.5 h-3.5 text-gold" />
                   <span>Contact Conakry</span>
                 </button>
                 <span>·</span>
@@ -239,14 +239,14 @@ export const Header: React.FC<HeaderProps> = ({
                   href={`https://wa.me/${COMPANY_DATA.whatsappNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-[#009460] font-semibold"
+                  className="flex items-center gap-1.5 text-gn-green font-semibold"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
                   <span>WhatsApp direct</span>
                 </a>
               </div>
 
-              <div className="text-center text-[11px] text-[#44505F] font-['Lora'] italic pt-1">
+              <div className="text-center text-[11px] text-slate-text font-lora italic pt-1">
                 « {COMPANY_DATA.signatures.primary} »
               </div>
             </div>

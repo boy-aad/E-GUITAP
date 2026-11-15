@@ -63,19 +63,19 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#102C50]/80 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-marine/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden border border-[#C6A15B]/30 max-h-[92vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden border border-gold/30 max-h-[92vh] flex flex-col"
         role="dialog"
         aria-modal="true"
       >
         {/* Modal Header */}
-        <div className="bg-[#102C50] text-white px-4 sm:px-6 py-4 flex items-center justify-between border-b border-[#C6A15B]/40 shrink-0">
+        <div className="bg-marine text-white px-4 sm:px-6 py-4 flex items-center justify-between border-b border-gold/40 shrink-0">
           <div>
-            <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#C6A15B] font-['Poppins']">
+            <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-gold font-poppins">
               Devis & Cotation Institutionnelle
             </div>
-            <h3 className="text-lg sm:text-xl font-bold font-['Poppins']">
+            <h3 className="text-lg sm:text-xl font-bold font-poppins">
               Demande d’étude personnalisée
             </h3>
           </div>
@@ -95,16 +95,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               <div className="w-12 sm:w-14 h-12 sm:h-14 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-600 border border-emerald-200">
                 <CheckCircle2 className="w-7 sm:w-8 h-7 sm:h-8" />
               </div>
-              <h4 className="text-lg sm:text-xl font-bold text-[#102C50] font-['Poppins']">
+              <h4 className="text-lg sm:text-xl font-bold text-marine font-poppins">
                 Demande de devis enregistrée avec succès
               </h4>
-              <p className="text-xs sm:text-sm text-[#44505F] max-w-md mx-auto leading-relaxed">
-                <strong className="text-[#102C50]">[Mode prototype institutionnel]</strong> Votre demande a
+              <p className="text-xs sm:text-sm text-slate-text max-w-md mx-auto leading-relaxed">
+                <strong className="text-marine">[Mode prototype institutionnel]</strong> Votre demande a
                 été simulée avec succès. Dès raccordement au système d’information de E.GUITAP, un
                 responsable technique ou commercial prendra attache avec vous dans les 24 heures.
               </p>
 
-              <div className="p-3.5 bg-[#F5F1E8] rounded border border-[#C6A15B]/30 max-w-md mx-auto text-xs text-left space-y-1">
+              <div className="p-3.5 bg-ivory rounded border border-gold/30 max-w-md mx-auto text-xs text-left space-y-1">
                 <div><strong>Domaine :</strong> {domain.toUpperCase()}</div>
                 <div><strong>Contact :</strong> {fullName} ({phone})</div>
                 {initialItemRef && <div><strong>Référence :</strong> {initialItemRef}</div>}
@@ -113,14 +113,14 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-3">
                 <button
                   onClick={handleWhatsAppDirect}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#009460] hover:bg-[#007a4f] text-white rounded font-['Poppins'] text-xs font-bold uppercase tracking-wider transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 bg-gn-green hover:bg-gn-green-hover text-white rounded font-poppins text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Envoyer également par WhatsApp</span>
                 </button>
                 <button
                   onClick={resetForm}
-                  className="w-full sm:w-auto px-5 py-3 bg-[#102C50] hover:bg-[#0A1C33] text-white rounded font-['Poppins'] text-xs font-bold uppercase tracking-wider transition-colors"
+                  className="w-full sm:w-auto px-5 py-3 bg-marine hover:bg-marine-dark text-white rounded font-poppins text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   Fermer
                 </button>
@@ -128,17 +128,17 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 text-sm">
-              <p className="text-xs text-[#44505F]">
+              <p className="text-xs text-slate-text">
                 Transmettez les spécifications de votre besoin. Nos équipes techniques évalueront la
                 faisabilité, les ressources requises et vous transmettront une cotation conforme.
               </p>
 
               {initialItemRef && (
-                <div className="p-3 bg-[#F5F1E8] rounded border border-[#C6A15B]/40 text-xs flex items-center justify-between">
-                  <span className="text-[#102C50] font-medium">
+                <div className="p-3 bg-ivory rounded border border-gold/40 text-xs flex items-center justify-between">
+                  <span className="text-marine font-medium">
                     Réf. catalogue : <strong>{initialItemRef}</strong>
                   </span>
-                  <span className="text-[10px] uppercase font-bold text-[#C6A15B] tracking-wider">
+                  <span className="text-[10px] uppercase font-bold text-gold tracking-wider">
                     Lié à l'offre
                   </span>
                 </div>
@@ -146,7 +146,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
 
               {/* Domain Selection */}
               <div>
-                <label className="block text-xs font-bold text-[#102C50] uppercase tracking-wide mb-1.5 font-['Poppins']">
+                <label className="block text-xs font-bold text-marine uppercase tracking-wide mb-1.5 font-poppins">
                   Domaine concerné *
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -162,8 +162,8 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                       onClick={() => setDomain(d.id)}
                       className={`px-2.5 sm:px-3 py-2 text-xs font-semibold rounded border transition-all text-center truncate ${
                         domain === d.id
-                          ? 'bg-[#102C50] text-white border-[#102C50] shadow-sm'
-                          : 'bg-[#F5F1E8]/50 text-[#44505F] border-slate-200 hover:border-[#C6A15B]'
+                          ? 'bg-marine text-white border-marine shadow-sm'
+                          : 'bg-ivory/50 text-slate-text border-slate-200 hover:border-gold'
                       }`}
                     >
                       {d.label}
@@ -175,7 +175,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
               {/* Identity & Contact Fields */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                  <label className="block text-xs font-semibold text-marine mb-1">
                     Nom et prénom *
                   </label>
                   <input
@@ -183,7 +183,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Ex: Ibrahima Diallo"
-                    className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                    className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                       errors.fullName ? 'border-red-500' : 'border-slate-300'
                     }`}
                   />
@@ -193,7 +193,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                  <label className="block text-xs font-semibold text-marine mb-1">
                     Société ou organisme (optionnel)
                   </label>
                   <input
@@ -201,14 +201,14 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="Ex: Entreprise / Particulier"
-                    className="w-full px-3.5 py-2.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B]"
+                    className="w-full px-3.5 py-2.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-gold"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                  <label className="block text-xs font-semibold text-marine mb-1">
                     Adresse email professionnelle *
                   </label>
                   <input
@@ -216,7 +216,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Ex: contact@entreprise.com"
-                    className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                    className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                       errors.email ? 'border-red-500' : 'border-slate-300'
                     }`}
                   />
@@ -226,7 +226,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                  <label className="block text-xs font-semibold text-marine mb-1">
                     Téléphone / WhatsApp *
                   </label>
                   <input
@@ -234,7 +234,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="Ex: +224 62X XX XX XX"
-                    className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                    className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                       errors.phone ? 'border-red-500' : 'border-slate-300'
                     }`}
                   />
@@ -246,7 +246,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
 
               {/* Message */}
               <div>
-                <label className="block text-xs font-semibold text-[#102C50] mb-1">
+                <label className="block text-xs font-semibold text-marine mb-1">
                   Description du projet ou quantités souhaitées *
                 </label>
                 <textarea
@@ -254,7 +254,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Précisez la nature de l'opération, la localisation, les volumes ou la date souhaitée..."
-                  className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-[#C6A15B] ${
+                  className={`w-full px-3.5 py-2.5 text-xs rounded border bg-white focus:outline-none focus:ring-1 focus:ring-gold ${
                     errors.message ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
@@ -268,7 +268,7 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                 <button
                   type="button"
                   onClick={handleWhatsAppDirect}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold text-[#009460] hover:bg-emerald-50 rounded border border-[#009460]/40 transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold text-gn-green hover:bg-emerald-50 rounded border border-gn-green/40 transition-colors"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>WhatsApp direct</span>
@@ -278,16 +278,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="flex-1 sm:flex-initial px-4 py-2.5 text-xs font-medium text-[#44505F] hover:bg-slate-100 rounded transition-colors"
+                    className="flex-1 sm:flex-initial px-4 py-2.5 text-xs font-medium text-slate-text hover:bg-slate-100 rounded transition-colors"
                   >
                     Annuler
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#102C50] hover:bg-[#0A1C33] text-white font-['Poppins'] text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-sm"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-marine hover:bg-marine-dark text-white font-poppins text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-sm"
                   >
                     <span>Soumettre</span>
-                    <Send className="w-3.5 h-3.5 text-[#C6A15B]" />
+                    <Send className="w-3.5 h-3.5 text-gold" />
                   </button>
                 </div>
               </div>
