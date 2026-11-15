@@ -57,6 +57,7 @@ Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
 | `…_seed_content` | contenu communiqué par l'entreprise (identique au site) |
 | `…_rls_split_public_reads` | règles de lecture séparées visiteur / équipe |
 | `…_private_helpers` | `is_staff()`, `is_admin()`… déplacées dans le schéma `private` (hors API) |
+| `…_inquiry_notifications` | suivi de la notification e-mail des demandes |
 
 Points clés :
 
@@ -65,6 +66,17 @@ Points clés :
 - Un projet ne peut pas passer en « commercialisation ouverte » sans documents validés juridiquement (contrainte SQL).
 - Rôles : `admin` (équipe, documents, suppressions) et `editeur` (contenu). Un compte n'a accès à l'administration que s'il figure dans `staff_profiles`.
 - Types TypeScript : `src/types/database.ts`, à régénérer après chaque migration.
+
+## Demandes de renseignements
+
+Le formulaire appelle l'Edge Function `supabase/functions/submit-inquiry` (déployée avec `verify_jwt: false` : elle se protège elle-même) qui :
+
+1. vérifie le captcha Cloudflare Turnstile ;
+2. valide les champs et limite à 3 demandes par heure et par numéro ;
+3. enregistre la demande dans `inquiries` (visible dans l'administration) ;
+4. envoie la notification via Resend à l'e-mail publié dans les coordonnées.
+
+Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY` ; facultatifs : `RESEND_FROM`, `INQUIRY_NOTIFY_TO`, `ALLOWED_ORIGINS` (domaine de production).
 
 ## Règles de contenu
 

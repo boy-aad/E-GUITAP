@@ -2,8 +2,8 @@ import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
 import { useSiteContent } from '../data/useSiteContent';
 
-// À réviser à l'étape D (enregistrement des demandes en base) et à faire valider
-// par un juriste au regard de la législation guinéenne sur les données personnelles.
+// Texte à faire valider par un juriste au regard de la législation guinéenne sur les
+// données personnelles (durée de conservation notamment).
 
 export function PrivacyPage() {
   const { contacts } = useSiteContent();
@@ -13,24 +13,37 @@ export function PrivacyPage() {
       <PageHero eyebrow="Informations légales" title="Politique de confidentialité" />
       <div className="mx-auto max-w-3xl space-y-8 px-4 py-14 text-sm leading-relaxed text-slate-text sm:px-6 lg:py-20">
         <section className="space-y-3">
-          <h2 className="font-poppins text-xl font-bold text-marine">Données collectées par le site</h2>
+          <h2 className="font-poppins text-xl font-bold text-marine">Demandes de renseignements</h2>
           <p>
-            Le site n'enregistre aucune donnée personnelle. Le formulaire de demande de renseignements
-            prépare un message qui s'ouvre dans WhatsApp ou dans votre messagerie : c'est vous qui
-            choisissez de l'envoyer à E-GUITAP.
+            Lorsque vous envoyez une demande depuis le site, E-GUITAP enregistre les informations que
+            vous saisissez : nom, organisation, téléphone, e-mail, sujet et message, ainsi que la date
+            de votre accord. Ces informations servent uniquement à répondre à votre demande. Elles ne
+            sont ni vendues ni cédées à des tiers.
           </p>
           <p>
-            Le site n'utilise ni cookie publicitaire ni outil de mesure d'audience. Ses polices de
-            caractères sont chargées depuis Google Fonts, qui reçoit à cette occasion l'adresse IP du
-            visiteur.
+            Elles sont conservées dans la base de données du site, accessible aux seules personnes
+            habilitées d'E-GUITAP, et transmises par e-mail à l'équipe pour traitement. Elles sont
+            conservées le temps nécessaire au suivi de votre demande.
           </p>
         </section>
         <section className="space-y-3">
-          <h2 className="font-poppins text-xl font-bold text-marine">Messages reçus</h2>
+          <h2 className="font-poppins text-xl font-bold text-marine">Prestataires techniques</h2>
+          <ul className="list-disc space-y-1.5 pl-5">
+            <li>Supabase : hébergement de la base de données du site.</li>
+            <li>Resend : envoi de l'e-mail de notification à E-GUITAP.</li>
+            <li>
+              Cloudflare Turnstile : protection du formulaire contre les robots ; ce service analyse
+              des informations techniques de votre navigateur.
+            </li>
+            <li>Google Fonts : chargement des polices de caractères, qui transmet l'adresse IP du visiteur.</li>
+          </ul>
+          <p>Le site n'utilise ni cookie publicitaire ni outil de mesure d'audience.</p>
+        </section>
+        <section className="space-y-3">
+          <h2 className="font-poppins text-xl font-bold text-marine">Échanges par WhatsApp</h2>
           <p>
-            Les informations que vous transmettez par WhatsApp ou par e-mail (nom, coordonnées, message)
-            sont utilisées uniquement pour répondre à votre demande. Elles ne sont ni vendues ni cédées à
-            des tiers.
+            Si vous choisissez de nous écrire sur WhatsApp, vos échanges relèvent de ce service. Les
+            informations que vous nous transmettez sont utilisées uniquement pour vous répondre.
           </p>
         </section>
         <section className="space-y-3">

@@ -1,9 +1,14 @@
-import { useState, type FormEvent } from 'react';
-import { Mail, MessageSquare } from 'lucide-react';
+import { useRef, useState, type FormEvent } from 'react';
+import { CheckCircle2, Loader2, MessageSquare, Send } from 'lucide-react';
+import { FunctionsHttpError } from '@supabase/supabase-js';
+import { Link } from 'react-router';
 import { Field, Input, Select, Textarea } from '../../components/ui/Field';
-import { mailtoUrl, whatsappUrl } from '../../lib/contact';
+import { env } from '../../config/env';
+import { supabase } from '../../lib/supabase';
+import { DEFAULT_WHATSAPP_MESSAGE, whatsappUrl } from '../../lib/contact';
 import { useSiteContent } from '../../data/useSiteContent';
-import { buildTopicGroups, topicLabel, type InquiryTopic } from './topics';
+import { Turnstile, type TurnstileHandle } from './Turnstile';
+import { buildTopicGroups, type InquiryTopic } from './topics';
 
 type Values = {
   fullName: string;
@@ -12,47 +17,51 @@ type Values = {
   email: string;
   topic: InquiryTopic;
   message: string;
+  consent: boolean;
+  website: string; // pot de miel invisible : rempli uniquement par les robots
 };
 
-type Errors = Partial<Record<keyof Values, string>>;
+type Errors = Partial<Record<keyof Values | 'captcha', string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function validate(v: Values): Errors {
+function validate(v: Values, captchaToken: string | null): Errors {
   const errors: Errors = {};
   if (!v.fullName.trim()) errors.fullName = 'Veuillez indiquer votre nom.';
   if (!v.phone.trim()) errors.phone = 'Veuillez indiquer un numéro de téléphone.';
-  if (v.email.trim() && !EMAIL_RE.test(v.email.trim()))
-    errors.email = "L'adresse e-mail ne semble pas valide.";
+  if (v.email.trim() && !EMAIL_RE.test(v.email.trim())) errors.email = "L'adresse e-mail ne semble pas valide.";
   if (!v.message.trim()) errors.message = 'Veuillez décrire votre demande.';
+  if (!v.consent) errors.consent = 'Votre accord est nécessaire pour que nous puissions vous répondre.';
+  if (!captchaToken) errors.captcha = 'Merci de patienter pendant la vérification anti-robot.';
   return errors;
 }
 
-function buildMessage(v: Values, subjectLabel: string) {
-  const details = [
-    `Sujet : ${subjectLabel}`,
-    `Nom : ${v.fullName.trim()}`,
-    v.organization.trim() ? `Organisation : ${v.organization.trim()}` : null,
-    `Téléphone : ${v.phone.trim()}`,
-    v.email.trim() ? `E-mail : ${v.email.trim()}` : null,
-  ].filter((line): line is string => line !== null);
-  return ['Bonjour E-GUITAP,', details.join('\n'), v.message.trim()].join('\n\n');
+/** Message d'erreur renvoyé par l'Edge Function, ou message générique. */
+async function readFunctionError(error: unknown): Promise<string> {
+  if (error instanceof FunctionsHttpError) {
+    try {
+      const body = (await error.context.json()) as { error?: string };
+      if (body.error) return body.error;
+    } catch {
+      /* réponse non JSON */
+    }
+  }
+  return "La demande n'a pas pu être envoyée. Vérifiez votre connexion et réessayez.";
 }
 
 type InquiryFormProps = {
   initialTopic?: InquiryTopic;
-  /** Appelé après l'ouverture de WhatsApp ou de la messagerie. */
-  onSent?: () => void;
 };
 
 /**
- * Demande de renseignements. En attendant l'enregistrement en base (étape D),
- * la demande est transmise par WhatsApp ou par e-mail depuis l'appareil du visiteur :
- * le site n'enregistre aucune donnée.
+ * Demande de renseignements : envoyée à l'Edge Function submit-inquiry, qui vérifie le
+ * captcha, enregistre la demande (visible dans l'administration) et prévient E-GUITAP par e-mail.
  */
-export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormProps) {
+export function InquiryForm({ initialTopic = 'general' }: InquiryFormProps) {
   const { domains, projects, contacts } = useSiteContent();
   const groups = buildTopicGroups(domains, projects);
+  const turnstile = useRef<TurnstileHandle>(null);
+
   const [values, setValues] = useState<Values>({
     fullName: '',
     organization: '',
@@ -60,49 +69,86 @@ export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormPro
     email: '',
     topic: initialTopic,
     message: '',
+    consent: false,
+    website: '',
   });
   const [errors, setErrors] = useState<Errors>({});
-  const [sentVia, setSentVia] = useState<'whatsapp' | 'email' | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaFailed, setCaptchaFailed] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const set = (key: keyof Values) => (e: { target: { value: string } }) =>
+  const set = (key: Exclude<keyof Values, 'consent'>) => (e: { target: { value: string } }) =>
     setValues((prev) => ({ ...prev, [key]: e.target.value }));
 
-  const send = (channel: 'whatsapp' | 'email') => {
-    const found = validate(values);
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitError(null);
+    const found = validate(values, captchaToken);
     setErrors(found);
     if (Object.keys(found).length > 0) return;
-    const subjectLabel = topicLabel(groups, values.topic);
-    const message = buildMessage(values, subjectLabel);
-    if (channel === 'whatsapp' && contacts.whatsapp) {
-      window.open(whatsappUrl(contacts.whatsapp.raw, message), '_blank', 'noopener');
-    } else if (channel === 'email' && contacts.email) {
-      window.location.assign(mailtoUrl(contacts.email.raw, `Demande de renseignements — ${subjectLabel}`, message));
-    } else {
+
+    setStatus('sending');
+    const { error } = await supabase.functions.invoke('submit-inquiry', {
+      body: { ...values, turnstileToken: captchaToken, sourcePage: window.location.pathname },
+    });
+    // Un jeton Turnstile ne sert qu'une fois : on en redemande un dans tous les cas.
+    turnstile.current?.reset();
+    if (error) {
+      setSubmitError(await readFunctionError(error));
+      setStatus('idle');
       return;
     }
-    setSentVia(channel);
-    onSent?.();
+    setStatus('sent');
   };
 
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    send(contacts.whatsapp ? 'whatsapp' : 'email');
-  };
+  const whatsappLink = contacts.whatsapp && (
+    <a
+      href={whatsappUrl(contacts.whatsapp.raw, DEFAULT_WHATSAPP_MESSAGE)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1.5 font-semibold text-gn-green hover:underline"
+    >
+      <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
+      écrire directement sur WhatsApp
+    </a>
+  );
+
+  if (status === 'sent') {
+    return (
+      <div role="status" className="space-y-3 py-6 text-center">
+        <CheckCircle2 className="mx-auto h-12 w-12 text-gn-green" aria-hidden="true" />
+        <p className="font-poppins text-lg font-bold text-marine">Votre demande a bien été envoyée</p>
+        <p className="text-sm text-slate-text">
+          Merci {values.fullName.trim()}. L'équipe E-GUITAP a reçu votre message et reviendra vers vous.
+        </p>
+      </div>
+    );
+  }
+
+  // Sans clé Turnstile configurée, le formulaire ne peut pas être protégé : on oriente vers WhatsApp.
+  if (!env.turnstileSiteKey) {
+    return (
+      <p className="rounded border border-gold/30 bg-ivory px-4 py-3 text-sm text-slate-text">
+        Le formulaire est momentanément indisponible. Vous pouvez {whatsappLink ?? 'nous contacter par téléphone'}.
+      </p>
+    );
+  }
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Nom et prénom" required error={errors.fullName}>
-          <Input autoComplete="name" value={values.fullName} onChange={set('fullName')} />
+          <Input autoComplete="name" value={values.fullName} onChange={set('fullName')} maxLength={200} />
         </Field>
         <Field label="Société ou organisation" hint="Facultatif">
-          <Input autoComplete="organization" value={values.organization} onChange={set('organization')} />
+          <Input autoComplete="organization" value={values.organization} onChange={set('organization')} maxLength={200} />
         </Field>
         <Field label="Téléphone ou WhatsApp" required error={errors.phone}>
-          <Input type="tel" autoComplete="tel" value={values.phone} onChange={set('phone')} />
+          <Input type="tel" autoComplete="tel" value={values.phone} onChange={set('phone')} maxLength={50} />
         </Field>
         <Field label="E-mail" hint="Facultatif" error={errors.email}>
-          <Input type="email" autoComplete="email" value={values.email} onChange={set('email')} />
+          <Input type="email" autoComplete="email" value={values.email} onChange={set('email')} maxLength={320} />
         </Field>
       </div>
 
@@ -121,42 +167,81 @@ export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormPro
       </Field>
 
       <Field label="Votre message" required error={errors.message}>
-        <Textarea rows={5} value={values.message} onChange={set('message')} />
+        <Textarea rows={5} value={values.message} onChange={set('message')} maxLength={5000} />
       </Field>
 
-      <p className="rounded border border-gold/30 bg-ivory px-3.5 py-2.5 text-xs leading-relaxed text-slate-text">
-        Votre demande s'ouvrira dans WhatsApp ou dans votre messagerie, pré-remplie : il vous
-        suffira de l'envoyer. Le site n'enregistre aucune donnée.
-      </p>
+      {/* Pot de miel : invisible et ignoré par les lecteurs d'écran. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Site web
+          <input type="text" tabIndex={-1} autoComplete="off" value={values.website} onChange={set('website')} />
+        </label>
+      </div>
 
-      {sentVia && (
-        <p role="status" className="rounded border border-gn-green/30 bg-gn-green/5 px-3.5 py-2.5 text-xs text-marine">
-          {sentVia === 'whatsapp'
-            ? "WhatsApp s'est ouvert avec votre message. Pensez à appuyer sur « Envoyer »."
-            : "Votre messagerie s'est ouverte avec votre message. Pensez à l'envoyer."}
+      <div>
+        <label className="flex items-start gap-3 text-xs leading-relaxed text-slate-text">
+          <input
+            type="checkbox"
+            checked={values.consent}
+            onChange={(e) => setValues((prev) => ({ ...prev, consent: e.target.checked }))}
+            aria-invalid={errors.consent ? true : undefined}
+            aria-describedby={errors.consent ? 'consent-error' : undefined}
+            className="mt-0.5 h-4 w-4 shrink-0 accent-marine"
+          />
+          <span>
+            J'accepte que E-GUITAP utilise ces informations pour répondre à ma demande. Voir la{' '}
+            <Link to="/confidentialite" className="font-semibold text-marine underline" target="_blank">
+              politique de confidentialité
+            </Link>
+            .
+          </span>
+        </label>
+        {errors.consent && (
+          <p id="consent-error" role="alert" className="mt-1 text-[11px] font-medium text-gn-red">
+            {errors.consent}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <Turnstile
+          ref={turnstile}
+          siteKey={env.turnstileSiteKey}
+          onToken={(token) => {
+            setCaptchaToken(token);
+            if (token) setCaptchaFailed(false);
+          }}
+          onError={() => setCaptchaFailed(true)}
+        />
+        {(errors.captcha || captchaFailed) && !captchaToken && (
+          <p role="alert" className="mt-1 text-[11px] font-medium text-gn-red">
+            {captchaFailed
+              ? 'La vérification anti-robot n’a pas pu se charger. Rechargez la page ou écrivez-nous sur WhatsApp.'
+              : errors.captcha}
+          </p>
+        )}
+      </div>
+
+      {submitError && (
+        <p role="alert" className="rounded border border-gn-red/30 bg-red-50 px-3.5 py-2.5 text-xs text-gn-red">
+          {submitError}
         </p>
       )}
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-        {contacts.email && (
-          <button
-            type={contacts.whatsapp ? 'button' : 'submit'}
-            onClick={contacts.whatsapp ? () => send('email') : undefined}
-            className="inline-flex items-center justify-center gap-2 rounded border border-marine px-5 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-marine transition-colors hover:bg-ivory"
-          >
-            <Mail className="h-4 w-4" aria-hidden="true" />
-            Envoyer par e-mail
-          </button>
-        )}
-        {contacts.whatsapp && (
-          <button
-            type="submit"
-            className="inline-flex items-center justify-center gap-2 rounded bg-gn-green px-5 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-gn-green-hover"
-          >
-            <MessageSquare className="h-4 w-4" aria-hidden="true" />
-            Envoyer par WhatsApp
-          </button>
-        )}
+      <div className="flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
+        <p className="text-xs text-slate-text">{whatsappLink && <>Vous pouvez aussi {whatsappLink}.</>}</p>
+        <button
+          type="submit"
+          disabled={status === 'sending'}
+          className="inline-flex w-full items-center justify-center gap-2 rounded bg-marine px-6 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-marine-dark disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+        >
+          {status === 'sending' ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : (
+            <Send className="h-4 w-4 text-gold" aria-hidden="true" />
+          )}
+          {status === 'sending' ? 'Envoi en cours…' : 'Envoyer la demande'}
+        </button>
       </div>
     </form>
   );

@@ -17,4 +17,6 @@ if (supabaseKey.startsWith('sb_secret_')) {
 export const env = {
   supabaseUrl: required('VITE_SUPABASE_URL'),
   supabaseKey,
+  /** Clé publique (site key) Cloudflare Turnstile ; sans elle, le formulaire renvoie vers WhatsApp. */
+  turnstileSiteKey: (import.meta.env.VITE_TURNSTILE_SITE_KEY ?? '').trim(),
 } as const;
