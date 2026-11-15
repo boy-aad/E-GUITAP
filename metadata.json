@@ -1,6 +1,0 @@
-{
-  "name": "E.GUITAP — Conakry, Guinée",
-  "description": "Site institutionnel et catalogue interactif de E.GUITAP : BTP, Immobilier, Commerce général et Import-export à Conakry, République de Guinée.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
