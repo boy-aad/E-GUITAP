@@ -4,7 +4,8 @@ import { MessageSquare } from 'lucide-react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { InquiryProvider } from '../../features/inquiry/InquiryContext';
-import { whatsappUrl } from '../../lib/contact';
+import { DEFAULT_WHATSAPP_MESSAGE, whatsappUrl } from '../../lib/contact';
+import { useSiteContent } from '../../data/useSiteContent';
 
 /** Fait défiler jusqu'à l'ancre (#btp…) quand l'URL en contient une. */
 function useScrollToHash() {
@@ -19,6 +20,7 @@ function useScrollToHash() {
 }
 
 export function Layout() {
+  const { contacts } = useSiteContent();
   useScrollToHash();
   return (
     <InquiryProvider>
@@ -36,16 +38,18 @@ export function Layout() {
         <Footer />
       </div>
 
-      <a
-        href={whatsappUrl('Bonjour E-GUITAP, je vous contacte depuis votre site internet.')}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-30 flex items-center gap-2.5 rounded-full border-2 border-white bg-gn-green p-3 text-white shadow-lg transition-all hover:bg-gn-green-hover hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gn-green sm:px-4"
-        aria-label="Écrire à E-GUITAP sur WhatsApp"
-      >
-        <MessageSquare className="h-5 w-5" aria-hidden="true" />
-        <span className="hidden font-poppins text-xs font-bold tracking-wide sm:inline">WhatsApp</span>
-      </a>
+      {contacts.whatsapp && (
+        <a
+          href={whatsappUrl(contacts.whatsapp.raw, DEFAULT_WHATSAPP_MESSAGE)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 z-30 flex items-center gap-2.5 rounded-full border-2 border-white bg-gn-green p-3 text-white shadow-lg transition-all hover:bg-gn-green-hover hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gn-green sm:px-4"
+          aria-label="Écrire à E-GUITAP sur WhatsApp"
+        >
+          <MessageSquare className="h-5 w-5" aria-hidden="true" />
+          <span className="hidden font-poppins text-xs font-bold tracking-wide sm:inline">WhatsApp</span>
+        </a>
+      )}
 
       {/* Au premier chargement, toutes les URL ont la clé « default » : on utilise alors le
           chemin, pour ne pas réappliquer la position de défilement d'une autre page. */}

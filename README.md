@@ -4,7 +4,7 @@ Site institutionnel d'E-GUITAP (Entreprise Guinéenne de Terrassement, d'Aménag
 
 ## Stack
 
-React 19 · TypeScript 7 · Vite 8 · Tailwind CSS 4 · React Router 7 · Supabase (à venir)
+React 19 · TypeScript 7 · Vite 8 · Tailwind CSS 4 · React Router 7 · Supabase
 
 ## Démarrer en local
 
@@ -31,14 +31,17 @@ npm run dev                  # http://localhost:3000
 
 ```
 src/
-├── app/router.tsx        routes (/, /entreprise, /activites, /projets, /projets/:slug, /contact…)
+├── app/router.tsx        routes ; le loader racine charge tout le contenu depuis Supabase
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
 │   ├── layout/           Header, Footer, Layout, navigation
 │   └── ui/               Modal, Field, PageHero, Eyebrow, Seo
-├── content/              contenus communiqués par l'entreprise, typés comme le futur schéma Supabase
+├── config/env.ts         variables d'environnement validées
+├── content/              types du contenu, libellés et avertissement juridique
+├── data/                 lecture Supabase (siteContent.ts) et hook useSiteContent
 ├── features/             inquiry (demande de renseignements), projects, activities
-├── lib/                  liens WhatsApp / e-mail / téléphone
+├── lib/                  client Supabase, liens WhatsApp / e-mail / téléphone
+├── types/database.ts     types générés depuis le schéma
 └── pages/
 ```
 

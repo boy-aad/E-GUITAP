@@ -2,18 +2,18 @@ import { Globe2, MapPin } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { Eyebrow } from '../components/ui/Eyebrow';
 import { PageHero } from '../components/ui/PageHero';
-import { COMPANY } from '../content/company';
-import { publicDomains } from '../content/activities';
+import { useSiteContent } from '../data/useSiteContent';
 
 export function CompanyPage() {
+  const { company, domains } = useSiteContent();
   return (
     <>
       <Seo
         title="L'entreprise"
         description="E-GUITAP, Entreprise Guinéenne de Terrassement, d'Aménagement et de Prestations : présentation, mission, vision et valeurs."
       />
-      <PageHero eyebrow="L'entreprise" title={COMPANY.brandName}>
-        <p>{COMPANY.fullName}</p>
+      <PageHero eyebrow="L'entreprise" title={company.brandName}>
+        <p>{company.fullName}</p>
       </PageHero>
 
       {/* Présentation */}
@@ -24,7 +24,7 @@ export function CompanyPage() {
             <h2 className="font-poppins text-2xl font-bold text-marine sm:text-3xl">
               Une entreprise guinéenne multisectorielle
             </h2>
-            {COMPANY.presentation.map((p) => (
+            {company.presentation.map((p) => (
               <p key={p} className="leading-relaxed text-slate-text">
                 {p}
               </p>
@@ -39,7 +39,7 @@ export function CompanyPage() {
                   Siège et zone d'intervention principale
                 </dt>
                 <dd className="mt-1 text-slate-text">
-                  {COMPANY.headOffice}, {COMPANY.country}
+                  {company.headOffice}, {company.country}
                 </dd>
               </div>
               <div>
@@ -47,11 +47,11 @@ export function CompanyPage() {
                   <Globe2 className="h-4 w-4 text-gold-hover" aria-hidden="true" />
                   Ambition
                 </dt>
-                <dd className="mt-1 text-slate-text">{COMPANY.ambition}</dd>
+                <dd className="mt-1 text-slate-text">{company.ambition}</dd>
               </div>
               <div>
                 <dt className="font-semibold text-marine">Secteurs</dt>
-                <dd className="mt-1 text-slate-text">{publicDomains().map((d) => d.title).join(' · ')}</dd>
+                <dd className="mt-1 text-slate-text">{domains.map((d) => d.title).join(' · ')}</dd>
               </div>
             </dl>
           </aside>
@@ -63,11 +63,11 @@ export function CompanyPage() {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
           <div className="space-y-3 border-l-2 border-gold pl-6">
             <Eyebrow tone="dark">Notre mission</Eyebrow>
-            <p className="text-lg leading-relaxed text-white/90">{COMPANY.mission}</p>
+            <p className="text-lg leading-relaxed text-white/90">{company.mission}</p>
           </div>
           <div className="space-y-3 border-l-2 border-gold pl-6">
             <Eyebrow tone="dark">Notre vision</Eyebrow>
-            <p className="text-lg leading-relaxed text-white/90">{COMPANY.vision}</p>
+            <p className="text-lg leading-relaxed text-white/90">{company.vision}</p>
           </div>
         </div>
       </section>
@@ -80,14 +80,14 @@ export function CompanyPage() {
             <h2 className="font-poppins text-2xl font-bold text-marine sm:text-3xl">Ce qui guide notre action</h2>
           </div>
           <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {COMPANY.values.map((value, i) => (
+            {company.values.map((value, i) => (
               <li key={value} className="rounded-lg border border-slate-200 bg-white p-5">
                 <span className="font-poppins text-2xl font-bold text-gold">{String(i + 1).padStart(2, '0')}</span>
                 <p className="mt-2 font-poppins font-semibold text-marine">{value}</p>
               </li>
             ))}
           </ol>
-          <p className="pt-4 text-center font-lora text-xl italic text-marine">{COMPANY.signatures.brand}</p>
+          <p className="pt-4 text-center font-lora text-xl italic text-marine">{company.signatures.brand}</p>
         </div>
       </section>
     </>

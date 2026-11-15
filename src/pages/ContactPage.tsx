@@ -1,26 +1,35 @@
 import { Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
-import { CONTACTS } from '../content/company';
+import { useSiteContent } from '../data/useSiteContent';
 import { InquiryForm } from '../features/inquiry/InquiryForm';
 import { mailtoUrl, telUrl, whatsappUrl } from '../lib/contact';
 
-const channels = [
-  { icon: MapPin, label: CONTACTS.address.label, value: CONTACTS.address.value, href: null, external: false },
-  { icon: Phone, label: CONTACTS.phone.label, value: CONTACTS.phone.value, href: telUrl(), external: false },
-  { icon: MessageSquare, label: CONTACTS.whatsapp.label, value: CONTACTS.whatsapp.value, href: whatsappUrl(), external: true },
-  { icon: Mail, label: CONTACTS.email.label, value: CONTACTS.email.value, href: mailtoUrl(), external: false },
-];
-
 export function ContactPage() {
+  const { contacts, blocks } = useSiteContent();
+  const intro = blocks['contact.intro'];
+
+  // Seules les coordonnées publiées dans l'administration sont affichées.
+  const channels = [
+    contacts.address && { icon: MapPin, ...contacts.address, href: null, external: false },
+    contacts.phone && { icon: Phone, ...contacts.phone, href: telUrl(contacts.phone.raw), external: false },
+    contacts.whatsapp && {
+      icon: MessageSquare,
+      ...contacts.whatsapp,
+      href: whatsappUrl(contacts.whatsapp.raw),
+      external: true,
+    },
+    contacts.email && { icon: Mail, ...contacts.email, href: mailtoUrl(contacts.email.raw), external: false },
+  ].filter((c) => c !== null);
+
   return (
     <>
       <Seo
         title="Contact"
         description="Contacter E-GUITAP à Dubréka et Conakry : téléphone, WhatsApp, e-mail et demande de renseignements."
       />
-      <PageHero eyebrow="Contact" title="Contacter E-GUITAP">
-        <p>Une question sur nos activités ou nos projets fonciers ? Écrivez-nous ou appelez-nous.</p>
+      <PageHero eyebrow="Contact" title={intro?.title ?? 'Contacter E-GUITAP'}>
+        {intro?.body && <p>{intro.body}</p>}
       </PageHero>
 
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-5 lg:px-8 lg:py-20">

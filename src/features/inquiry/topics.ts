@@ -1,5 +1,4 @@
-import { publicDomains } from '../../content/activities';
-import { LAND_PROJECTS } from '../../content/landProjects';
+import type { ActivityDomain, LandProject } from '../../content/types';
 
 /** Sujet d'une demande : un domaine, un projet foncier ou une demande générale. */
 export type InquiryTopic = `domain:${string}` | `project:${string}` | 'general';
@@ -9,21 +8,19 @@ export type InquiryTopicGroup = {
   options: { value: InquiryTopic; label: string }[];
 };
 
-export const INQUIRY_TOPIC_GROUPS: InquiryTopicGroup[] = [
-  {
-    label: 'Projets fonciers',
-    options: LAND_PROJECTS.map((p) => ({ value: `project:${p.slug}` as const, label: p.name })),
-  },
-  {
-    label: "Domaines d'activité",
-    options: publicDomains().map((d) => ({ value: `domain:${d.slug}` as const, label: d.title })),
-  },
-  {
-    label: 'Autre',
-    options: [{ value: 'general', label: 'Demande générale' }],
-  },
-];
+export function buildTopicGroups(domains: ActivityDomain[], projects: LandProject[]): InquiryTopicGroup[] {
+  return [
+    {
+      label: 'Projets fonciers',
+      options: projects.map((p) => ({ value: `project:${p.slug}` as const, label: p.name })),
+    },
+    {
+      label: "Domaines d'activité",
+      options: domains.map((d) => ({ value: `domain:${d.slug}` as const, label: d.title })),
+    },
+    { label: 'Autre', options: [{ value: 'general', label: 'Demande générale' }] },
+  ].filter((g) => g.options.length > 0) as InquiryTopicGroup[];
+}
 
-export const topicLabel = (topic: InquiryTopic) =>
-  INQUIRY_TOPIC_GROUPS.flatMap((g) => g.options).find((o) => o.value === topic)?.label ??
-  'Demande générale';
+export const topicLabel = (groups: InquiryTopicGroup[], topic: InquiryTopic) =>
+  groups.flatMap((g) => g.options).find((o) => o.value === topic)?.label ?? 'Demande générale';

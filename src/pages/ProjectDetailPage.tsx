@@ -6,24 +6,23 @@ import { BrandPanel } from '../components/brand/Skyline';
 import {
   COMMERCIAL_STATUS_LABELS,
   DEVELOPMENT_STATUS_LABELS,
-  LAND_COMMITMENT,
   LAND_DISCLAIMER,
-  LAND_PROJECTS,
-  findLandProject,
   formatHectares,
 } from '../content/landProjects';
 import { ProjectCard } from '../features/projects/ProjectCard';
 import { useInquiry } from '../features/inquiry/InquiryContext';
 import { NotFoundPage } from './NotFoundPage';
+import { useSiteContent } from '../data/useSiteContent';
 
 export function ProjectDetailPage() {
   const { slug } = useParams();
   const { openInquiry } = useInquiry();
-  const project = findLandProject(slug);
+  const { projects, blocks } = useSiteContent();
+  const project = projects.find((p) => p.slug === slug);
 
   if (!project) return <NotFoundPage />;
 
-  const others = LAND_PROJECTS.filter((p) => p.slug !== project.slug);
+  const others = projects.filter((p) => p.slug !== project.slug);
 
   return (
     <>
@@ -50,7 +49,9 @@ export function ProjectDetailPage() {
             <section className="space-y-3">
               <h2 className="font-poppins text-xl font-bold text-marine">Présentation</h2>
               <p className="leading-relaxed text-slate-text">{project.description}</p>
-              <p className="leading-relaxed text-slate-text">{LAND_COMMITMENT}</p>
+              {blocks['projects.intro']?.body && (
+                <p className="leading-relaxed text-slate-text">{blocks['projects.intro'].body}</p>
+              )}
             </section>
             <section className="space-y-3">
               <h2 className="font-poppins text-xl font-bold text-marine">Potentiel de développement</h2>

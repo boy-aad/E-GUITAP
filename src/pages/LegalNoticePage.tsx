@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
-import { COMPANY, CONTACTS } from '../content/company';
+import { useSiteContent } from '../data/useSiteContent';
 
 const PENDING = 'Information en cours de publication';
 
@@ -15,7 +15,8 @@ function Row({ label, value }: { label: string; value: ReactNode }) {
 }
 
 export function LegalNoticePage() {
-  const { legal } = COMPANY;
+  const { company, contacts } = useSiteContent();
+  const { legal } = company;
   return (
     <>
       <Seo title="Mentions légales" description="Mentions légales du site E-GUITAP." />
@@ -24,14 +25,14 @@ export function LegalNoticePage() {
         <section className="space-y-3">
           <h2 className="font-poppins text-xl font-bold text-marine">Éditeur du site</h2>
           <dl className="text-sm">
-            <Row label="Dénomination" value={COMPANY.fullName} />
-            <Row label="Nom commercial" value={COMPANY.brandName} />
+            <Row label="Dénomination" value={company.fullName} />
+            <Row label="Nom commercial" value={company.brandName} />
             <Row label="Forme juridique" value={legal.legalForm} />
             <Row label="RCCM" value={legal.rccm} />
             <Row label="NIF" value={legal.nif} />
-            <Row label="Siège" value={`${COMPANY.headOffice}, ${COMPANY.country}`} />
-            <Row label="Téléphone" value={CONTACTS.phone.value} />
-            <Row label="E-mail" value={CONTACTS.email.value} />
+            <Row label="Siège" value={`${company.headOffice}, ${company.country}`} />
+            <Row label="Téléphone" value={contacts.phone?.value ?? null} />
+            <Row label="E-mail" value={contacts.email?.value ?? null} />
             <Row label="Responsable de la publication" value={legal.publicationManager} />
           </dl>
         </section>

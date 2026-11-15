@@ -1,5 +1,8 @@
 import { createBrowserRouter } from 'react-router';
 import { Layout } from '../components/layout/Layout';
+import { LoadingScreen, RootErrorScreen } from '../components/layout/RootStatus';
+import { loadSiteContent } from '../data/siteContent';
+import { ROOT_ROUTE_ID } from '../data/useSiteContent';
 import { HomePage } from '../pages/HomePage';
 import { CompanyPage } from '../pages/CompanyPage';
 import { ActivitiesPage } from '../pages/ActivitiesPage';
@@ -13,6 +16,13 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 // L'hébergeur devra renvoyer index.html pour toutes les routes (réécriture SPA).
 export const router = createBrowserRouter([
   {
+    id: ROOT_ROUTE_ID,
+    // Tout le contenu public est chargé une fois, puis partagé par les pages.
+    loader: loadSiteContent,
+    // Les navigations internes ne rechargent pas le contenu.
+    shouldRevalidate: () => false,
+    HydrateFallback: LoadingScreen,
+    errorElement: <RootErrorScreen />,
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },

@@ -1,11 +1,12 @@
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
-import { publicDomains, publicServices } from '../content/activities';
-import { DOMAIN_ICONS } from '../features/activities/domainIcons';
+import { useSiteContent } from '../data/useSiteContent';
+import { DEFAULT_DOMAIN_ICON, DOMAIN_ICONS } from '../features/activities/domainIcons';
 import { useInquiry } from '../features/inquiry/InquiryContext';
 
 export function ActivitiesPage() {
+  const { domains } = useSiteContent();
   const { openInquiry } = useInquiry();
 
   return (
@@ -14,7 +15,7 @@ export function ActivitiesPage() {
         title="Nos activités"
         description="BTP, immobilier et aménagement foncier, commerce général, import-export : les domaines d'activité et prestations d'E-GUITAP."
       />
-      <PageHero eyebrow="Nos activités" title="Quatre domaines d'activité">
+      <PageHero eyebrow="Nos activités" title="Nos domaines d'activité">
         <p>
           E-GUITAP intervient dans le BTP, l'immobilier et l'aménagement foncier, le commerce général et
           l'import-export, depuis Dubréka et Conakry.
@@ -22,8 +23,8 @@ export function ActivitiesPage() {
       </PageHero>
 
       <div className="mx-auto max-w-7xl space-y-8 px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-        {publicDomains().map((domain) => {
-          const Icon = DOMAIN_ICONS[domain.slug];
+        {domains.map((domain) => {
+          const Icon = DOMAIN_ICONS[domain.slug] ?? DEFAULT_DOMAIN_ICON;
           return (
             <section
               key={domain.slug}
@@ -51,7 +52,7 @@ export function ActivitiesPage() {
                   Prestations
                 </h3>
                 <ul className="grid gap-3 sm:grid-cols-2">
-                  {publicServices(domain).map((service) => (
+                  {domain.services.map((service) => (
                     <li key={service.title} className="flex gap-3 rounded bg-paper px-4 py-3 text-sm text-marine">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-gn-green" aria-hidden="true" />
                       <span>

@@ -2,7 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { Mail, MessageSquare } from 'lucide-react';
 import { Field, Input, Select, Textarea } from '../../components/ui/Field';
 import { mailtoUrl, whatsappUrl } from '../../lib/contact';
-import { INQUIRY_TOPIC_GROUPS, topicLabel, type InquiryTopic } from './topics';
+import { useSiteContent } from '../../data/useSiteContent';
+import { buildTopicGroups, topicLabel, type InquiryTopic } from './topics';
 
 type Values = {
   fullName: string;
@@ -27,9 +28,9 @@ function validate(v: Values): Errors {
   return errors;
 }
 
-function buildMessage(v: Values) {
+function buildMessage(v: Values, subjectLabel: string) {
   const details = [
-    `Sujet : ${topicLabel(v.topic)}`,
+    `Sujet : ${subjectLabel}`,
     `Nom : ${v.fullName.trim()}`,
     v.organization.trim() ? `Organisation : ${v.organization.trim()}` : null,
     `Téléphone : ${v.phone.trim()}`,
@@ -50,6 +51,8 @@ type InquiryFormProps = {
  * le site n'enregistre aucune donnée.
  */
 export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormProps) {
+  const { domains, projects, contacts } = useSiteContent();
+  const groups = buildTopicGroups(domains, projects);
   const [values, setValues] = useState<Values>({
     fullName: '',
     organization: '',
@@ -68,14 +71,14 @@ export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormPro
     const found = validate(values);
     setErrors(found);
     if (Object.keys(found).length > 0) return;
-    const message = buildMessage(values);
-    if (channel === 'whatsapp') {
-      window.open(whatsappUrl(message), '_blank', 'noopener');
+    const subjectLabel = topicLabel(groups, values.topic);
+    const message = buildMessage(values, subjectLabel);
+    if (channel === 'whatsapp' && contacts.whatsapp) {
+      window.open(whatsappUrl(contacts.whatsapp.raw, message), '_blank', 'noopener');
+    } else if (channel === 'email' && contacts.email) {
+      window.location.assign(mailtoUrl(contacts.email.raw, `Demande de renseignements — ${subjectLabel}`, message));
     } else {
-      window.location.href = mailtoUrl(
-        `Demande de renseignements — ${topicLabel(values.topic)}`,
-        message,
-      );
+      return;
     }
     setSentVia(channel);
     onSent?.();
@@ -83,7 +86,7 @@ export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormPro
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    send('whatsapp');
+    send(contacts.whatsapp ? 'whatsapp' : 'email');
   };
 
   return (
@@ -105,7 +108,7 @@ export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormPro
 
       <Field label="Sujet de la demande" required>
         <Select value={values.topic} onChange={set('topic')}>
-          {INQUIRY_TOPIC_GROUPS.map((group) => (
+          {groups.map((group) => (
             <optgroup key={group.label} label={group.label}>
               {group.options.map((o) => (
                 <option key={o.value} value={o.value}>
@@ -135,21 +138,25 @@ export function InquiryForm({ initialTopic = 'general', onSent }: InquiryFormPro
       )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-        <button
-          type="button"
-          onClick={() => send('email')}
-          className="inline-flex items-center justify-center gap-2 rounded border border-marine px-5 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-marine transition-colors hover:bg-ivory"
-        >
-          <Mail className="h-4 w-4" aria-hidden="true" />
-          Envoyer par e-mail
-        </button>
-        <button
-          type="submit"
-          className="inline-flex items-center justify-center gap-2 rounded bg-gn-green px-5 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-gn-green-hover"
-        >
-          <MessageSquare className="h-4 w-4" aria-hidden="true" />
-          Envoyer par WhatsApp
-        </button>
+        {contacts.email && (
+          <button
+            type={contacts.whatsapp ? 'button' : 'submit'}
+            onClick={contacts.whatsapp ? () => send('email') : undefined}
+            className="inline-flex items-center justify-center gap-2 rounded border border-marine px-5 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-marine transition-colors hover:bg-ivory"
+          >
+            <Mail className="h-4 w-4" aria-hidden="true" />
+            Envoyer par e-mail
+          </button>
+        )}
+        {contacts.whatsapp && (
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center gap-2 rounded bg-gn-green px-5 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-gn-green-hover"
+          >
+            <MessageSquare className="h-4 w-4" aria-hidden="true" />
+            Envoyer par WhatsApp
+          </button>
+        )}
       </div>
     </form>
   );

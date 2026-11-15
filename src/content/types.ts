@@ -1,36 +1,25 @@
-// Types du contenu du site. Ils reprennent le futur schéma Supabase
-// (company_profile, company_contacts, activity_domains, activity_services,
-// land_projects…) pour que le passage à la base (étape C) ne change pas les pages.
+import type { Enums } from '../types/database';
 
-/** Disponibilité d'une activité ou d'une prestation (enum availability_status). */
-export type AvailabilityStatus = 'operationnelle' | 'en_developpement' | 'non_confirmee';
+// Types du contenu tel que l'utilisent les pages. Ils sont construits à partir
+// des lignes Supabase (voir src/data/siteContent.ts).
 
-/** État d'avancement d'un projet foncier (enum land_dev_status). */
-export type LandDevelopmentStatus =
-  | 'identification'
-  | 'etudes'
-  | 'amenagement_en_cours'
-  | 'morcellement_en_cours'
-  | 'viabilisation_en_cours'
-  | 'suspendu';
-
-/** Statut de commercialisation d'un projet foncier (enum land_commercial_status). */
-export type LandCommercialStatus =
-  | 'non_commercialise'
-  | 'pre_commercialisation'
-  | 'commercialisation_ouverte'
-  | 'suspendu'
-  | 'cloture';
-
-export type ContactKind = 'phone' | 'whatsapp' | 'email' | 'address';
+export type AvailabilityStatus = Enums<'availability_status'>;
+export type LandDevelopmentStatus = Enums<'land_dev_status'>;
+export type LandCommercialStatus = Enums<'land_commercial_status'>;
 
 export interface CompanyContact {
-  kind: ContactKind;
   label: string;
   /** Valeur affichée. */
   value: string;
   /** Valeur technique (numéro international sans espaces, adresse e-mail…). */
   raw: string;
+}
+
+export interface CompanyContacts {
+  phone: CompanyContact | null;
+  whatsapp: CompanyContact | null;
+  email: CompanyContact | null;
+  address: CompanyContact | null;
 }
 
 export interface CompanyProfile {
@@ -39,17 +28,17 @@ export interface CompanyProfile {
   fullName: string;
   country: string;
   headOffice: string;
-  ambition: string;
+  ambition: string | null;
   presentation: string[];
-  mission: string;
-  vision: string;
+  mission: string | null;
+  vision: string | null;
   values: string[];
   signatures: {
-    brand: string;
-    institutional: string;
-    sectoral: string;
+    brand: string | null;
+    institutional: string | null;
+    sectoral: string | null;
   };
-  /** Champs juridiques non communiqués : laissés vides plutôt qu'inventés. */
+  /** Champs juridiques : null tant qu'ils ne sont pas communiqués. */
   legal: {
     legalForm: string | null;
     rccm: string | null;
@@ -65,7 +54,7 @@ export interface ActivityService {
 }
 
 export interface ActivityDomain {
-  slug: 'btp' | 'immobilier-amenagement' | 'commerce-general' | 'import-export';
+  slug: string;
   letter: string;
   title: string;
   shortTitle: string;
@@ -77,7 +66,6 @@ export interface ActivityDomain {
 export interface LandProject {
   slug: string;
   name: string;
-  /** Rattachement administratif, si communiqué. */
   prefecture: string | null;
   /** Superficie communiquée par l'entreprise (non mesurée par un géomètre). */
   areaHa: number;
@@ -87,4 +75,36 @@ export interface LandProject {
   /** null = non communiqué : rien n'est affiché. */
   developmentStatus: LandDevelopmentStatus | null;
   commercialStatus: LandCommercialStatus | null;
+}
+
+export interface HeroSlide {
+  eyebrow: string | null;
+  title: string;
+  titleHighlight: string | null;
+  subtitle: string | null;
+  showSignature: boolean;
+  primaryCta: { label: string; href: string } | null;
+  secondaryCta: { label: string; href: string } | null;
+}
+
+export type ContentBlockKey =
+  | 'home.presentation'
+  | 'home.cta'
+  | 'company.presentation'
+  | 'projects.intro'
+  | 'contact.intro';
+
+export interface ContentBlock {
+  title: string | null;
+  body: string | null;
+}
+
+/** Tout le contenu public du site, chargé une fois au démarrage. */
+export interface SiteContent {
+  company: CompanyProfile;
+  contacts: CompanyContacts;
+  domains: ActivityDomain[];
+  projects: LandProject[];
+  hero: HeroSlide | null;
+  blocks: Partial<Record<ContentBlockKey, ContentBlock>>;
 }

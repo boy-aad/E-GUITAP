@@ -3,13 +3,13 @@ import { Link, NavLink, useLocation } from 'react-router';
 import { ArrowUpRight, Menu, MessageSquare, Phone, X } from 'lucide-react';
 import { Logo } from '../brand/Logo';
 import { TricolorBand } from '../brand/Skyline';
-import { COMPANY, CONTACTS } from '../../content/company';
-import { publicDomains } from '../../content/activities';
+import { useSiteContent } from '../../data/useSiteContent';
 import { useInquiry } from '../../features/inquiry/InquiryContext';
 import { telUrl, whatsappUrl } from '../../lib/contact';
 import { NAV_ITEMS } from './navigation';
 
 export function Header() {
+  const { company, contacts, domains } = useSiteContent();
   const { openInquiry } = useInquiry();
   const { pathname } = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -125,7 +125,7 @@ export function Header() {
                   Nos domaines
                 </p>
                 <div className="grid grid-cols-2 gap-2 text-xs font-medium text-marine">
-                  {publicDomains().map((d) => (
+                  {domains.map((d) => (
                     <Link key={d.slug} to={`/activites#${d.slug}`} className="truncate rounded bg-ivory/70 p-2.5 hover:bg-ivory">
                       {d.letter}. {d.shortTitle}
                     </Link>
@@ -147,22 +147,28 @@ export function Header() {
                 <ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />
               </button>
               <div className="flex items-center justify-center gap-4 text-xs text-slate-text">
-                <a href={telUrl()} className="flex items-center gap-1.5 hover:text-marine">
-                  <Phone className="h-3.5 w-3.5" aria-hidden="true" />
-                  {CONTACTS.phone.value}
-                </a>
-                <span aria-hidden="true">·</span>
-                <a
-                  href={whatsappUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 font-semibold text-gn-green"
-                >
-                  <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
-                  WhatsApp
-                </a>
+                {contacts.phone && (
+                  <a href={telUrl(contacts.phone.raw)} className="flex items-center gap-1.5 hover:text-marine">
+                    <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+                    {contacts.phone.value}
+                  </a>
+                )}
+                {contacts.phone && contacts.whatsapp && <span aria-hidden="true">·</span>}
+                {contacts.whatsapp && (
+                  <a
+                    href={whatsappUrl(contacts.whatsapp.raw)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 font-semibold text-gn-green"
+                  >
+                    <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
+                    WhatsApp
+                  </a>
+                )}
               </div>
-              <p className="text-center font-lora text-xs italic text-slate-text">{COMPANY.signatures.brand}</p>
+              {company.signatures.brand && (
+                <p className="text-center font-lora text-xs italic text-slate-text">{company.signatures.brand}</p>
+              )}
             </div>
           </div>
         )}

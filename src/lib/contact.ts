@@ -1,16 +1,19 @@
-import { CONTACTS } from '../content/company';
+// Liens de contact construits à partir des coordonnées enregistrées dans Supabase.
 
-/** Lien WhatsApp « click to chat » avec un message pré-rempli. */
-export const whatsappUrl = (message?: string) =>
-  `https://wa.me/${CONTACTS.whatsapp.raw}${message ? `?text=${encodeURIComponent(message)}` : ''}`;
+/** Lien WhatsApp « click to chat » (numéro international sans « + » ni espaces). */
+export const whatsappUrl = (number: string, message?: string) =>
+  `https://wa.me/${number.replace(/\D/g, '')}${message ? `?text=${encodeURIComponent(message)}` : ''}`;
 
 /** Lien mailto avec objet et corps pré-remplis. */
-export const mailtoUrl = (subject?: string, body?: string) => {
+export const mailtoUrl = (email: string, subject?: string, body?: string) => {
   const params = new URLSearchParams();
   if (subject) params.set('subject', subject);
   if (body) params.set('body', body);
   const query = params.toString().replace(/\+/g, '%20');
-  return `mailto:${CONTACTS.email.raw}${query ? `?${query}` : ''}`;
+  return `mailto:${email}${query ? `?${query}` : ''}`;
 };
 
-export const telUrl = () => `tel:${CONTACTS.phone.raw}`;
+export const telUrl = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
+
+/** Message par défaut des boutons WhatsApp du site. */
+export const DEFAULT_WHATSAPP_MESSAGE = 'Bonjour E-GUITAP, je vous contacte depuis votre site internet.';

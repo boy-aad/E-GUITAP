@@ -1,11 +1,12 @@
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
-import { CONTACTS } from '../content/company';
+import { useSiteContent } from '../data/useSiteContent';
 
 // À réviser à l'étape D (enregistrement des demandes en base) et à faire valider
 // par un juriste au regard de la législation guinéenne sur les données personnelles.
 
 export function PrivacyPage() {
+  const { contacts } = useSiteContent();
   return (
     <>
       <Seo title="Confidentialité" description="Politique de confidentialité du site E-GUITAP." />
@@ -36,10 +37,15 @@ export function PrivacyPage() {
           <h2 className="font-poppins text-xl font-bold text-marine">Vos droits</h2>
           <p>
             Vous pouvez demander l'accès, la rectification ou la suppression des informations vous
-            concernant en écrivant à{' '}
-            <a href={`mailto:${CONTACTS.email.raw}`} className="font-semibold text-marine underline">
-              {CONTACTS.email.value}
-            </a>
+            concernant en contactant E-GUITAP
+            {contacts.email && (
+              <>
+                {' '}à{' '}
+                <a href={`mailto:${contacts.email.raw}`} className="font-semibold text-marine underline">
+                  {contacts.email.value}
+                </a>
+              </>
+            )}
             .
           </p>
         </section>
