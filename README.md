@@ -42,6 +42,27 @@ src/
 └── pages/
 ```
 
+## Base de données (Supabase)
+
+Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
+
+| Migration | Contenu |
+|---|---|
+| `…_schema` | types énumérés, tables, index, contraintes, journal d'audit, `updated_at` |
+| `…_rls` | RLS sur toutes les tables, droits minimaux (`anon` : lecture du contenu publié) |
+| `…_storage` | buckets `public-media` (public) et `land-documents` (**privé**) |
+| `…_seed_content` | contenu communiqué par l'entreprise (identique au site) |
+| `…_rls_split_public_reads` | règles de lecture séparées visiteur / équipe |
+| `…_private_helpers` | `is_staff()`, `is_admin()`… déplacées dans le schéma `private` (hors API) |
+
+Points clés :
+
+- Les visiteurs ne lisent que le contenu publié ; ni coordonnées GPS ni statut documentaire des projets.
+- Documents fonciers : table et bucket réservés à l'équipe (lecture) et aux admins (écriture).
+- Un projet ne peut pas passer en « commercialisation ouverte » sans documents validés juridiquement (contrainte SQL).
+- Rôles : `admin` (équipe, documents, suppressions) et `editeur` (contenu). Un compte n'a accès à l'administration que s'il figure dans `staff_profiles`.
+- Types TypeScript : `src/types/database.ts`, à régénérer après chaque migration.
+
 ## Règles de contenu
 
 - Le nom s'écrit toujours **E-GUITAP** (trait d'union) ; la dénomination développée est réservée aux mentions légales.
