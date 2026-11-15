@@ -12,16 +12,19 @@
   --color-gold-hover: #B59048;
   --color-gold-light: #E8D7B0;
   --color-ivory: #F5F1E8;
+  --color-ivory-dark: #E9E3D5;
+  --color-paper: #FAFAF7;
   --color-slate-text: #44505F;
   --color-gn-red: #CE1126;
   --color-gn-yellow: #FCD116;
   --color-gn-green: #009460;
+  --color-gn-green-hover: #007A4F;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  color: #102C50;
-  background-color: #FAFAF7;
+  color: var(--color-marine);
+  background-color: var(--color-paper);
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
@@ -39,12 +42,12 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F5F1E8;
+  background: var(--color-ivory);
 }
 ::-webkit-scrollbar-thumb {
-  background: #C6A15B;
+  background: var(--color-gold);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B59048;
+  background: var(--color-gold-hover);
 }
