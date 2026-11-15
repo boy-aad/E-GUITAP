@@ -216,7 +216,7 @@ export function InquiryForm({ initialTopic = 'general' }: InquiryFormProps) {
         {(errors.captcha || captchaFailed) && !captchaToken && (
           <p role="alert" className="mt-1 text-[11px] font-medium text-gn-red">
             {captchaFailed
-              ? 'La vérification anti-robot n’a pas pu se charger. Rechargez la page ou écrivez-nous sur WhatsApp.'
+              ? 'La vérification anti-robot n’a pas abouti. Rechargez la page pour réessayer, ou écrivez-nous sur WhatsApp.'
               : errors.captcha}
           </p>
         )}
