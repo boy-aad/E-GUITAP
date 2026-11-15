@@ -137,8 +137,16 @@ export async function action({ request, params }: Params & { request: Request })
   return { ok: true, message: 'Projet enregistré. Rechargez le site public pour voir les changements.' };
 }
 
+type LoaderData = Awaited<ReturnType<typeof loader>>;
+
 export function Component() {
-  const { project, objectives } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const data = useLoaderData() as LoaderData;
+  // Une clé par projet : passer d'un projet à un autre (ou à « Nouveau ») recrée le formulaire
+  // au lieu de conserver l'état (nom, identifiant d'URL…) du projet précédent.
+  return <ProjectForm key={data.project?.id ?? 'nouveau'} {...data} />;
+}
+
+function ProjectForm({ project, objectives }: LoaderData) {
   const result = useActionData() as ActionResult | undefined;
   const navigation = useNavigation();
   const session = useOutletContext<AdminSession>();
