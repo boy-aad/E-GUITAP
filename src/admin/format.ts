@@ -27,6 +27,12 @@ export const PUBLICATION_LABELS: Record<Enums<'publication_status'>, string> = {
   archive: 'Archivé',
 };
 
+export const AVAILABILITY_LABELS: Record<Enums<'availability_status'>, string> = {
+  operationnelle: 'Opérationnelle',
+  en_developpement: 'En développement',
+  non_confirmee: 'Non confirmée (masquée)',
+};
+
 export const DOCUMENT_STATUS_LABELS: Record<Enums<'document_status'>, string> = {
   non_fourni: 'Non fournis',
   en_attente: 'En attente',

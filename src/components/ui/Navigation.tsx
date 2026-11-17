@@ -40,15 +40,18 @@ export function Chips<T extends string>({
   value,
   onChange,
   label,
+  nowrap,
 }: {
   options: ChipOption<T>[];
   value: T;
   onChange: (value: T) => void;
   /** Nom accessible du groupe. */
   label: string;
+  /** Une seule ligne (à placer dans un conteneur qui défile). */
+  nowrap?: boolean;
 }) {
   return (
-    <div role="group" aria-label={label} className="flex flex-wrap gap-2">
+    <div role="group" aria-label={label} className={`flex gap-2 ${nowrap ? 'w-max' : 'flex-wrap'}`}>
       {options.map((o) => {
         const active = o.value === value;
         return (
@@ -57,7 +60,7 @@ export function Chips<T extends string>({
             type="button"
             aria-pressed={active}
             onClick={() => onChange(o.value)}
-            className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
+            className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
               active ? 'border-marine bg-marine text-white' : 'border-slate-200 bg-white text-marine hover:border-gold'
             }`}
           >

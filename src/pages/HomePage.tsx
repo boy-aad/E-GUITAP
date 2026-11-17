@@ -8,12 +8,15 @@ import { LAND_DISCLAIMER, formatHectares, totalAreaHa } from '../content/landPro
 import { useSiteContent } from '../data/useSiteContent';
 import { DomainCard } from '../features/activities/DomainCard';
 import { ProjectCard } from '../features/projects/ProjectCard';
+import { OfferCard } from '../features/offers/OfferCard';
 import { HomeHero } from '../features/home/HomeHero';
 import { KeyFacts } from '../features/home/KeyFacts';
 import { CtaBand } from '../features/home/CtaBand';
 
 export function HomePage() {
-  const { company, domains, projects, blocks } = useSiteContent();
+  const { company, domains, projects, blocks, offers } = useSiteContent();
+  const featured = offers.filter((o) => o.isFeatured);
+  const featuredOffers = (featured.length ? featured : offers).slice(0, 6);
   const totalHa = totalAreaHa(projects);
   const presentation = blocks['home.presentation'];
 
@@ -80,10 +83,33 @@ export function HomePage() {
         </Section>
       )}
 
+      {/* Offres phares : mises en avant, sinon les premières du catalogue. */}
+      {featuredOffers.length > 0 && (
+        <Section
+          tone="paper"
+          id="offres"
+          eyebrow="Catalogue"
+          title="Nos offres phares"
+          action={
+            <Button variant="secondary" to="/offres" iconRight={<ArrowRight className="h-4 w-4" aria-hidden="true" />}>
+              Voir tout le catalogue
+            </Button>
+          }
+        >
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredOffers.map((offer, i) => (
+              <Reveal key={offer.slug} delay={(i % 3) * 80} className="h-full">
+                <OfferCard offer={offer} compact />
+              </Reveal>
+            ))}
+          </div>
+        </Section>
+      )}
+
       {/* Projets fonciers */}
       {projects.length > 0 && (
         <Section
-          tone="paper"
+          tone="white"
           id="projets"
           eyebrow="Nos projets fonciers"
           title={`${projects.length} site${projects.length > 1 ? 's' : ''}, ${formatHectares(totalHa)} annoncés`}

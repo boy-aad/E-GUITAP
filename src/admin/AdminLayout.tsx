@@ -29,7 +29,7 @@ const NAV: NavItem[] = [
   { to: '/admin', label: 'Tableau de bord', icon: LayoutDashboard, end: true },
   { to: '/admin/demandes', label: 'Demandes', icon: Inbox },
   { to: '/admin/projets', label: 'Projets fonciers', icon: LandPlot },
-  { to: '/admin/activites', label: 'Activités', icon: Briefcase, soon: true },
+  { to: '/admin/offres', label: 'Offres', icon: Briefcase },
   { to: '/admin/entreprise', label: 'Entreprise et accueil', icon: Building2, soon: true },
   { to: '/admin/medias', label: 'Médias', icon: Image, soon: true },
   { to: '/admin/equipe', label: 'Équipe', icon: Users, soon: true, adminOnly: true },

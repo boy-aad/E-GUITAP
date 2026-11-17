@@ -1,4 +1,5 @@
-import { ArrowUpRight, Check } from 'lucide-react';
+import { Link } from 'react-router';
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
 import { stockImage } from '../content/stockPhotos';
@@ -56,28 +57,43 @@ export function ActivitiesPage() {
                     {domain.availability === 'en_developpement' && <Badge tone="gold">Activité en développement</Badge>}
                   </div>
                   <div className="space-y-5 lg:col-span-2">
-                    <h3 className="font-inter text-xs font-semibold uppercase tracking-[0.15em] text-slate-text">Prestations</h3>
+                    <h3 className="font-inter text-xs font-semibold uppercase tracking-[0.15em] text-slate-text">Nos offres</h3>
                     <ul className="grid gap-3 sm:grid-cols-2">
                       {domain.services.map((service) => (
-                        <li key={service.title} className="flex gap-3 rounded-lg bg-paper px-4 py-3.5 text-sm text-marine">
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-gn-green" aria-hidden="true" />
-                          <span>
-                            {service.title}
-                            {service.availability === 'en_developpement' && (
-                              <span className="ml-2 text-xs text-slate-text">(en développement)</span>
-                            )}
-                          </span>
+                        <li key={service.slug}>
+                          <Link
+                            to={`/offres/${service.slug}`}
+                            className="group flex h-full gap-3 rounded-lg bg-paper px-4 py-3.5 text-sm text-marine ring-1 ring-transparent transition hover:bg-white hover:ring-gold/50 focus-visible:outline-2 focus-visible:outline-gold"
+                          >
+                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-gn-green" aria-hidden="true" />
+                            <span className="flex-1">
+                              {service.title}
+                              {service.availability === 'en_developpement' && (
+                                <span className="ml-2 text-xs text-slate-text">(en développement)</span>
+                              )}
+                            </span>
+                            <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-gold-hover" aria-hidden="true" />
+                          </Link>
                         </li>
                       ))}
                     </ul>
-                    <Button
-                      variant="dark"
-                      onClick={() => openInquiry(`domain:${domain.slug}`)}
-                      iconRight={<ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />}
-                    >
-                      Demander des renseignements
-                      <span className="sr-only"> — {domain.title}</span>
-                    </Button>
+                    <div className="flex flex-wrap gap-3">
+                      <Button
+                        variant="dark"
+                        to={`/offres?categorie=${domain.slug}`}
+                        iconRight={<ArrowRight className="h-4 w-4 text-gold" aria-hidden="true" />}
+                      >
+                        Voir les offres {domain.shortTitle}
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => openInquiry(`domain:${domain.slug}`)}
+                        iconRight={<ArrowUpRight className="h-4 w-4" aria-hidden="true" />}
+                      >
+                        Demander des renseignements
+                        <span className="sr-only"> — {domain.title}</span>
+                      </Button>
+                    </div>
                   </div>
                 </Card>
               </Reveal>

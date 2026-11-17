@@ -41,7 +41,7 @@ src/
 ├── config/env.ts         variables d'environnement validées
 ├── content/              types du contenu, libellés, avertissement juridique, photos par défaut (stockPhotos.ts)
 ├── data/                 lecture Supabase (siteContent.ts) et hook useSiteContent
-├── features/             home (hero en carrousel, scène animée, chiffres clés, bandeau), inquiry, projects, activities
+├── features/             offers (carte, filtres, image par défaut), home (hero en carrousel, scène animée, chiffres clés, bandeau), inquiry, projects, activities
 ├── lib/                  client Supabase, liens WhatsApp / e-mail / téléphone, médias, réseaux sociaux, motion
 ├── types/database.ts     types générés depuis le schéma
 └── pages/
@@ -60,6 +60,12 @@ Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
 | `…_rls_split_public_reads` | règles de lecture séparées visiteur / équipe |
 | `…_private_helpers` | `is_staff()`, `is_admin()`… déplacées dans le schéma `private` (hors API) |
 | `…_inquiry_notifications` | suivi de la notification e-mail des demandes |
+| `…_catalog_offers` | catalogue : `slug`, `summary`, `cover_media_id`, `is_featured`, `quote_enabled` sur `activity_services` |
+| `…_inquiry_quote_type` | type de demande `demande_devis` |
+| `…_inquiry_request_details` | précisions d'un devis (`request_details` : lieu, délai, quantité ; aucun prix) |
+| `…_offer_descriptions` | résumé et description des 21 offres (modifiables dans l'administration, menu « Offres ») |
+
+Note : sur le projet distant, ces quatre migrations sont enregistrées avec l'horodatage de leur application (contenu identique aux fichiers).
 
 Points clés :
 
@@ -69,11 +75,20 @@ Points clés :
 - Rôles : `admin` (équipe, documents, suppressions) et `editeur` (contenu). Un compte n'a accès à l'administration que s'il figure dans `staff_profiles`.
 - Types TypeScript : `src/types/database.ts`, à régénérer après chaque migration.
 
+## Catalogue d'offres
+
+- Pages `/offres` (filtres par catégorie, disponibilité et recherche dans l'URL) et `/offres/:slug`.
+- Image d'une offre : média téléversé, sinon illustration SVG `public/assets/illustrations/offres/<slug>.svg`,
+  sinon celle de la catégorie, sinon `defaut.svg` (mention « Visuel d'illustration »).
+- Illustrations régénérables : `python scripts/generate-offer-illustrations.py public/assets/illustrations`
+  (met aussi à jour `src/content/offerIllustrations.ts`).
+
 ## Demandes de renseignements
 
 Le formulaire appelle l'Edge Function `supabase/functions/submit-inquiry` (déployée avec `verify_jwt: false` : elle se protège elle-même) qui :
 
 1. vérifie le captcha Cloudflare Turnstile ;
+   (un sujet `offer:<slug>` crée une demande de devis : `type = demande_devis`, `service_id`, `request_details`, e-mail « Demande de devis — <offre> ») ;
 2. valide les champs et limite à 3 demandes par heure et par numéro ;
 3. enregistre la demande dans `inquiries` (visible dans l'administration) ;
 4. envoie la notification via Resend à l'e-mail publié dans les coordonnées.

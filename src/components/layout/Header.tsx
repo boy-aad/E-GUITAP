@@ -4,7 +4,6 @@ import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { Logo } from '../brand/Logo';
 import { TricolorBand } from '../brand/Skyline';
 import { Button } from '../ui/Button';
-import { useInquiry } from '../../features/inquiry/InquiryContext';
 import { MobileMenu } from './MobileMenu';
 import { NAV_ITEMS } from './navigation';
 
@@ -12,7 +11,6 @@ import { NAV_ITEMS } from './navigation';
 const SCROLL_THRESHOLD = 40;
 
 export function Header() {
-  const { openInquiry } = useInquiry();
   const { pathname } = useLocation();
   const isHome = pathname === '/';
   const [isScrolled, setIsScrolled] = useState(false);
@@ -102,8 +100,9 @@ export function Header() {
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             {/* Enveloppe : `hidden` ne peut pas surcharger le `inline-flex` du bouton. */}
             <div className="hidden sm:block">
-              <Button size="sm" onClick={() => openInquiry()} iconRight={<ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />}>
-                Demande de renseignements
+              {/* Mène au catalogue : chaque offre a son bouton « Demander un devis ». */}
+              <Button size="sm" to="/offres" iconRight={<ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />}>
+                Demander un devis
               </Button>
             </div>
             <button

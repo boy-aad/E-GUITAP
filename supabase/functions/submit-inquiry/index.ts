@@ -1,4 +1,4 @@
-// E-GUITAP — réception des demandes de renseignements
+// E-GUITAP — réception des demandes de renseignements et de devis
 //
 // 1. Vérifie le captcha Cloudflare Turnstile.
 // 2. Valide les champs et applique une limite anti-abus.
@@ -54,7 +54,38 @@ type Payload = {
   turnstileToken: string;
   sourcePage: string;
   website: string; // pot de miel : doit rester vide
+  requestDetails: RequestDetails | null;
 };
+
+/** Précisions d'une demande de devis : clés autorisées uniquement, 300 caractères chacune. Aucun prix. */
+type RequestDetails = { lieu?: string; delai?: string; quantite?: string };
+const DETAIL_KEYS = ['lieu', 'delai', 'quantite'] as const;
+const DELAY_VALUES = new Set(['urgent', 'moins_1_mois', '1_3_mois', 'plus_3_mois', 'a_definir']);
+const DETAIL_LABELS: Record<(typeof DETAIL_KEYS)[number], string> = {
+  lieu: 'Lieu du chantier ou de livraison',
+  delai: 'Délai souhaité',
+  quantite: 'Quantité ou surface estimée',
+};
+const DELAY_LABELS: Record<string, string> = {
+  urgent: 'Urgent',
+  moins_1_mois: 'Moins d’un mois',
+  '1_3_mois': '1 à 3 mois',
+  plus_3_mois: 'Plus de 3 mois',
+  a_definir: 'À définir',
+};
+
+function parseDetails(raw: unknown): RequestDetails | null {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const r = raw as Record<string, unknown>;
+  const out: RequestDetails = {};
+  for (const key of DETAIL_KEYS) {
+    const v = str(r[key], 300);
+    if (!v) continue;
+    if (key === 'delai' && !DELAY_VALUES.has(v)) continue;
+    out[key] = v;
+  }
+  return Object.keys(out).length ? out : null;
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
@@ -73,6 +104,7 @@ function parsePayload(raw: unknown): { data?: Payload; error?: string } {
     turnstileToken: str(r.turnstileToken, 4096),
     sourcePage: str(r.sourcePage, 300),
     website: str(r.website, 200),
+    requestDetails: parseDetails(r.requestDetails),
   };
   if (!data.fullName) return { error: 'Veuillez indiquer votre nom.' };
   if (!data.phone) return { error: 'Veuillez indiquer un numéro de téléphone.' };
@@ -108,9 +140,17 @@ function buildEmail(p: {
   email: string;
   message: string;
   sourcePage: string;
+  isQuote: boolean;
+  requestDetails: RequestDetails | null;
 }) {
+  const title = p.isQuote ? 'Nouvelle demande de devis' : 'Nouvelle demande de renseignements';
+  const details: [string, string][] = DETAIL_KEYS.flatMap((k) => {
+    const v = p.requestDetails?.[k];
+    return v ? [[DETAIL_LABELS[k], k === 'delai' ? (DELAY_LABELS[v] ?? v) : v] as [string, string]] : [];
+  });
   const rows: [string, string][] = [
-    ['Sujet', p.subjectLabel],
+    [p.isQuote ? 'Offre' : 'Sujet', p.subjectLabel],
+    ...details,
     ['Nom', p.fullName],
     ['Organisation', p.organization || '—'],
     ['Téléphone', p.phone],
@@ -120,7 +160,7 @@ function buildEmail(p: {
   const html = `<!doctype html><html lang="fr"><body style="margin:0;background:#F5F1E8;font-family:Arial,sans-serif;color:#102C50">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:6px;overflow:hidden">
-<tr><td style="background:#102C50;color:#ffffff;padding:20px 24px;font-size:18px;font-weight:bold">E-GUITAP — Nouvelle demande de renseignements</td></tr>
+<tr><td style="background:#102C50;color:#ffffff;padding:20px 24px;font-size:18px;font-weight:bold">E-GUITAP — ${title}</td></tr>
 <tr><td style="padding:20px 24px"><table role="presentation" width="100%" cellpadding="6" cellspacing="0" style="font-size:14px">
 ${rows.map(([k, v]) => `<tr><td style="color:#44505F;width:130px;vertical-align:top">${k}</td><td style="font-weight:bold">${escapeHtml(v)}</td></tr>`).join('')}
 </table>
@@ -129,7 +169,7 @@ ${rows.map(([k, v]) => `<tr><td style="color:#44505F;width:130px;vertical-align:
 <p style="margin-top:24px;color:#44505F;font-size:12px">Référence : ${p.id}. La demande est également consultable dans l'administration du site.</p>
 </td></tr></table></td></tr></table></body></html>`;
   const text = [
-    'E-GUITAP — Nouvelle demande de renseignements',
+    `E-GUITAP — ${title}`,
     '',
     ...rows.map(([k, v]) => `${k} : ${v}`),
     '',
@@ -187,13 +227,28 @@ Deno.serve(async (req) => {
     return json({ error: 'Plusieurs demandes ont déjà été envoyées. Merci de réessayer plus tard.' }, 429, origin);
   }
 
-  // Sujet : domaine ou projet publié, sinon demande générale.
-  let type: 'contact' | 'renseignement_activite' | 'renseignement_projet' = 'contact';
+  // Sujet : offre, domaine ou projet publié, sinon demande générale.
+  let type: 'contact' | 'renseignement_activite' | 'renseignement_projet' | 'demande_devis' = 'contact';
   let domainId: string | null = null;
+  let serviceId: string | null = null;
   let projectId: string | null = null;
   let subjectLabel = 'Demande générale';
   const [kind, slug] = p.topic.split(':');
-  if (kind === 'domain' && slug) {
+  if (kind === 'offer' && slug) {
+    const { data } = await admin
+      .from('activity_services')
+      .select('id, title, domain_id, activity_domains!inner (publication)')
+      .eq('slug', slug)
+      .eq('publication', 'publie')
+      .eq('activity_domains.publication', 'publie')
+      .maybeSingle();
+    if (data) {
+      type = 'demande_devis';
+      serviceId = data.id;
+      domainId = data.domain_id;
+      subjectLabel = data.title;
+    }
+  } else if (kind === 'domain' && slug) {
     const { data } = await admin
       .from('activity_domains')
       .select('id, title')
@@ -228,7 +283,9 @@ Deno.serve(async (req) => {
       phone: p.phone,
       email: p.email || null,
       domain_id: domainId,
+      service_id: serviceId,
       land_project_id: projectId,
+      request_details: type === 'demande_devis' ? p.requestDetails : null,
       subject: subjectLabel,
       message: p.message,
       consent: true,
@@ -256,7 +313,8 @@ Deno.serve(async (req) => {
 
   let notificationError: string | null = notifyTo ? null : 'Aucune adresse de notification configurée.';
   if (notifyTo) {
-    const { html, text } = buildEmail({ id: inserted.id, subjectLabel, ...p });
+    const isQuote = type === 'demande_devis';
+    const { html, text } = buildEmail({ id: inserted.id, subjectLabel, ...p, isQuote });
     try {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -268,7 +326,7 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           from: Deno.env.get('RESEND_FROM') ?? 'E-GUITAP <onboarding@resend.dev>',
           to: [notifyTo],
-          subject: `Nouvelle demande — ${subjectLabel} — ${p.fullName}`,
+          subject: isQuote ? `Demande de devis — ${subjectLabel}` : `Nouvelle demande — ${subjectLabel} — ${p.fullName}`,
           html,
           text,
           ...(p.email ? { reply_to: p.email } : {}),

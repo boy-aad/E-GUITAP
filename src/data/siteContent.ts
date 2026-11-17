@@ -56,7 +56,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     supabase
       .from('activity_domains')
       .select(
-        `slug, letter, title, short_title, summary, availability, sort_order, cover:media!activity_domains_cover_media_id_fkey (${MEDIA_COLUMNS}), activity_services (title, availability, publication, sort_order)`,
+        `slug, letter, title, short_title, summary, availability, sort_order, cover:media!activity_domains_cover_media_id_fkey (${MEDIA_COLUMNS}), activity_services (slug, title, summary, description, availability, publication, sort_order, is_featured, quote_enabled, cover:media!activity_services_cover_media_id_fkey (${MEDIA_COLUMNS}))`,
       )
       .eq('publication', 'publie')
       .neq('availability', 'non_confirmee')
@@ -116,8 +116,26 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     services: d.activity_services
       .filter((s) => s.publication === 'publie' && s.availability !== 'non_confirmee')
       .sort(bySortOrder)
-      .map((s) => ({ title: s.title, availability: s.availability })),
+      .map((s) => ({
+        slug: s.slug,
+        title: s.title,
+        summary: s.summary,
+        description: s.description,
+        availability: s.availability,
+        isFeatured: s.is_featured,
+        quoteEnabled: s.quote_enabled,
+        cover: toMedia(s.cover),
+        domainSlug: d.slug,
+        sortOrder: s.sort_order,
+      })),
   }));
+
+  // Catalogue : mises en avant d'abord, puis ordre des catégories, puis ordre des offres.
+  const offers = domains
+    .flatMap((d) => d.services)
+    .map((o, i) => ({ o, i }))
+    .sort((a, b) => Number(b.o.isFeatured) - Number(a.o.isFeatured) || a.i - b.i)
+    .map(({ o }) => o);
 
   const projects: LandProject[] = projectRows.map((p) => ({
     slug: p.slug,
@@ -174,6 +192,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     domains,
     projects,
     heroSlides,
+    offers,
     blocks,
   };
 }

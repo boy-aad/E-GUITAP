@@ -46,11 +46,11 @@ export function Footer() {
 
           {domains.length > 0 && (
             <div>
-              <h2 className={headingClass}>Nos domaines</h2>
+              <h2 className={headingClass}>Nos offres</h2>
               <ul className="space-y-2.5 text-sm">
                 {domains.map((d) => (
                   <li key={d.slug}>
-                    <Link to={`/activites#${d.slug}`} className={linkClass}>
+                    <Link to={`/offres?categorie=${d.slug}`} className={linkClass}>
                       {d.title}
                     </Link>
                   </li>

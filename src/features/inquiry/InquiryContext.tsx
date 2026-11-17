@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { Modal } from '../../components/ui/Modal';
 import { InquiryForm } from './InquiryForm';
-import type { InquiryTopic } from './topics';
+import { isQuoteTopic, type InquiryTopic } from './topics';
 
 type InquiryContextValue = {
   /** Ouvre la demande de renseignements, avec un sujet présélectionné. */
@@ -23,7 +23,7 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
         open={topic !== null}
         onClose={() => setTopic(null)}
         eyebrow="Contact E-GUITAP"
-        title="Demande de renseignements"
+        title={topic !== null && isQuoteTopic(topic) ? 'Demande de devis' : 'Demande de renseignements'}
       >
         {/* La clé remonte le formulaire à chaque ouverture : le sujet suit le bouton cliqué. */}
         {topic !== null && <InquiryForm key={topic} initialTopic={topic} />}

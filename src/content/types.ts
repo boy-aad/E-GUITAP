@@ -85,10 +85,27 @@ export interface CompanyProfile {
   };
 }
 
+/** Offre du catalogue = prestation d'un domaine (activity_services). */
 export interface ActivityService {
+  slug: string;
   title: string;
+  /** Résumé de carte (≤ 200 caractères) ; null = non affiché. */
+  summary: string | null;
+  /** Description complète de la fiche. */
+  description: string | null;
   availability: AvailabilityStatus;
+  isFeatured: boolean;
+  /** Bouton « Demander un devis » affiché. */
+  quoteEnabled: boolean;
+  /** Image téléversée ; sinon illustration par défaut. */
+  cover: MediaAsset | null;
+  /** Catégorie (slug du domaine). */
+  domainSlug: string;
+  sortOrder: number;
 }
+
+/** Alias explicite côté catalogue. */
+export type Offer = ActivityService;
 
 export interface ActivityDomain {
   /** Image de couverture téléversée (sinon : photo ou visuel par défaut de la catégorie). */
@@ -148,5 +165,7 @@ export interface SiteContent {
   projects: LandProject[];
   /** Slides actives du hero de l'accueil, dans l'ordre. */
   heroSlides: HeroSlide[];
+  /** Toutes les offres publiées : mises en avant d'abord, puis par catégorie et ordre. */
+  offers: Offer[];
   blocks: Partial<Record<ContentBlockKey, ContentBlock>>;
 }

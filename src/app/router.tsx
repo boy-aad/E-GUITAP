@@ -7,6 +7,8 @@ import { HomePage } from '../pages/HomePage';
 import { CompanyPage } from '../pages/CompanyPage';
 import { ActivitiesPage } from '../pages/ActivitiesPage';
 import { ProjectsPage } from '../pages/ProjectsPage';
+import { OffersPage } from '../pages/OffersPage';
+import { OfferDetailPage } from '../pages/OfferDetailPage';
 import { ProjectDetailPage } from '../pages/ProjectDetailPage';
 import { ContactPage } from '../pages/ContactPage';
 import { LegalNoticePage } from '../pages/LegalNoticePage';
@@ -29,6 +31,8 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'entreprise', element: <CompanyPage /> },
       { path: 'activites', element: <ActivitiesPage /> },
+      { path: 'offres', element: <OffersPage /> },
+      { path: 'offres/:slug', element: <OfferDetailPage /> },
       { path: 'projets', element: <ProjectsPage /> },
       { path: 'projets/:slug', element: <ProjectDetailPage /> },
       { path: 'contact', element: <ContactPage /> },

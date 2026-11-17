@@ -9,7 +9,8 @@ import { supabase } from '../../lib/supabase';
 import { DEFAULT_WHATSAPP_MESSAGE, whatsappUrl } from '../../lib/contact';
 import { useSiteContent } from '../../data/useSiteContent';
 import { Turnstile, type TurnstileHandle } from './Turnstile';
-import { buildTopicGroups, type InquiryTopic } from './topics';
+import { buildTopicGroups, isQuoteTopic, type InquiryTopic } from './topics';
+import { EMPTY_QUOTE_DETAILS, QuoteDetailsFields, type QuoteDetails } from './QuoteDetailsFields';
 
 type Values = {
   fullName: string;
@@ -73,6 +74,8 @@ export function InquiryForm({ initialTopic = 'general' }: InquiryFormProps) {
     consent: false,
     website: '',
   });
+  const [details, setDetails] = useState<QuoteDetails>(EMPTY_QUOTE_DETAILS);
+  const isQuote = isQuoteTopic(values.topic);
   const [errors, setErrors] = useState<Errors>({});
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaFailed, setCaptchaFailed] = useState(false);
@@ -91,7 +94,12 @@ export function InquiryForm({ initialTopic = 'general' }: InquiryFormProps) {
 
     setStatus('sending');
     const { error } = await supabase.functions.invoke('submit-inquiry', {
-      body: { ...values, turnstileToken: captchaToken, sourcePage: window.location.pathname },
+      body: {
+        ...values,
+        requestDetails: isQuote ? details : null,
+        turnstileToken: captchaToken,
+        sourcePage: window.location.pathname,
+      },
     });
     // Un jeton Turnstile ne sert qu'une fois : on en redemande un dans tous les cas.
     turnstile.current?.reset();
@@ -167,7 +175,9 @@ export function InquiryForm({ initialTopic = 'general' }: InquiryFormProps) {
         </Select>
       </Field>
 
-      <Field label="Votre message" required error={errors.message}>
+      {isQuote && <QuoteDetailsFields value={details} onChange={setDetails} />}
+
+      <Field label={isQuote ? 'Description de votre besoin' : 'Votre message'} required error={errors.message}>
         <Textarea rows={5} value={values.message} onChange={set('message')} maxLength={5000} />
       </Field>
 
@@ -244,7 +254,7 @@ export function InquiryForm({ initialTopic = 'general' }: InquiryFormProps) {
             )
           }
         >
-          {status === 'sending' ? 'Envoi en cours…' : 'Envoyer la demande'}
+          {status === 'sending' ? 'Envoi en cours…' : isQuote ? 'Envoyer la demande de devis' : 'Envoyer la demande'}
         </Button>
       </div>
     </form>
