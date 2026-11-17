@@ -1,8 +1,13 @@
-import { Link, useParams } from 'react-router';
-import { ArrowLeft, ArrowUpRight, Info, MapPin, Ruler } from 'lucide-react';
+import { useParams } from 'react-router';
+import { ArrowUpRight, Info, MapPin, Ruler } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
 import { BrandPanel } from '../components/brand/Skyline';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
+import { Container } from '../components/ui/Section';
+import { SmartImage } from '../components/ui/SmartImage';
+import { Reveal } from '../components/ui/Reveal';
 import {
   COMMERCIAL_STATUS_LABELS,
   DEVELOPMENT_STATUS_LABELS,
@@ -30,22 +35,19 @@ export function ProjectDetailPage() {
         title={project.name}
         description={`${project.name} — projet foncier E-GUITAP, superficie annoncée de ${formatHectares(project.areaHa)}. ${project.summary}`}
       />
-      <PageHero eyebrow="Projet foncier" title={project.name}>
+      <PageHero
+        eyebrow="Projet foncier"
+        title={project.name}
+        crumbs={[{ label: 'Nos projets', to: '/projets' }, { label: project.name }]}
+      >
         <p>{project.summary}</p>
       </PageHero>
 
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <Link
-          to="/projets"
-          className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-marine hover:text-gold-hover"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Tous les projets
-        </Link>
+      <Container className="py-14 lg:py-20">
 
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <BrandPanel className="h-56 rounded-lg sm:h-72" />
+            <SmartImage ratio="16/9" className="rounded-xl" fallback={<BrandPanel className="h-full" />} />
             <section className="space-y-3">
               <h2 className="font-poppins text-xl font-bold text-marine">Présentation</h2>
               <p className="leading-relaxed text-slate-text">{project.description}</p>
@@ -57,7 +59,7 @@ export function ProjectDetailPage() {
               <h2 className="font-poppins text-xl font-bold text-marine">Potentiel de développement</h2>
               <ul className="grid gap-3 sm:grid-cols-2">
                 {project.objectives.map((o) => (
-                  <li key={o} className="flex gap-3 rounded bg-white px-4 py-3 text-sm text-marine ring-1 ring-slate-200">
+                  <li key={o} className="flex gap-3 rounded-lg bg-white px-4 py-3.5 text-sm text-marine ring-1 ring-slate-200">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
                     {o}
                   </li>
@@ -67,7 +69,7 @@ export function ProjectDetailPage() {
           </div>
 
           <aside className="space-y-4 self-start lg:sticky lg:top-28">
-            <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-6">
+            <Card className="space-y-5 p-7">
               <h2 className="font-poppins text-base font-bold text-marine">Informations</h2>
               <dl className="space-y-3 text-sm">
                 <div className="flex gap-3">
@@ -99,31 +101,35 @@ export function ProjectDetailPage() {
                   </div>
                 )}
               </dl>
-              <button
-                type="button"
+              <Button
+                variant="dark"
+                fullWidth
                 onClick={() => openInquiry(`project:${project.slug}`)}
-                className="flex w-full items-center justify-center gap-2 rounded bg-marine px-5 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-white hover:bg-marine-dark"
+                iconRight={<ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />}
               >
                 Demander des renseignements
-                <ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />
-              </button>
-            </div>
-            <p className="flex gap-3 rounded-lg bg-ivory p-4 text-xs leading-relaxed text-slate-text">
+              </Button>
+            </Card>
+            <p className="flex gap-3 rounded-xl bg-ivory p-4 text-xs leading-relaxed text-slate-text">
               <Info className="h-4 w-4 shrink-0 text-marine" aria-hidden="true" />
               {LAND_DISCLAIMER}
             </p>
           </aside>
         </div>
 
-        <section className="mt-16 space-y-6 border-t border-slate-200 pt-12">
-          <h2 className="font-poppins text-xl font-bold text-marine">Autres projets</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {others.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
-            ))}
-          </div>
-        </section>
-      </div>
+        {others.length > 0 && (
+          <section className="mt-20 space-y-8 border-t border-slate-200 pt-14">
+            <h2 className="font-poppins text-2xl font-bold tracking-tight text-marine sm:text-3xl">Autres projets</h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {others.map((p, i) => (
+                <Reveal key={p.slug} delay={i * 80} className="h-full">
+                  <ProjectCard project={p} />
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        )}
+      </Container>
     </>
   );
 }

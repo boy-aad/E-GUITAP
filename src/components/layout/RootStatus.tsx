@@ -2,6 +2,7 @@ import { isRouteErrorResponse, useRouteError } from 'react-router';
 import { RefreshCw } from 'lucide-react';
 import { Logo } from '../brand/Logo';
 import { Skyline, TricolorBand } from '../brand/Skyline';
+import { Button } from '../ui/Button';
 
 /** Écran affiché pendant le premier chargement du contenu. */
 export function LoadingScreen() {
@@ -33,14 +34,9 @@ export function RootErrorScreen() {
         <p className="text-white/80">
           Le contenu n'a pas pu être chargé. Vérifiez votre connexion internet puis réessayez.
         </p>
-        <button
-          type="button"
-          onClick={() => window.location.reload()}
-          className="inline-flex items-center gap-2 rounded bg-gold px-6 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-marine hover:bg-gold-light"
-        >
-          <RefreshCw className="h-4 w-4" aria-hidden="true" />
+        <Button onClick={() => window.location.reload()} icon={<RefreshCw className="h-4 w-4" aria-hidden="true" />}>
           Réessayer
-        </button>
+        </Button>
         {import.meta.env.DEV && detail && <p className="text-xs text-white/50">{detail}</p>}
       </main>
     </div>

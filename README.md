@@ -34,13 +34,15 @@ src/
 ├── app/router.tsx        routes ; le loader racine charge tout le contenu depuis Supabase
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
-│   ├── layout/           Header, Footer, Layout, navigation
-│   └── ui/               Modal, Field, PageHero, Eyebrow, Seo
+│   ├── layout/           Header (transparent sur l'accueil), MobileMenu, Footer, SocialLinks, Layout
+│   └── ui/               design system : Button, Section/Container, Card/Badge, Reveal, CountUp,
+│                         SmartImage, PageHero, Navigation (Breadcrumbs, Chips, SearchInput, EmptyState),
+│                         Modal, Field, Eyebrow, Seo
 ├── config/env.ts         variables d'environnement validées
 ├── content/              types du contenu, libellés et avertissement juridique
 ├── data/                 lecture Supabase (siteContent.ts) et hook useSiteContent
 ├── features/             inquiry (demande de renseignements), projects, activities
-├── lib/                  client Supabase, liens WhatsApp / e-mail / téléphone
+├── lib/                  client Supabase, liens WhatsApp / e-mail / téléphone, médias, réseaux sociaux, motion
 ├── types/database.ts     types générés depuis le schéma
 └── pages/
 ```

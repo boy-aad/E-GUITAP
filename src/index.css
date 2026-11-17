@@ -51,3 +51,72 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-gold-hover);
 }
+
+/* ---------------------------------------------------------------------------
+   Mouvements (désactivés si l'utilisateur demande à réduire les animations)
+   --------------------------------------------------------------------------- */
+
+/* Apparition au défilement : voir components/ui/Reveal.tsx. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    transition:
+      opacity 500ms ease-out,
+      transform 500ms ease-out;
+  }
+  .reveal:not([data-visible]) {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* Soulignement or animé des liens de navigation et des liens « fléchés ». */
+.link-underline {
+  background-image: linear-gradient(var(--color-gold), var(--color-gold));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size 250ms ease-out;
+}
+.link-underline:hover,
+.link-underline:focus-visible,
+.link-underline[aria-current='page'] {
+  background-size: 100% 2px;
+}
+
+/* Menu mobile plein écran. */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .animate-menu-in {
+    animation: menu-in 250ms ease-out both;
+  }
+  .animate-menu-in > * > * {
+    animation: menu-in 300ms ease-out both;
+  }
+  .animate-menu-in > * > *:nth-child(2) { animation-delay: 30ms; }
+  .animate-menu-in > * > *:nth-child(3) { animation-delay: 60ms; }
+  .animate-menu-in > * > *:nth-child(4) { animation-delay: 90ms; }
+  .animate-menu-in > * > *:nth-child(5) { animation-delay: 120ms; }
+  .animate-menu-in > * > *:nth-child(6) { animation-delay: 150ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

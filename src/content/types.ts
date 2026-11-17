@@ -15,11 +15,36 @@ export interface CompanyContact {
   raw: string;
 }
 
+export type SocialNetwork = 'facebook' | 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'x' | 'autre';
+
+/** Compte officiel sur un réseau social (company_contacts.kind = 'social'). */
+export interface SocialLink {
+  network: SocialNetwork;
+  label: string;
+  url: string;
+}
+
 export interface CompanyContacts {
   phone: CompanyContact | null;
   whatsapp: CompanyContact | null;
   email: CompanyContact | null;
   address: CompanyContact | null;
+  /** Vide tant qu'aucun compte n'est publié : la section est alors masquée. */
+  social: SocialLink[];
+}
+
+export type MediaKind = Enums<'media_kind'>;
+
+/** Image du bucket public-media. */
+export interface MediaAsset {
+  path: string;
+  kind: MediaKind;
+  alt: string;
+  credit: string | null;
+  width: number | null;
+  height: number | null;
+  /** Autres tailles disponibles : largeur en px → chemin dans le bucket. */
+  variants?: Record<number, string>;
 }
 
 export interface CompanyProfile {

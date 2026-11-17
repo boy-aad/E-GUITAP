@@ -2,6 +2,7 @@ import { useRef, useState, type FormEvent } from 'react';
 import { CheckCircle2, Loader2, MessageSquare, Send } from 'lucide-react';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { Link } from 'react-router';
+import { Button } from '../../components/ui/Button';
 import { Field, Input, Select, Textarea } from '../../components/ui/Field';
 import { env } from '../../config/env';
 import { supabase } from '../../lib/supabase';
@@ -230,18 +231,21 @@ export function InquiryForm({ initialTopic = 'general' }: InquiryFormProps) {
 
       <div className="flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
         <p className="text-xs text-slate-text">{whatsappLink && <>Vous pouvez aussi {whatsappLink}.</>}</p>
-        <button
+        <Button
           type="submit"
+          variant="dark"
           disabled={status === 'sending'}
-          className="inline-flex w-full items-center justify-center gap-2 rounded bg-marine px-6 py-3 font-poppins text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-marine-dark disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+          className="w-full sm:w-auto"
+          icon={
+            status === 'sending' ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <Send className="h-4 w-4 text-gold" aria-hidden="true" />
+            )
+          }
         >
-          {status === 'sending' ? (
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-          ) : (
-            <Send className="h-4 w-4 text-gold" aria-hidden="true" />
-          )}
           {status === 'sending' ? 'Envoi en cours…' : 'Envoyer la demande'}
-        </button>
+        </Button>
       </div>
     </form>
   );

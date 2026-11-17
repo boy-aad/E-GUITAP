@@ -3,6 +3,9 @@ import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
 import { useSiteContent } from '../data/useSiteContent';
 import { InquiryForm } from '../features/inquiry/InquiryForm';
+import { Section } from '../components/ui/Section';
+import { Card } from '../components/ui/Card';
+import { SocialLinks } from '../components/layout/SocialLinks';
 import { mailtoUrl, telUrl, whatsappUrl } from '../lib/contact';
 
 export function ContactPage() {
@@ -28,11 +31,12 @@ export function ContactPage() {
         title="Contact"
         description="Contacter E-GUITAP à Dubréka et Conakry : téléphone, WhatsApp, e-mail et demande de renseignements."
       />
-      <PageHero eyebrow="Contact" title={intro?.title ?? 'Contacter E-GUITAP'}>
+      <PageHero eyebrow="Contact" title={intro?.title ?? 'Contacter E-GUITAP'} crumbs={[{ label: 'Contact' }]}>
         {intro?.body && <p>{intro.body}</p>}
       </PageHero>
 
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-5 lg:px-8 lg:py-20">
+      <Section tone="paper" compact>
+        <div className="grid gap-10 lg:grid-cols-5">
         <section aria-labelledby="coordonnees" className="space-y-4 lg:col-span-2">
           <h2 id="coordonnees" className="font-poppins text-xl font-bold text-marine">
             Coordonnées
@@ -41,7 +45,7 @@ export function ContactPage() {
             {channels.map(({ icon: Icon, label, value, href, external }) => {
               const content = (
                 <>
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-marine text-gold">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-marine text-gold">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span>
@@ -50,14 +54,14 @@ export function ContactPage() {
                   </span>
                 </>
               );
-              const box = 'flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4';
+              const box = 'flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-5';
               return (
                 <li key={label}>
                   {href ? (
                     <a
                       href={href}
                       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      className={`${box} transition-colors hover:border-gold`}
+                      className={`${box} transition-all hover:border-gold hover:shadow-[0_20px_50px_-20px_rgba(16,44,80,0.35)]`}
                     >
                       {content}
                     </a>
@@ -68,15 +72,22 @@ export function ContactPage() {
               );
             })}
           </ul>
+          {contacts.social.length > 0 && (
+            <div className="rounded-xl bg-marine p-5">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-gold">Suivez-nous</p>
+              <SocialLinks links={contacts.social} />
+            </div>
+          )}
         </section>
 
-        <section aria-labelledby="demande" className="rounded-lg border border-slate-200 bg-white p-6 sm:p-8 lg:col-span-3">
+        <Card as="section" aria-labelledby="demande" className="p-6 sm:p-10 lg:col-span-3">
           <h2 id="demande" className="mb-6 font-poppins text-xl font-bold text-marine">
             Demande de renseignements
           </h2>
           <InquiryForm />
-        </section>
-      </div>
+        </Card>
+        </div>
+      </Section>
     </>
   );
 }

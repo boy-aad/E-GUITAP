@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { socialNetworkOf } from '../lib/social';
 import type {
   ActivityDomain,
   CompanyContact,
@@ -92,6 +93,10 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     whatsapp: contactOf('whatsapp'),
     email: contactOf('email'),
     address: contactOf('address'),
+    // Seules les adresses https sont retenues.
+    social: contactRows
+      .filter((c) => c.kind === 'social' && /^https:\/\//i.test(c.raw_value))
+      .map((c) => ({ network: socialNetworkOf(c.raw_value), label: c.label, url: c.raw_value })),
   };
 
   const domains: ActivityDomain[] = domainRows.map((d) => ({
