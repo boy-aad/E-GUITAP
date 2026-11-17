@@ -83,7 +83,9 @@ Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECR
 - Le nom s'écrit toujours **E-GUITAP** (trait d'union) ; la dénomination développée est réservée aux mentions légales.
 - Aucune information non communiquée par l'entreprise (réalisations, chiffres, certifications, titres fonciers…).
 - Les projets fonciers sont présentés avec leur superficie **annoncée** et l'avertissement `LAND_DISCLAIMER`.
-- Pas de photo générique : visuels de la charte en attendant de vraies photos.
+- Visuels en attendant de vraies photos : illustrations de la charte (mention « Visuel d'illustration ») ou photos libres de droits Unsplash / Pexels (licence vérifiée, crédit enregistré, mention « Photo d'illustration »), jamais présentées comme des chantiers, terrains ou équipes d'E-GUITAP.
+- Aucun prix ni budget affiché : les offres sont « Sur devis ».
+- Règles complètes pour les agents de code : `CLAUDE.md`.
 
 ## Déploiement
 
