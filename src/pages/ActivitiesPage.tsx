@@ -1,6 +1,7 @@
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
+import { stockImage } from '../content/stockPhotos';
 import { Section } from '../components/ui/Section';
 import { Reveal } from '../components/ui/Reveal';
 import { Badge, Card } from '../components/ui/Card';
@@ -19,7 +20,12 @@ export function ActivitiesPage() {
         title="Nos activités"
         description="BTP, immobilier et aménagement foncier, commerce général, import-export : les domaines d'activité et prestations d'E-GUITAP."
       />
-      <PageHero eyebrow="Nos activités" title="Nos domaines d'activité" crumbs={[{ label: 'Nos activités' }]}>
+      <PageHero
+        eyebrow="Nos activités"
+        title="Nos domaines d'activité"
+        crumbs={[{ label: 'Nos activités' }]}
+        image={stockImage('pageActivites')}
+      >
         <p>
           E-GUITAP intervient dans le BTP, l'immobilier et l'aménagement foncier, le commerce général et
           l'import-export, depuis Dubréka et Conakry.

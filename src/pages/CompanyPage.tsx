@@ -1,6 +1,7 @@
 import { Globe2, Layers, MapPin } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
+import { stockImage } from '../content/stockPhotos';
 import { Section } from '../components/ui/Section';
 import { Reveal } from '../components/ui/Reveal';
 import { Card } from '../components/ui/Card';
@@ -14,7 +15,12 @@ export function CompanyPage() {
         title="L'entreprise"
         description="E-GUITAP, Entreprise Guinéenne de Terrassement, d'Aménagement et de Prestations : présentation, mission, vision et valeurs."
       />
-      <PageHero eyebrow="L'entreprise" title={company.brandName} crumbs={[{ label: "L'entreprise" }]}>
+      <PageHero
+        eyebrow="L'entreprise"
+        title={company.brandName}
+        crumbs={[{ label: "L'entreprise" }]}
+        image={stockImage('pageEntreprise')}
+      >
         <p>{company.fullName}</p>
       </PageHero>
 

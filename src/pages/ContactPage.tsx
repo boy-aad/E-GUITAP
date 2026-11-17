@@ -1,6 +1,7 @@
 import { Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
+import { stockImage } from '../content/stockPhotos';
 import { useSiteContent } from '../data/useSiteContent';
 import { InquiryForm } from '../features/inquiry/InquiryForm';
 import { Section } from '../components/ui/Section';
@@ -31,7 +32,12 @@ export function ContactPage() {
         title="Contact"
         description="Contacter E-GUITAP à Dubréka et Conakry : téléphone, WhatsApp, e-mail et demande de renseignements."
       />
-      <PageHero eyebrow="Contact" title={intro?.title ?? 'Contacter E-GUITAP'} crumbs={[{ label: 'Contact' }]}>
+      <PageHero
+        eyebrow="Contact"
+        title={intro?.title ?? 'Contacter E-GUITAP'}
+        crumbs={[{ label: 'Contact' }]}
+        image={stockImage('pageContact')}
+      >
         {intro?.body && <p>{intro.body}</p>}
       </PageHero>
 

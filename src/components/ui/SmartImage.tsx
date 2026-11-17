@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import type { MediaAsset } from '../../content/types';
-import { publicMediaUrl } from '../../lib/media';
+import type { ImageSource } from '../../content/types';
 
 export type ImageRatio = '4/3' | '16/9' | '21/9' | '1/1' | 'auto';
 
@@ -13,83 +12,73 @@ const RATIOS: Record<ImageRatio, string> = {
 };
 
 type SmartImageProps = {
-  /** Média de la base (bucket public-media). */
-  media?: MediaAsset | null;
-  /** Ou une image du site (ex. illustration SVG par défaut). */
-  src?: string | null;
-  /** Texte alternatif quand `src` est utilisé (vide = image décorative). */
-  alt?: string;
-  /** Mention affichée sur l'image si elle n'est pas une photo réelle d'E-GUITAP. */
-  notice?: string | null;
+  /** Image à afficher (voir mediaImage, stockImage) ; null → repli. */
+  image?: ImageSource | null;
   ratio?: ImageRatio;
-  /** Image principale de la page (hero) : chargement prioritaire. */
+  /** Image principale de la page (hero, bannière) : chargement prioritaire. */
   priority?: boolean;
   /** Largeurs d'affichage, pour que le navigateur choisisse la bonne taille. */
   sizes?: string;
   /** Rendu de repli si aucune image n'est disponible ou si le chargement échoue. */
   fallback?: ReactNode;
+  /** Position de la mention d'illustration. */
+  noticePosition?: 'bottom-right' | 'top-left';
   className?: string;
   imgClassName?: string;
 };
 
-/** Mention à afficher selon la nature du média (règle 5 de CLAUDE.md). */
-export function mediaNotice(media: MediaAsset): string | null {
-  if (media.kind !== 'illustration') return null;
-  return media.credit ? "Photo d'illustration" : "Visuel d'illustration";
-}
-
 /**
  * Image de contenu : ratio fixe (pas de décalage de mise en page), chargement différé
- * hors écran, deux tailles si le média en dispose, mention d'illustration, et repli
- * aux couleurs de la charte si l'image manque ou ne se charge pas.
+ * hors écran, deux tailles si disponibles, mention d'illustration, et repli aux
+ * couleurs de la charte si l'image manque ou ne se charge pas.
  */
 export function SmartImage({
-  media,
-  src,
-  alt = '',
-  notice,
+  image,
   ratio = '4/3',
   priority,
   sizes = '(min-width: 1024px) 33vw, 100vw',
   fallback,
+  noticePosition = 'bottom-right',
   className = '',
   imgClassName = '',
 }: SmartImageProps) {
-  const [failed, setFailed] = useState(false);
-
-  const url = media ? publicMediaUrl(media.path) : (src ?? null);
-  const srcSet = media?.variants
-    ? Object.entries(media.variants)
-        .map(([width, path]) => `${publicMediaUrl(path)} ${width}w`)
-        .join(', ')
-    : undefined;
-  const label = notice !== undefined ? notice : media ? mediaNotice(media) : null;
-  const showImage = url && !failed;
+  const [failed, setFailed] = useState<string | null>(null);
+  const showImage = image && failed !== image.src;
 
   return (
     <div className={`relative overflow-hidden bg-marine ${RATIOS[ratio]} ${className}`}>
       {showImage ? (
         <img
-          src={url}
-          srcSet={srcSet}
-          sizes={srcSet ? sizes : undefined}
-          alt={media ? media.alt : alt}
-          width={media?.width ?? undefined}
-          height={media?.height ?? undefined}
+          src={image.src}
+          srcSet={image.srcSet}
+          sizes={image.srcSet ? sizes : undefined}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
           loading={priority ? 'eager' : 'lazy'}
           decoding="async"
           fetchPriority={priority ? 'high' : 'auto'}
-          onError={() => setFailed(true)}
+          onError={() => setFailed(image.src)}
           className={`absolute inset-0 h-full w-full object-cover ${imgClassName}`}
         />
       ) : (
         <div className="absolute inset-0">{fallback}</div>
       )}
-      {showImage && label && (
-        <span className="pointer-events-none absolute bottom-2 right-2 rounded bg-marine-dark/75 px-1.5 py-0.5 text-[10px] font-medium leading-4 text-white">
-          {label}
-        </span>
-      )}
+      {showImage && image.notice && <ImageNotice position={noticePosition}>{image.notice}</ImageNotice>}
     </div>
+  );
+}
+
+/** Mention discrète « Photo d'illustration » / « Visuel d'illustration ». */
+export function ImageNotice({ children, position = 'bottom-right' }: { children: ReactNode; position?: 'bottom-right' | 'top-left' | 'bottom-left' }) {
+  const place = {
+    'bottom-right': 'bottom-2 right-2',
+    'bottom-left': 'bottom-2 left-2',
+    'top-left': 'left-2 top-2',
+  }[position];
+  return (
+    <span className={`pointer-events-none absolute z-10 rounded bg-marine-dark/75 px-1.5 py-0.5 text-[10px] font-medium leading-4 text-white ${place}`}>
+      {children}
+    </span>
   );
 }

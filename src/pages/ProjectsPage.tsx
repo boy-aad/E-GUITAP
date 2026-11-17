@@ -1,6 +1,7 @@
 import { Info } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
+import { stockImage } from '../content/stockPhotos';
 import { LAND_DISCLAIMER, formatHectares, totalAreaHa } from '../content/landProjects';
 import { useSiteContent } from '../data/useSiteContent';
 import { ProjectCard } from '../features/projects/ProjectCard';
@@ -16,7 +17,12 @@ export function ProjectsPage() {
         title="Nos projets"
         description="Les projets fonciers d'E-GUITAP en Guinée : localisation, superficie annoncée et potentiel de développement de chaque site."
       />
-      <PageHero eyebrow="Nos projets" title="Projets fonciers" crumbs={[{ label: 'Nos projets' }]}>
+      <PageHero
+        eyebrow="Nos projets"
+        title="Projets fonciers"
+        crumbs={[{ label: 'Nos projets' }]}
+        image={stockImage('pageProjets')}
+      >
         <p>
           {projects.length} site{projects.length > 1 ? 's' : ''} pour une superficie annoncée de {formatHectares(totalAreaHa(projects))}.{' '}
           {blocks['projects.intro']?.body}

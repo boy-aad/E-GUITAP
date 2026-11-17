@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lot de photos E-GUITAP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+<style>
+  /* Planche de validation : une ligne par emplacement, vignette au format d'usage. */
+  :root {
+    --marine: #102C50; --or: #C6A15B; --ivoire: #F5F1E8; --papier: #FAFAF7; --ardoise: #44505F; --alerte: #9A3412;
+    --titre: 'Poppins', system-ui, sans-serif; --texte: 'Inter', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--papier); color: var(--marine); font: 15px/1.55 var(--texte); }
+  header { background: var(--marine); color: #fff; padding: 40px max(16px, 4vw) 32px; }
+  header h1 { font: 700 30px/1.2 var(--titre); margin: 0 0 8px; }
+  header p { margin: 4px 0; color: rgba(255,255,255,.82); max-width: 75ch; }
+  main { padding: 24px max(16px, 4vw) 64px; display: grid; gap: 40px; }
+  h2 { font: 700 20px/1.3 var(--titre); margin: 0 0 14px; display: flex; gap: 10px; align-items: center; }
+  h2::before { content: ""; width: 24px; height: 2px; background: var(--or); }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+  figure { margin: 0; background: #fff; border: 1px solid #e2e5ea; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+  figure img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--ivoire); }
+  figure.wide img { aspect-ratio: 21/9; }
+  figure.card img { aspect-ratio: 4/3; }
+  figcaption { padding: 14px 16px 16px; display: grid; gap: 6px; }
+  .slot { font: 600 11px/1 var(--texte); letter-spacing: .14em; text-transform: uppercase; color: var(--ardoise); }
+  .sujet { font-weight: 600; }
+  .meta { font-size: 13px; color: var(--ardoise); }
+  .meta a { color: var(--marine); }
+  .why { font-size: 13.5px; }
+  .warn { font-size: 13px; color: var(--alerte); background: #FFF4EC; border-radius: 6px; padding: 6px 9px; }
+  .note { background: var(--ivoire); border-left: 3px solid var(--or); padding: 14px 18px; border-radius: 0 8px 8px 0; max-width: 90ch; }
+  .note ul { margin: 6px 0 0; padding-left: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Lot de photos libres de droits : proposition</h1>
+  <p>Phase 2 du PRD v2 (§ 5.7). 13 photos, toutes issues d'Unsplash sous licence Unsplash (usage commercial libre, attribution non obligatoire mais enregistrée). Licence vérifiée le 17/11/2026 sur la page de chaque photo : aucune n'est « Unsplash+ ».</p>
+  <p>Rien n'est encore téléchargé ni intégré. Après votre validation : conversion WebP 1920/960 px, téléversement dans <code>public-media</code>, mention « Photo d'illustration » et crédit dans <code>docs/CREDITS-PHOTOS.md</code>.</p>
+</header>
+<main>
+
+<section>
+  <h2>Hero de l'accueil (3)</h2>
+  <div class="grid">
+    <figure><img src="https://images.unsplash.com/photo-1561089095-5b672d1587f0?w=800&q=70&auto=format" alt="Vue aérienne d'une route goudronnée sinueuse entre des collines boisées, accotements en latérite" loading="lazy">
+      <figcaption><span class="slot">Hero 1 · BTP / routes</span>
+        <span class="sujet">Route sinueuse vue du ciel, végétation dense, accotements en latérite</span>
+        <span class="meta">Shubham Sharan · <a href="https://unsplash.com/photos/car-on-road-passing-with-trees-Zx49AWzWqFw" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Évoque directement l'ouverture et l'aménagement de routes ; sol rouge et végétation proches des paysages guinéens ; aucune personne visible. Beaucoup d'espace à gauche pour le texte.</span></figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1575281923032-f40d94ef6160?w=800&q=70&auto=format" alt="Pelle hydraulique chargeant de la terre rouge dans un tombereau sur un chantier de terrassement" loading="lazy">
+      <figcaption><span class="slot">Hero 2 · Terrassement</span>
+        <span class="sujet">Pelle chargeant un tombereau, terre rouge, chantier</span>
+        <span class="meta">Troy Mortier · <a href="https://unsplash.com/photos/excavator-dumping-soil-into-dump-truck-eKY6_9W_iqY" target="_blank" rel="noopener">source</a> · Melbourne, Australie</span>
+        <span class="why">Le terrassement et le remblayage, cœur du BTP d'E-GUITAP ; terre de type latérite.</span>
+        <span class="warn">Prise en Australie (lieu non reconnaissable). Une petite marque de constructeur peut figurer sur la flèche de la pelle : à vérifier à pleine taille ; recadrage possible.</span></figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1777310569880-e20082e2c8ea?w=800&q=70&auto=format" alt="Paysage vert de collines et d'arbres épars sous un ciel dégagé" loading="lazy">
+      <figcaption><span class="slot">Hero 3 · Aménagement foncier</span>
+        <span class="sujet">Collines vertes, arbres épars, piste au loin</span>
+        <span class="meta">Ismail Abubakar · <a href="https://unsplash.com/photos/expansive-green-landscape-with-rolling-hills-and-scattered-trees-_U863FniUCw" target="_blank" rel="noopener">source</a> · Mangochi, Malawi</span>
+        <span class="why">Terrain naturel à aménager, cohérent avec les projets fonciers ; paysage africain de savane boisée.</span></figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Bannières des pages intérieures (5, format 21:9)</h2>
+  <div class="grid">
+    <figure class="wide"><img src="https://images.unsplash.com/photo-1733665921380-27c7d02f3b0b?w=800&q=70&auto=format" alt="Immeuble en construction en contre-jour au coucher du soleil" loading="lazy">
+      <figcaption><span class="slot">L'entreprise</span>
+        <span class="sujet">Bâtiment en construction en silhouette, coucher de soleil</span>
+        <span class="meta">Nichika Sakurai · <a href="https://unsplash.com/photos/a-building-under-construction-with-the-sun-setting-in-the-background-w16Jhg7J4g0" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Image « construire » sobre et chaude, sans détail identifiable ; tons dorés proches de la charte.</span></figcaption></figure>
+    <figure class="wide"><img src="https://images.unsplash.com/photo-1649807479468-40011b31ee09?w=800&q=70&auto=format" alt="Pelle hydraulique jaune sur une butte, à contre-jour, sous un ciel clair" loading="lazy">
+      <figcaption><span class="slot">Nos activités</span>
+        <span class="sujet">Pelle hydraulique sur une butte à contre-jour</span>
+        <span class="meta">Built Robotics · <a href="https://unsplash.com/photos/a-yellow-excavator-on-a-hill-with-a-blue-sky-in-the-background-zmW-UG2OX_M" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Engin de chantier seul, composition aérée qui laisse la place au titre.</span>
+        <span class="warn">L'auteur est une entreprise de robotique : vérifier à pleine taille qu'aucun logo n'est lisible sur l'engin.</span></figcaption></figure>
+    <figure class="wide"><img src="https://images.unsplash.com/photo-1527436446415-a2db1025f089?w=800&q=70&auto=format" alt="Piste en terre qui serpente entre des buissons de savane" loading="lazy">
+      <figcaption><span class="slot">Nos offres</span>
+        <span class="sujet">Piste en terre dans la savane</span>
+        <span class="meta">Wade Lambert · <a href="https://unsplash.com/photos/empty-roadway-near-bushes-G2DK8n2qnyM" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Neutre vis-à-vis des quatre catégories, rappelle la latérite et les pistes à ouvrir.</span></figcaption></figure>
+    <figure class="wide"><img src="https://images.unsplash.com/photo-1560440293-855922f9cc7d?w=800&q=70&auto=format" alt="Arbres de savane en silhouette au coucher du soleil" loading="lazy">
+      <figcaption><span class="slot">Nos projets</span>
+        <span class="sujet">Savane boisée au coucher du soleil</span>
+        <span class="meta">Dawn Westveld · <a href="https://unsplash.com/photos/trees-on-land-during-sunset-xPbprms3u6Q" target="_blank" rel="noopener">source</a> · Serengeti, Tanzanie</span>
+        <span class="why">Terrains naturels, ambiance chaude ; ne montre aucun site précis, donc aucun risque d'être pris pour un projet d'E-GUITAP.</span>
+        <span class="warn">Acacias typiques d'Afrique de l'Est : moins proches de la Guinée que les autres images.</span></figcaption></figure>
+    <figure class="wide"><img src="https://images.unsplash.com/photo-1597589619070-76e39b498f49?w=800&q=70&auto=format" alt="Vue aérienne d'une ville aux toits clairs et aux rues arborées" loading="lazy">
+      <figcaption><span class="slot">Contact</span>
+        <span class="sujet">Vue aérienne d'un quartier urbain</span>
+        <span class="meta">Ben Koorengevel · <a href="https://unsplash.com/photos/aerial-view-of-city-buildings-during-daytime-4wiwWdRBRW0" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Ancrage urbain et proximité (bureaux, rendez-vous) sans monument identifiable.</span></figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Couvertures des catégories (4)</h2>
+  <div class="grid">
+    <figure class="card"><img src="https://images.unsplash.com/photo-1649829726631-fcd218631ab5?w=800&q=70&auto=format" alt="Vue aérienne d'une pelle creusant une tranchée dans un sol sablonneux" loading="lazy">
+      <figcaption><span class="slot">BTP</span>
+        <span class="sujet">Pelle creusant une tranchée, vue du dessus</span>
+        <span class="meta">Built Robotics · <a href="https://unsplash.com/photos/a-large-yellow-truck-driving-down-a-dirt-road-oX2MggrtCVA" target="_blank" rel="noopener">source</a> · Queensland, Australie</span>
+        <span class="why">Vue zénithale graphique, logos illisibles de cet angle, lieu non reconnaissable.</span></figcaption></figure>
+    <figure class="card"><img src="https://images.unsplash.com/photo-1783260606348-bb2deaa215a3?w=800&q=70&auto=format" alt="Vue aérienne d'une ville africaine avec de nombreux bâtiments et routes" loading="lazy">
+      <figcaption><span class="slot">Immobilier et aménagement foncier</span>
+        <span class="sujet">Quartier résidentiel vu du ciel</span>
+        <span class="meta">Tunde Buremo · <a href="https://unsplash.com/photos/aerial-view-of-a-city-with-many-buildings-and-roads-V5w1Gp67lg8" target="_blank" rel="noopener">source</a> · Ibadan, Nigeria</span>
+        <span class="why">Habitat ouest-africain contemporain, crédible pour l'immobilier en Guinée ; aucun monument.</span></figcaption></figure>
+    <figure class="card"><img src="https://images.unsplash.com/photo-1709804945989-c8be542e04db?w=800&q=70&auto=format" alt="Rayonnages d'entrepôt chargés de cartons" loading="lazy">
+      <figcaption><span class="slot">Commerce général</span>
+        <span class="sujet">Entrepôt, rayonnages et cartons</span>
+        <span class="meta">Ali Mkumbwa · <a href="https://unsplash.com/photos/a-large-stack-of-boxes-in-a-warehouse-DU2ybvshovg" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Stock et distribution de marchandises, sans personne.</span>
+        <span class="warn">Vérifier à pleine taille qu'aucune marque n'est lisible sur les cartons.</span></figcaption></figure>
+    <figure class="card"><img src="https://images.unsplash.com/photo-1769144256181-698b8f807066?w=800&q=70&auto=format" alt="Porte-conteneurs vu du dessus sous des grues portuaires" loading="lazy">
+      <figcaption><span class="slot">Import-export</span>
+        <span class="sujet">Porte-conteneurs sous les grues, vue aérienne</span>
+        <span class="meta">Daniel Miksha · <a href="https://unsplash.com/photos/cargo-ship-loaded-with-colorful-containers-at-a-port-w8VfTO3TGs8" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Logistique maritime ; vue zénithale sans nom de compagnie lisible (contrairement aux photos écartées montrant des logos d'armateurs).</span></figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Bandeau d'appel à l'action de l'accueil (1)</h2>
+  <div class="grid">
+    <figure class="wide"><img src="https://images.unsplash.com/photo-1707526176242-e9761fd81483?w=800&q=70&auto=format" alt="Grues de chantier en silhouette sur un ciel orangé" loading="lazy">
+      <figcaption><span class="slot">Bandeau « Demander un devis »</span>
+        <span class="sujet">Grues en silhouette sur ciel orangé</span>
+        <span class="meta">Jahanzeb Ahsan · <a href="https://unsplash.com/photos/the-sun-is-setting-behind-a-building-under-construction-C24QDMvoblg" target="_blank" rel="noopener">source</a> · lieu non indiqué</span>
+        <span class="why">Fond très lisible sous un voile marine, tons or de la charte.</span></figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Remplaçantes possibles</h2>
+  <div class="grid">
+    <figure><img src="https://images.unsplash.com/photo-1766330301270-e4c652b1c538?w=800&q=70&auto=format" alt="Voitures sur une route en travaux au coucher du soleil" loading="lazy">
+      <figcaption><span class="slot">Pour un hero</span>
+        <span class="sujet">Route en travaux dans une ville africaine, soleil couchant</span>
+        <span class="meta">Omar · <a href="https://unsplash.com/photos/cars-driving-on-a-road-under-construction-at-sunset-2zTqDMo7ym0" target="_blank" rel="noopener">source</a> · Dar es Salaam, Tanzanie</span>
+        <span class="why">Alternative africaine au hero 2 (Australie).</span>
+        <span class="warn">Silhouettes d'immeubles d'une ville réelle : risque d'être reconnue.</span></figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1783260606376-046b461ba2bc?w=800&q=70&auto=format" alt="Ville verdoyante avec bâtiments et routes" loading="lazy">
+      <figcaption><span class="slot">Pour Contact</span>
+        <span class="sujet">Ville verdoyante vue d'en haut</span>
+        <span class="meta">Tunde Buremo · <a href="https://unsplash.com/photos/cityscape-with-buildings-roads-and-lush-green-trees-8xynIuyDJ_4" target="_blank" rel="noopener">source</a> · Ibadan, Nigeria</span>
+        <span class="why">Même auteur et même ville que la couverture Immobilier : à n'utiliser qu'à la place de l'une ou l'autre.</span></figcaption></figure>
+  </div>
+</section>
+
+<div class="note">
+  <strong>Écartées et pourquoi</strong>
+  <ul>
+    <li>Engins avec logo CAT, Volvo ou Komatsu bien visible ; navires avec logo d'armateur (Maersk, ONE).</li>
+    <li>Littoral : les résultats « côte ouest-africaine » étaient en fait des paysages d'Afrique australe (fynbos), écartés.</li>
+    <li>Photos avec des personnes reconnaissables en gros plan, et camion portant une inscription peinte lisible.</li>
+    <li>Bulldozer dans une forêt de conifères : paysage manifestement non africain.</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Skyline, TricolorBand } from '../brand/Skyline';
-import type { MediaAsset } from '../../content/types';
+import type { ImageSource } from '../../content/types';
 import { Breadcrumbs, type Crumb } from './Navigation';
 import { Eyebrow } from './Eyebrow';
 import { SmartImage } from './SmartImage';
@@ -12,7 +12,7 @@ type PageHeroProps = {
   /** Fil d'Ariane après « Accueil » ; par défaut, le titre de la page. */
   crumbs?: Crumb[];
   /** Image de fond (bannière) ; sinon, scène de marque statique. */
-  image?: MediaAsset | null;
+  image?: ImageSource | null;
 };
 
 /** Scène de marque statique : dégradé marine, skyline et repère d'angle doré. */
@@ -35,8 +35,16 @@ export function PageHero({ eyebrow, title, children, crumbs, image }: PageHeroPr
     <section className="relative isolate overflow-hidden bg-marine text-white">
       {image ? (
         <>
-          <SmartImage media={image} ratio="auto" priority sizes="100vw" fallback={<BrandScene />} className="absolute! inset-0 -z-10" />
-          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-marine-dark/90 via-marine/70 to-marine/20" aria-hidden="true" />
+          <SmartImage
+            image={{ ...image, alt: '' }}
+            ratio="auto"
+            priority
+            sizes="100vw"
+            fallback={<BrandScene />}
+            className="absolute! inset-0 -z-10"
+          />
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-marine-dark/95 via-marine/75 to-marine/25" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-marine-dark/70 to-transparent" aria-hidden="true" />
         </>
       ) : (
         <div className="absolute inset-0 -z-10">

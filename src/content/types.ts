@@ -47,6 +47,18 @@ export interface MediaAsset {
   variants?: Record<number, string>;
 }
 
+/** Image prête à afficher, quelle que soit son origine (média en base, photo ou illustration du site). */
+export interface ImageSource {
+  src: string;
+  srcSet?: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  /** Mention affichée sur l'image (« Photo d'illustration »…), null pour une photo réelle. */
+  notice: string | null;
+  credit?: string | null;
+}
+
 export interface CompanyProfile {
   brandName: string;
   /** Dénomination développée : réservée aux mentions légales et documents officiels. */
@@ -79,6 +91,8 @@ export interface ActivityService {
 }
 
 export interface ActivityDomain {
+  /** Image de couverture téléversée (sinon : photo ou visuel par défaut de la catégorie). */
+  cover: MediaAsset | null;
   slug: string;
   letter: string;
   title: string;
@@ -103,6 +117,8 @@ export interface LandProject {
 }
 
 export interface HeroSlide {
+  /** Image de fond téléversée (sinon : photo par défaut de la slide). */
+  background: MediaAsset | null;
   eyebrow: string | null;
   title: string;
   titleHighlight: string | null;
@@ -130,6 +146,7 @@ export interface SiteContent {
   contacts: CompanyContacts;
   domains: ActivityDomain[];
   projects: LandProject[];
-  hero: HeroSlide | null;
+  /** Slides actives du hero de l'accueil, dans l'ordre. */
+  heroSlides: HeroSlide[];
   blocks: Partial<Record<ContentBlockKey, ContentBlock>>;
 }

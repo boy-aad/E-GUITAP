@@ -39,9 +39,9 @@ src/
 │                         SmartImage, PageHero, Navigation (Breadcrumbs, Chips, SearchInput, EmptyState),
 │                         Modal, Field, Eyebrow, Seo
 ├── config/env.ts         variables d'environnement validées
-├── content/              types du contenu, libellés et avertissement juridique
+├── content/              types du contenu, libellés, avertissement juridique, photos par défaut (stockPhotos.ts)
 ├── data/                 lecture Supabase (siteContent.ts) et hook useSiteContent
-├── features/             inquiry (demande de renseignements), projects, activities
+├── features/             home (hero en carrousel, scène animée, chiffres clés, bandeau), inquiry, projects, activities
 ├── lib/                  client Supabase, liens WhatsApp / e-mail / téléphone, médias, réseaux sociaux, motion
 ├── types/database.ts     types générés depuis le schéma
 └── pages/
@@ -86,6 +86,7 @@ Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECR
 - Aucune information non communiquée par l'entreprise (réalisations, chiffres, certifications, titres fonciers…).
 - Les projets fonciers sont présentés avec leur superficie **annoncée** et l'avertissement `LAND_DISCLAIMER`.
 - Visuels en attendant de vraies photos : illustrations de la charte (mention « Visuel d'illustration ») ou photos libres de droits Unsplash / Pexels (licence vérifiée, crédit enregistré, mention « Photo d'illustration »), jamais présentées comme des chantiers, terrains ou équipes d'E-GUITAP.
+- Photos d'illustration actuelles : `public/assets/photos/` (WebP), crédits dans `docs/CREDITS-PHOTOS.md` et dans les mentions légales. Une image téléversée en base reste prioritaire.
 - Aucun prix ni budget affiché : les offres sont « Sur devis ».
 - Règles complètes pour les agents de code : `CLAUDE.md`.
 

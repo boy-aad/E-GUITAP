@@ -1,4 +1,4 @@
-import { ArrowRight, ArrowUpRight, MessageSquare } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { Button } from '../components/ui/Button';
 import { Section } from '../components/ui/Section';
@@ -8,14 +8,12 @@ import { LAND_DISCLAIMER, formatHectares, totalAreaHa } from '../content/landPro
 import { useSiteContent } from '../data/useSiteContent';
 import { DomainCard } from '../features/activities/DomainCard';
 import { ProjectCard } from '../features/projects/ProjectCard';
-import { useInquiry } from '../features/inquiry/InquiryContext';
 import { HomeHero } from '../features/home/HomeHero';
 import { KeyFacts } from '../features/home/KeyFacts';
-import { DEFAULT_WHATSAPP_MESSAGE, whatsappUrl } from '../lib/contact';
+import { CtaBand } from '../features/home/CtaBand';
 
 export function HomePage() {
-  const { company, contacts, domains, projects, blocks } = useSiteContent();
-  const { openInquiry } = useInquiry();
+  const { company, domains, projects, blocks } = useSiteContent();
   const totalHa = totalAreaHa(projects);
   const presentation = blocks['home.presentation'];
 
@@ -147,30 +145,7 @@ export function HomePage() {
         </Section>
       )}
 
-      {/* Appel à l'action */}
-      <Section tone="ivory" compact>
-        <Reveal className="mx-auto max-w-3xl space-y-6 text-center">
-          <h2 className="font-poppins text-3xl font-bold tracking-tight text-marine sm:text-4xl">
-            {blocks['home.cta']?.title ?? 'Un projet, une question ?'}
-          </h2>
-          {blocks['home.cta']?.body && <p className="text-lg leading-relaxed text-slate-text">{blocks['home.cta'].body}</p>}
-          <div className="flex flex-col justify-center gap-3 sm:flex-row">
-            <Button size="lg" variant="dark" onClick={() => openInquiry()} iconRight={<ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />}>
-              Demande de renseignements
-            </Button>
-            {contacts.whatsapp && (
-              <Button
-                size="lg"
-                variant="whatsapp"
-                href={whatsappUrl(contacts.whatsapp.raw, DEFAULT_WHATSAPP_MESSAGE)}
-                icon={<MessageSquare className="h-4 w-4" aria-hidden="true" />}
-              >
-                WhatsApp
-              </Button>
-            )}
-          </div>
-        </Reveal>
-      </Section>
+      <CtaBand />
     </>
   );
 }

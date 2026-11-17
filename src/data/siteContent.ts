@@ -8,6 +8,7 @@ import type {
   ContentBlockKey,
   HeroSlide,
   LandProject,
+  MediaAsset,
   SiteContent,
 } from '../content/types';
 
@@ -24,6 +25,12 @@ function unwrap<T>(result: { data: T | null; error: { message: string } | null }
 
 /** Délai maximum de chargement : au-delà, l'écran d'erreur propose de réessayer. */
 const LOAD_TIMEOUT_MS = 15_000;
+
+/** Colonnes publiques d'un média (bucket public-media). */
+const MEDIA_COLUMNS = 'path, kind, alt, credit, width, height';
+
+type MediaRow = Pick<MediaAsset, 'path' | 'kind' | 'alt' | 'credit' | 'width' | 'height'>;
+const toMedia = (row: MediaRow | null): MediaAsset | null => (row ? { ...row } : null);
 
 const bySortOrder = (a: { sort_order: number }, b: { sort_order: number }) => a.sort_order - b.sort_order;
 
@@ -49,7 +56,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     supabase
       .from('activity_domains')
       .select(
-        'slug, letter, title, short_title, summary, availability, sort_order, activity_services (title, availability, publication, sort_order)',
+        `slug, letter, title, short_title, summary, availability, sort_order, cover:media!activity_domains_cover_media_id_fkey (${MEDIA_COLUMNS}), activity_services (title, availability, publication, sort_order)`,
       )
       .eq('publication', 'publie')
       .neq('availability', 'non_confirmee')
@@ -67,11 +74,10 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     supabase
       .from('hero_slides')
       .select(
-        'eyebrow, title, title_highlight, subtitle, show_signature, primary_cta_label, primary_cta_href, secondary_cta_label, secondary_cta_href',
+        `eyebrow, title, title_highlight, subtitle, show_signature, primary_cta_label, primary_cta_href, secondary_cta_label, secondary_cta_href, background:media!hero_slides_background_media_id_fkey (${MEDIA_COLUMNS})`,
       )
       .eq('is_active', true)
       .order('sort_order')
-      .limit(1)
       .abortSignal(signal),
     supabase.from('content_blocks').select('key, title, body').eq('publication', 'publie').abortSignal(signal),
   ]);
@@ -100,6 +106,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
   };
 
   const domains: ActivityDomain[] = domainRows.map((d) => ({
+    cover: toMedia(d.cover),
     slug: d.slug,
     letter: d.letter,
     title: d.title,
@@ -124,24 +131,17 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     commercialStatus: p.commercial_status,
   }));
 
-  const heroRow = heroRows[0];
-  const hero: HeroSlide | null = heroRow
-    ? {
-        eyebrow: heroRow.eyebrow,
-        title: heroRow.title,
-        titleHighlight: heroRow.title_highlight,
-        subtitle: heroRow.subtitle,
-        showSignature: heroRow.show_signature,
-        primaryCta:
-          heroRow.primary_cta_label && heroRow.primary_cta_href
-            ? { label: heroRow.primary_cta_label, href: heroRow.primary_cta_href }
-            : null,
-        secondaryCta:
-          heroRow.secondary_cta_label && heroRow.secondary_cta_href
-            ? { label: heroRow.secondary_cta_label, href: heroRow.secondary_cta_href }
-            : null,
-      }
-    : null;
+  const heroSlides: HeroSlide[] = heroRows.map((h) => ({
+    background: toMedia(h.background),
+    eyebrow: h.eyebrow,
+    title: h.title,
+    titleHighlight: h.title_highlight,
+    subtitle: h.subtitle,
+    showSignature: h.show_signature,
+    primaryCta: h.primary_cta_label && h.primary_cta_href ? { label: h.primary_cta_label, href: h.primary_cta_href } : null,
+    secondaryCta:
+      h.secondary_cta_label && h.secondary_cta_href ? { label: h.secondary_cta_label, href: h.secondary_cta_href } : null,
+  }));
 
   const blocks: Partial<Record<ContentBlockKey, ContentBlock>> = {};
   for (const b of blockRows) blocks[b.key as ContentBlockKey] = { title: b.title, body: b.body };
@@ -173,7 +173,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     contacts,
     domains,
     projects,
-    hero,
+    heroSlides,
     blocks,
   };
 }
