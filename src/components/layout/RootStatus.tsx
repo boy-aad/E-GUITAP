@@ -7,8 +7,12 @@ import { Button } from '../ui/Button';
 /** Écran affiché pendant le premier chargement du contenu. */
 export function LoadingScreen() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-paper" role="status">
-      <Logo variant="horizontal-compact" className="h-[60px] animate-pulse" />
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-paper" role="status">
+      <Logo variant="horizontal-compact" className="h-[60px]" />
+      {/* Barre de progression indéterminée (immobile si les animations sont réduites). */}
+      <div className="h-1 w-48 overflow-hidden rounded-full bg-ivory-dark" aria-hidden="true">
+        <div className="loading-bar h-full w-1/3 rounded-full bg-gold" />
+      </div>
       <span className="sr-only">Chargement du site E-GUITAP…</span>
     </div>
   );

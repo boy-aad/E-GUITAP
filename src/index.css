@@ -19,6 +19,8 @@
   --color-gn-yellow: #FCD116;
   --color-gn-green: #009460;
   --color-gn-green-hover: #007A4F;
+  /* Vert des boutons WhatsApp : texte blanc lisible (contraste 5,4:1, AA). */
+  --color-gn-green-dark: #006B45;
 }
 
 body {
@@ -170,4 +172,13 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-scene-dust { display: none; }
+}
+
+/* Écran de chargement : barre indéterminée. */
+@keyframes loading-slide {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .loading-bar { animation: loading-slide 1.2s ease-in-out infinite; }
 }

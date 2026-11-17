@@ -4,15 +4,6 @@ import { LoadingScreen, RootErrorScreen } from '../components/layout/RootStatus'
 import { loadSiteContent } from '../data/siteContent';
 import { ROOT_ROUTE_ID } from '../data/useSiteContent';
 import { HomePage } from '../pages/HomePage';
-import { CompanyPage } from '../pages/CompanyPage';
-import { ActivitiesPage } from '../pages/ActivitiesPage';
-import { ProjectsPage } from '../pages/ProjectsPage';
-import { OffersPage } from '../pages/OffersPage';
-import { OfferDetailPage } from '../pages/OfferDetailPage';
-import { ProjectDetailPage } from '../pages/ProjectDetailPage';
-import { ContactPage } from '../pages/ContactPage';
-import { LegalNoticePage } from '../pages/LegalNoticePage';
-import { PrivacyPage } from '../pages/PrivacyPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { adminRoutes } from '../admin/routes';
 
@@ -27,17 +18,18 @@ export const router = createBrowserRouter([
     HydrateFallback: LoadingScreen,
     errorElement: <RootErrorScreen />,
     element: <Layout />,
+    // L'accueil est dans le bundle initial ; les autres pages sont chargées à la demande.
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'entreprise', element: <CompanyPage /> },
-      { path: 'activites', element: <ActivitiesPage /> },
-      { path: 'offres', element: <OffersPage /> },
-      { path: 'offres/:slug', element: <OfferDetailPage /> },
-      { path: 'projets', element: <ProjectsPage /> },
-      { path: 'projets/:slug', element: <ProjectDetailPage /> },
-      { path: 'contact', element: <ContactPage /> },
-      { path: 'mentions-legales', element: <LegalNoticePage /> },
-      { path: 'confidentialite', element: <PrivacyPage /> },
+      { path: 'entreprise', lazy: () => import('../pages/CompanyPage').then((m) => ({ Component: m.CompanyPage })) },
+      { path: 'activites', lazy: () => import('../pages/ActivitiesPage').then((m) => ({ Component: m.ActivitiesPage })) },
+      { path: 'offres', lazy: () => import('../pages/OffersPage').then((m) => ({ Component: m.OffersPage })) },
+      { path: 'offres/:slug', lazy: () => import('../pages/OfferDetailPage').then((m) => ({ Component: m.OfferDetailPage })) },
+      { path: 'projets', lazy: () => import('../pages/ProjectsPage').then((m) => ({ Component: m.ProjectsPage })) },
+      { path: 'projets/:slug', lazy: () => import('../pages/ProjectDetailPage').then((m) => ({ Component: m.ProjectDetailPage })) },
+      { path: 'contact', lazy: () => import('../pages/ContactPage').then((m) => ({ Component: m.ContactPage })) },
+      { path: 'mentions-legales', lazy: () => import('../pages/LegalNoticePage').then((m) => ({ Component: m.LegalNoticePage })) },
+      { path: 'confidentialite', lazy: () => import('../pages/PrivacyPage').then((m) => ({ Component: m.PrivacyPage })) },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

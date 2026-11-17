@@ -8,6 +8,22 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_GN" />
     <meta name="theme-color" content="#102C50" />
+    <!-- Connexion anticipée à Supabase : le contenu du site y est lu dès le démarrage. -->
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin>
+    <script>
+      // Accueil : la photo par défaut de la 1re slide du hero est l'image principale de la page.
+      // Elle est demandée tout de suite, sans attendre le JavaScript et le contenu.
+      // À tenir à jour avec HERO_PHOTOS / stockImage (src/content/stockPhotos.ts).
+      if (location.pathname === '/') {
+        var hero = document.createElement('link');
+        hero.rel = 'preload';
+        hero.as = 'image';
+        hero.setAttribute('imagesrcset', '/assets/photos/hero-routes-960.webp 960w, /assets/photos/hero-routes-1920.webp 1920w');
+        hero.setAttribute('imagesizes', '100vw');
+        hero.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(hero);
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:ital,wght@1,400&family=Poppins:wght@500;700&display=swap" rel="stylesheet">

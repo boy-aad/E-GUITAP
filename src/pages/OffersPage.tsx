@@ -78,8 +78,12 @@ export function OffersPage() {
         </Container>
       </div>
 
-      <section aria-label="Offres" className="bg-paper py-12 lg:py-16">
+      <section aria-labelledby="liste-offres" className="bg-paper py-12 lg:py-16">
         <Container>
+          {/* Titre de niveau 2 pour une hiérarchie continue (h1 → h2 → titres des cartes en h3). */}
+          <h2 id="liste-offres" className="sr-only">
+            Liste des offres
+          </h2>
           <p className="mb-6 text-sm text-slate-text" aria-live="polite">
             {visible.length} offre{visible.length > 1 ? 's' : ''}
           </p>

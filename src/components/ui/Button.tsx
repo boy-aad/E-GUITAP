@@ -14,7 +14,7 @@ const VARIANTS: Record<ButtonVariant, string> = {
   secondary: 'border border-marine text-marine hover:bg-marine hover:text-white',
   ghost: 'text-marine hover:text-gold-hover',
   dark: 'bg-marine text-white shadow-sm hover:bg-marine-dark hover:shadow-md',
-  whatsapp: 'bg-gn-green text-white shadow-sm hover:bg-gn-green-hover hover:shadow-md',
+  whatsapp: 'bg-gn-green-hover text-white shadow-sm hover:bg-gn-green-dark hover:shadow-md',
 };
 
 const ON_DARK: Partial<Record<ButtonVariant, string>> = {

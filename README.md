@@ -110,6 +110,13 @@ Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECR
 
 Application monopage : l'hébergeur doit renvoyer `index.html` pour toutes les routes.
 
+## Référencement (SEO)
+
+- `VITE_SITE_URL` (adresse publique, sans « / » final) : liens canoniques, balises de partage et `sitemap.xml`. À définir sur l'hébergeur de production ; sans elle, l'adresse du navigateur est utilisée et aucun sitemap n'est généré.
+- `npm run build` lance ensuite `scripts/generate-sitemap.mjs` (`postbuild`) : `dist/sitemap.xml` (pages fixes + offres et projets publiés, lus avec la clé publique) et ligne `Sitemap:` ajoutée à `dist/robots.txt`.
+- `public/robots.txt` : `/admin` exclu. Image de partage par défaut : `public/og/default.png` (1200 × 630, dérivée du logo).
+- Données structurées : `Organization` + `LocalBusiness` sur l'accueil (champs publiés uniquement), `BreadcrumbList` sur toutes les pages à bannière ; la page 404 est en `noindex`.
+
 ## Branches
 
 - `main` : version stable, modifiée uniquement par pull request depuis `develop`.

@@ -19,4 +19,7 @@ export const env = {
   supabaseKey,
   /** Clé publique (site key) Cloudflare Turnstile ; sans elle, le formulaire renvoie vers WhatsApp. */
   turnstileSiteKey: (import.meta.env.VITE_TURNSTILE_SITE_KEY ?? '').trim(),
+  /** Adresse publique du site (ex. https://www.e-guitap.com), sans « / » final. Sert aux liens
+   *  canoniques et aux balises de partage ; à défaut, l'adresse courante du navigateur. */
+  siteUrl: (import.meta.env.VITE_SITE_URL ?? '').trim().replace(/\/+$/, ''),
 } as const;

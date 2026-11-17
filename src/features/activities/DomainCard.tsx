@@ -25,8 +25,13 @@ export function DomainCard({ domain }: { domain: ActivityDomain }) {
         </span>
       </div>
       <div className="flex flex-1 flex-col px-6 pb-6 pt-10">
-        <p className="font-poppins text-xs font-bold text-slate-text" aria-hidden="true">
-          Domaine {domain.letter}
+        <p className="flex items-center justify-between gap-2 font-poppins text-xs font-bold text-slate-text">
+          <span aria-hidden="true">Domaine {domain.letter}</span>
+          {domain.services.length > 0 && (
+            <span className="rounded-full bg-ivory px-2 py-0.5 font-inter font-semibold text-marine">
+              {domain.services.length} offre{domain.services.length > 1 ? 's' : ''}
+            </span>
+          )}
         </p>
         <h3 className="mt-1 font-poppins text-lg font-bold text-marine">
           <Link to={`/activites#${domain.slug}`} className="after:absolute after:inset-0 focus-visible:outline-none">
@@ -42,7 +47,7 @@ export function DomainCard({ domain }: { domain: ActivityDomain }) {
           ))}
         </ul>
         <span className="mt-5 inline-flex items-center gap-1.5 font-poppins text-xs font-bold uppercase tracking-wider text-marine transition-colors group-hover:text-gold-hover">
-          Toutes les prestations
+          Découvrir le domaine
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
         </span>
       </div>

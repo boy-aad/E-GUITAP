@@ -12,6 +12,7 @@ import { OfferCard } from '../features/offers/OfferCard';
 import { resolveOfferImage } from '../features/offers/offerImage';
 import { useInquiry } from '../features/inquiry/InquiryContext';
 import { DEFAULT_WHATSAPP_MESSAGE, telUrl, whatsappUrl } from '../lib/contact';
+import { mediaImage } from '../lib/media';
 import { NotFoundPage } from './NotFoundPage';
 
 export function OfferDetailPage() {
@@ -28,7 +29,12 @@ export function OfferDetailPage() {
 
   return (
     <>
-      <Seo title={offer.title} description={offer.summary ?? `${offer.title} — offre E-GUITAP, sur devis.`} />
+      <Seo
+        title={offer.title}
+        description={offer.summary ?? `${offer.title} — offre E-GUITAP, sur devis.`}
+        // Image de partage : uniquement une vraie image (les illustrations SVG ne sont pas lues par les réseaux).
+        image={offer.cover ? mediaImage(offer.cover).src : null}
+      />
       <PageHero
         eyebrow={category?.title ?? 'Nos offres'}
         title={offer.title}

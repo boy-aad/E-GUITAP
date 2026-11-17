@@ -10,6 +10,9 @@ import { Button } from '../components/ui/Button';
 import { useSiteContent } from '../data/useSiteContent';
 import { DEFAULT_DOMAIN_ICON, DOMAIN_ICONS } from '../features/activities/domainIcons';
 import { useInquiry } from '../features/inquiry/InquiryContext';
+import { domainCoverImage } from '../features/activities/domainCover';
+import { SmartImage } from '../components/ui/SmartImage';
+import { BrandPanel } from '../components/brand/Skyline';
 
 export function ActivitiesPage() {
   const { domains } = useSiteContent();
@@ -35,7 +38,7 @@ export function ActivitiesPage() {
 
       <Section tone="paper" compact>
         <div className="space-y-8">
-          {domains.map((domain) => {
+          {domains.map((domain, index) => {
             const Icon = DOMAIN_ICONS[domain.slug] ?? DEFAULT_DOMAIN_ICON;
             return (
               <Reveal key={domain.slug}>
@@ -43,12 +46,23 @@ export function ActivitiesPage() {
                   as="section"
                   id={domain.slug}
                   aria-labelledby={`${domain.slug}-title`}
-                  className="grid scroll-mt-28 gap-8 p-6 sm:p-10 lg:grid-cols-3"
+                  className="grid scroll-mt-28 lg:grid-cols-5"
                 >
-                  <div className="space-y-4">
-                    <span className="flex h-16 w-16 items-center justify-center rounded-xl bg-marine text-gold">
-                      <Icon className="h-8 w-8" strokeWidth={1.75} aria-hidden="true" />
+                  {/* Visuel du domaine, alterné à gauche puis à droite. */}
+                  <div className={`relative lg:col-span-2 ${index % 2 ? 'lg:order-last' : ''}`}>
+                    <SmartImage
+                      image={domainCoverImage(domain)}
+                      ratio="4/3"
+                      sizes="(min-width: 1024px) 40vw, 100vw"
+                      className="h-full lg:aspect-auto"
+                      fallback={<BrandPanel className="h-full" />}
+                    />
+                    <span className="absolute left-6 top-6 flex h-14 w-14 items-center justify-center rounded-xl bg-marine text-gold shadow-lg">
+                      <Icon className="h-7 w-7" strokeWidth={1.75} aria-hidden="true" />
                     </span>
+                  </div>
+                  <div className="space-y-6 p-6 sm:p-10 lg:col-span-3">
+                  <div className="space-y-4">
                     <p className="font-poppins text-sm font-bold text-slate-text">Domaine {domain.letter}</p>
                     <h2 id={`${domain.slug}-title`} className="font-poppins text-2xl font-bold tracking-tight text-marine sm:text-3xl">
                       {domain.title}
@@ -56,9 +70,9 @@ export function ActivitiesPage() {
                     <p className="leading-relaxed text-slate-text">{domain.summary}</p>
                     {domain.availability === 'en_developpement' && <Badge tone="gold">Activité en développement</Badge>}
                   </div>
-                  <div className="space-y-5 lg:col-span-2">
+                  <div className="space-y-5">
                     <h3 className="font-inter text-xs font-semibold uppercase tracking-[0.15em] text-slate-text">Nos offres</h3>
-                    <ul className="grid gap-3 sm:grid-cols-2">
+                    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                       {domain.services.map((service) => (
                         <li key={service.slug}>
                           <Link
@@ -94,6 +108,7 @@ export function ActivitiesPage() {
                         <span className="sr-only"> — {domain.title}</span>
                       </Button>
                     </div>
+                  </div>
                   </div>
                 </Card>
               </Reveal>

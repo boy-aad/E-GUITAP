@@ -4,6 +4,8 @@ import { Button } from '../components/ui/Button';
 import { Section } from '../components/ui/Section';
 import { Reveal } from '../components/ui/Reveal';
 import { BrandPanel } from '../components/brand/Skyline';
+import { SmartImage } from '../components/ui/SmartImage';
+import { stockImage } from '../content/stockPhotos';
 import { LAND_DISCLAIMER, formatHectares, totalAreaHa } from '../content/landProjects';
 import { useSiteContent } from '../data/useSiteContent';
 import { DomainCard } from '../features/activities/DomainCard';
@@ -12,9 +14,11 @@ import { OfferCard } from '../features/offers/OfferCard';
 import { HomeHero } from '../features/home/HomeHero';
 import { KeyFacts } from '../features/home/KeyFacts';
 import { CtaBand } from '../features/home/CtaBand';
+import { QuickContact } from '../features/home/QuickContact';
+import { organizationJsonLd } from '../lib/seo';
 
 export function HomePage() {
-  const { company, domains, projects, blocks, offers } = useSiteContent();
+  const { company, contacts, domains, projects, blocks, offers } = useSiteContent();
   const featured = offers.filter((o) => o.isFeatured);
   const featuredOffers = (featured.length ? featured : offers).slice(0, 6);
   const totalHa = totalAreaHa(projects);
@@ -25,6 +29,7 @@ export function HomePage() {
       <Seo
         title="E-GUITAP"
         description="E-GUITAP, entreprise guinéenne multisectorielle basée à Dubréka et Conakry : BTP, immobilier et aménagement foncier, commerce général, import-export, et projets fonciers."
+        jsonLd={organizationJsonLd({ company, contacts })}
       />
 
       <HomeHero />
@@ -55,7 +60,13 @@ export function HomePage() {
             </Button>
           </Reveal>
           <Reveal delay={120}>
-            <BrandPanel className="h-72 rounded-xl shadow-[0_30px_60px_-30px_rgba(16,44,80,0.5)] sm:h-96" label={company.headOffice} />
+            <SmartImage
+              image={{ ...stockImage('pageEntreprise'), alt: '' }}
+              ratio="4/3"
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="rounded-xl shadow-[0_30px_60px_-30px_rgba(16,44,80,0.5)]"
+              fallback={<BrandPanel className="h-full" label={company.headOffice} />}
+            />
           </Reveal>
         </div>
       </Section>
@@ -172,6 +183,7 @@ export function HomePage() {
       )}
 
       <CtaBand />
+      <QuickContact />
     </>
   );
 }

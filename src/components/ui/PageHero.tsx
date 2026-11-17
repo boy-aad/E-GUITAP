@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { useLocation } from 'react-router';
+import { breadcrumbJsonLd, serializeJsonLd } from '../../lib/seo';
 import { Skyline, TricolorBand } from '../brand/Skyline';
 import type { ImageSource } from '../../content/types';
 import { Breadcrumbs, type Crumb } from './Navigation';
@@ -30,6 +32,7 @@ function BrandScene() {
  * sinon scène de marque, avec fil d'Ariane, eyebrow, titre et introduction.
  */
 export function PageHero({ eyebrow, title, children, crumbs, image }: PageHeroProps) {
+  const { pathname } = useLocation();
   const trail: Crumb[] = [{ label: 'Accueil', to: '/' }, ...(crumbs ?? [{ label: title }])];
   return (
     <section className="relative isolate overflow-hidden bg-marine text-white">
@@ -60,6 +63,10 @@ export function PageHero({ eyebrow, title, children, crumbs, image }: PageHeroPr
         </div>
       </div>
       <TricolorBand className="relative h-1" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd(trail, pathname)) }}
+      />
     </section>
   );
 }
