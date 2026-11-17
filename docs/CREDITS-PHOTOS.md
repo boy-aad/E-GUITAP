@@ -28,3 +28,17 @@ Photos libres de droits utilisées sur le site, validées par E-GUITAP le 17/11/
 | `categorie-commerce-general` | Couverture Commerce général | Ali Mkumbwa | — | [lien](https://unsplash.com/photos/a-large-stack-of-boxes-in-a-warehouse-DU2ybvshovg) |
 | `categorie-import-export` | Couverture Import-export | Daniel Miksha | — | [lien](https://unsplash.com/photos/cargo-ship-loaded-with-colorful-containers-at-a-port-w8VfTO3TGs8) |
 | `cta-devis` | Bandeau d'appel à l'action (accueil) | Jahanzeb Ahsan | — | [lien](https://unsplash.com/photos/the-sun-is-setting-behind-a-building-under-construction-C24QDMvoblg) |
+
+## Projets fonciers
+
+| Fichier | Projet | Nature | Origine |
+|---|---|---|---|
+| `public/assets/projets/tanene-kenende-1-*.webp` | Tanènè – Kenendé | Photo réelle (vue aérienne) | Communiquée par E-GUITAP le 17/11/2026 ; retouche : rognage des bords, désembuage, contraste, saturation, netteté (aucun élément ajouté ni retiré) |
+| `public/assets/projets/tanene-kenende-2-*.webp` | Tanènè – Kenendé | Photo réelle (vue aérienne) | Idem |
+| `public/assets/illustrations/projets/amaria-ouassou.svg` | Amaria – Ouassou | Illustration générée | Vue aérienne stylisée d'un lotissement en savane, inspirée des photos de Tanènè Kenendé ; mention « Visuel d'illustration » |
+| `public/assets/illustrations/projets/site-de-forecariah.svg` | Site de Forécariah | Illustration générée | Idem, composition différente |
+| `public/assets/illustrations/projets/bady.svg` | Bady | Illustration générée | Idem, composition différente |
+
+Les sources basse définition reçues (734 × 554 et 1206 × 667 px) limitent la netteté : la première
+photo n'est pas agrandie au-delà de 1024 px. Des fichiers originaux en meilleure définition
+amélioreraient nettement le rendu.

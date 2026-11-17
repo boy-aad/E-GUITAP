@@ -18,6 +18,7 @@ export const INQUIRY_TYPE_LABELS: Record<Enums<'inquiry_type'>, string> = {
   contact: 'Demande générale',
   renseignement_activite: 'Activité',
   renseignement_projet: 'Projet foncier',
+  demande_devis: 'Demande de devis',
 };
 
 export const PUBLICATION_LABELS: Record<Enums<'publication_status'>, string> = {

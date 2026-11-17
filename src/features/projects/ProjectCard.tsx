@@ -5,13 +5,21 @@ import { Badge, Card } from '../../components/ui/Card';
 import { SmartImage } from '../../components/ui/SmartImage';
 import { DEVELOPMENT_STATUS_LABELS, formatHectares } from '../../content/landProjects';
 import type { LandProject } from '../../content/types';
+import { projectCover } from '../../content/projectImages';
 
 export function ProjectCard({ project }: { project: LandProject }) {
   return (
     <Card as="article" interactive className="flex h-full flex-col">
       <div className="relative">
-        {/* Aucune photo réelle pour l'instant : visuel neutre aux couleurs de la charte. */}
-        <SmartImage ratio="16/9" fallback={<BrandPanel className="h-full transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />} />
+        {/* Photo réelle du site, sinon illustration du projet, sinon visuel neutre de la charte. */}
+        <SmartImage
+          image={projectCover(project)}
+          ratio="16/9"
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+          noticePosition="top-left"
+          imgClassName="transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+          fallback={<BrandPanel className="h-full" />}
+        />
         <Badge tone="light" className="absolute right-4 top-4 font-poppins text-sm">
           {formatHectares(project.areaHa)}
           <span className="sr-only"> annoncés</span>

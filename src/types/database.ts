@@ -84,6 +84,12 @@ export type Database = {
           sort_order: number
           title: string
           updated_at: string
+          cover_media_id: string | null
+          is_featured: boolean
+          quote_enabled: boolean
+          slug: string
+          summary: string | null
+          updated_by: string | null
         }
         Insert: {
           availability?: Database["public"]["Enums"]["availability_status"]
@@ -95,6 +101,12 @@ export type Database = {
           sort_order?: number
           title: string
           updated_at?: string
+          cover_media_id?: string | null
+          is_featured?: boolean
+          quote_enabled?: boolean
+          slug: string
+          summary?: string | null
+          updated_by?: string | null
         }
         Update: {
           availability?: Database["public"]["Enums"]["availability_status"]
@@ -106,8 +118,21 @@ export type Database = {
           sort_order?: number
           title?: string
           updated_at?: string
+          cover_media_id?: string | null
+          is_featured?: boolean
+          quote_enabled?: boolean
+          slug?: string
+          summary?: string | null
+          updated_by?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "activity_services_cover_media_id_fkey"
+            columns: ["cover_media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "activity_services_domain_id_fkey"
             columns: ["domain_id"]
@@ -402,6 +427,7 @@ export type Database = {
           subject: string | null
           type: Database["public"]["Enums"]["inquiry_type"]
           updated_at: string
+          request_details: Json | null
         }
         Insert: {
           assigned_to?: string | null
@@ -425,6 +451,7 @@ export type Database = {
           subject?: string | null
           type?: Database["public"]["Enums"]["inquiry_type"]
           updated_at?: string
+          request_details?: Json | null
         }
         Update: {
           assigned_to?: string | null
@@ -448,6 +475,7 @@ export type Database = {
           subject?: string | null
           type?: Database["public"]["Enums"]["inquiry_type"]
           updated_at?: string
+          request_details?: Json | null
         }
         Relationships: [
           {
@@ -796,6 +824,7 @@ export type Database = {
         | "contact"
         | "renseignement_activite"
         | "renseignement_projet"
+        | "demande_devis"
       land_commercial_status:
         | "non_commercialise"
         | "pre_commercialisation"
@@ -964,6 +993,7 @@ export const Constants = {
         "contact",
         "renseignement_activite",
         "renseignement_projet",
+        "demande_devis",
       ],
       land_commercial_status: [
         "non_commercialise",

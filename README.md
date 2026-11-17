@@ -86,6 +86,7 @@ Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECR
 - Aucune information non communiquée par l'entreprise (réalisations, chiffres, certifications, titres fonciers…).
 - Les projets fonciers sont présentés avec leur superficie **annoncée** et l'avertissement `LAND_DISCLAIMER`.
 - Visuels en attendant de vraies photos : illustrations de la charte (mention « Visuel d'illustration ») ou photos libres de droits Unsplash / Pexels (licence vérifiée, crédit enregistré, mention « Photo d'illustration »), jamais présentées comme des chantiers, terrains ou équipes d'E-GUITAP.
+- Projets fonciers : photos réelles communiquées par l'entreprise (`public/assets/projets/`), sinon illustration générée du projet (`public/assets/illustrations/projets/`, mention « Visuel d'illustration ») ; correspondances dans `src/content/projectImages.ts`.
 - Photos d'illustration actuelles : `public/assets/photos/` (WebP), crédits dans `docs/CREDITS-PHOTOS.md` et dans les mentions légales. Une image téléversée en base reste prioritaire.
 - Aucun prix ni budget affiché : les offres sont « Sur devis ».
 - Règles complètes pour les agents de code : `CLAUDE.md`.

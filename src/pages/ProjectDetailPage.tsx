@@ -2,11 +2,9 @@ import { useParams } from 'react-router';
 import { ArrowUpRight, Info, MapPin, Ruler } from 'lucide-react';
 import { Seo } from '../components/ui/Seo';
 import { PageHero } from '../components/ui/PageHero';
-import { BrandPanel } from '../components/brand/Skyline';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Container } from '../components/ui/Section';
-import { SmartImage } from '../components/ui/SmartImage';
 import { Reveal } from '../components/ui/Reveal';
 import {
   COMMERCIAL_STATUS_LABELS,
@@ -15,6 +13,7 @@ import {
   formatHectares,
 } from '../content/landProjects';
 import { ProjectCard } from '../features/projects/ProjectCard';
+import { ProjectGallery } from '../features/projects/ProjectGallery';
 import { useInquiry } from '../features/inquiry/InquiryContext';
 import { NotFoundPage } from './NotFoundPage';
 import { useSiteContent } from '../data/useSiteContent';
@@ -47,7 +46,7 @@ export function ProjectDetailPage() {
 
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <SmartImage ratio="16/9" className="rounded-xl" fallback={<BrandPanel className="h-full" />} />
+            <ProjectGallery project={project} />
             <section className="space-y-3">
               <h2 className="font-poppins text-xl font-bold text-marine">Présentation</h2>
               <p className="leading-relaxed text-slate-text">{project.description}</p>
