@@ -56,16 +56,19 @@ export function useToast() {
   return push;
 }
 
+/** Résultats d'action déjà affichés (même objet = même soumission). */
+const shownResults = new WeakSet<object>();
+
 /**
  * Affiche une fois le résultat d'une action (`{ ok, message }`) sous forme de toast.
  * Le même objet n'est jamais affiché deux fois (nouvel objet = nouvelle soumission).
  */
 export function useResultToast(result: { ok: boolean; message: string } | undefined) {
   const push = useToast();
-  const shown = useRef<unknown>(null);
   useEffect(() => {
-    if (!result || shown.current === result) return;
-    shown.current = result;
+    // Mémoire au niveau du module : un composant recréé (clé changée) ne réaffiche pas le message.
+    if (!result || shownResults.has(result)) return;
+    shownResults.add(result);
     // Les erreurs restent aussi affichées dans la page, à côté du formulaire.
     if (result.ok) push('success', result.message);
   }, [result, push]);

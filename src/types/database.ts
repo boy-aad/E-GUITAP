@@ -501,6 +501,44 @@ export type Database = {
           },
         ]
       }
+      inquiry_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          from_value: string | null
+          id: number
+          inquiry_id: string
+          kind: string
+          to_value: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          from_value?: string | null
+          id?: never
+          inquiry_id: string
+          kind: string
+          to_value?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          from_value?: string | null
+          id?: never
+          inquiry_id?: string
+          kind?: string
+          to_value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inquiry_events_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       land_project_documents: {
         Row: {
           created_at: string

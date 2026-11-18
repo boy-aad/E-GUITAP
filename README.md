@@ -71,6 +71,8 @@ Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
 | `…_inquiry_quote_type` | type de demande `demande_devis` |
 | `…_inquiry_request_details` | précisions d'un devis (`request_details` : lieu, délai, quantité ; aucun prix) |
 | `…_offer_descriptions` | résumé et description des 21 offres (modifiables dans l'administration, menu « Offres ») |
+| `…_staff_directory` | l'équipe lit l'annuaire (noms, rôles) pour l'assignation des demandes ; écriture inchangée (admins) |
+| `…_inquiry_events` | historique des demandes (statut, assignation) alimenté par déclencheur, sans données personnelles ; lu par l'équipe |
 
 Note : sur le projet distant, ces quatre migrations sont enregistrées avec l'horodatage de leur application (contenu identique aux fichiers).
 

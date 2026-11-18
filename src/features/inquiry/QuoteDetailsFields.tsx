@@ -1,17 +1,8 @@
 import { Field, Input, Select } from '../../components/ui/Field';
+import { QUOTE_DELAYS, type QuoteDetails } from './quoteDetails';
 
-/** Précisions facultatives d'une demande de devis (aucun prix ni budget demandé). */
-export type QuoteDetails = { lieu: string; delai: string; quantite: string };
+export { EMPTY_QUOTE_DETAILS, type QuoteDetails } from './quoteDetails';
 
-export const EMPTY_QUOTE_DETAILS: QuoteDetails = { lieu: '', delai: '', quantite: '' };
-
-const DELAYS = [
-  { value: 'urgent', label: 'Urgent' },
-  { value: 'moins_1_mois', label: 'Moins d’un mois' },
-  { value: '1_3_mois', label: '1 à 3 mois' },
-  { value: 'plus_3_mois', label: 'Plus de 3 mois' },
-  { value: 'a_definir', label: 'À définir' },
-];
 
 export function QuoteDetailsFields({
   value,
@@ -31,7 +22,7 @@ export function QuoteDetailsFields({
         <Field label="Délai souhaité" hint="Facultatif">
           <Select value={value.delai} onChange={set('delai')}>
             <option value="">Non précisé</option>
-            {DELAYS.map((d) => (
+            {QUOTE_DELAYS.map((d) => (
               <option key={d.value} value={d.value}>
                 {d.label}
               </option>

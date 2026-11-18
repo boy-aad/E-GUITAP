@@ -61,14 +61,12 @@ export function Component() {
         <StatCard icon={<Inbox className="h-5 w-5" aria-hidden="true" />} value={kpi.newInquiries} label={plural(kpi.newInquiries, 'nouvelle demande', 'nouvelles demandes')} to="/admin/demandes?statut=nouveau" />
         <StatCard icon={<FileText className="h-5 w-5" aria-hidden="true" />} value={kpi.pendingQuotes} label="devis en attente" hint="Nouveaux ou en cours" to="/admin/demandes?type=demande_devis" />
         <StatCard icon={<CheckCheck className="h-5 w-5" aria-hidden="true" />} value={kpi.treated30} label={plural(kpi.treated30, 'demande traitée', 'demandes traitées')} hint="Sur les 30 derniers jours" to="/admin/demandes?statut=traite" />
-        {data.isAdmin && (
-          <StatCard
-            icon={<Clock className="h-5 w-5" aria-hidden="true" />}
-            value={kpi.avgHandlingHours === null ? '—' : formatDelay(kpi.avgHandlingHours)}
-            label="délai moyen de prise en charge"
-            hint={kpi.avgHandlingHours === null ? 'Aucune demande prise en charge sur 90 jours' : 'De « nouvelle » au premier changement de statut, 90 jours'}
-          />
-        )}
+        <StatCard
+          icon={<Clock className="h-5 w-5" aria-hidden="true" />}
+          value={kpi.avgHandlingHours === null ? '—' : formatDelay(kpi.avgHandlingHours)}
+          label="délai moyen de prise en charge"
+          hint={kpi.avgHandlingHours === null ? 'Aucune demande prise en charge sur 90 jours' : 'De la réception au premier changement de statut, 90 jours'}
+        />
         <StatCard icon={<Briefcase className="h-5 w-5" aria-hidden="true" />} value={`${kpi.offers.published} / ${kpi.offers.total}`} label="offres publiées" to="/admin/offres" />
         <StatCard icon={<LandPlot className="h-5 w-5" aria-hidden="true" />} value={`${kpi.projects.published} / ${kpi.projects.total}`} label="projets fonciers publiés" to="/admin/projets" />
         <StatCard icon={<Image className="h-5 w-5" aria-hidden="true" />} value={kpi.media} label={plural(kpi.media, 'média dans la médiathèque', 'médias dans la médiathèque')} />

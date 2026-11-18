@@ -3,7 +3,7 @@ import type { Enums } from '../../../types/database';
 import { requireStaff } from '../../auth';
 
 // Données du tableau de bord (PRD § 6.3), toutes lues avec les droits de l'utilisateur :
-// un éditeur ne voit ni le journal ni le délai de prise en charge (RLS « audit : lecture admin »).
+// un éditeur ne voit pas le journal d'activité (RLS « audit : lecture admin »).
 
 export const WEEKS = 12;
 const DAY = 86_400_000;
@@ -61,21 +61,12 @@ export async function loader({ request }: { request: Request }) {
   // Journal (admin uniquement : RLS « audit : lecture admin »), lu en parallèle.
   const adminQueries = isAdmin
     ? Promise.all([
-        supabase
-          .from('audit_log')
-          .select('created_at, new_data')
-          .eq('table_name', 'inquiries')
-          .eq('action', 'UPDATE')
-          .eq('old_data->>status', 'nouveau')
-          .neq('new_data->>status', 'nouveau')
-          .gte('created_at', since90)
-          .limit(1000),
         supabase.from('audit_log').select('id, created_at, actor_id, table_name, action, old_data, new_data').order('created_at', { ascending: false }).limit(10),
         supabase.from('staff_profiles').select('user_id, full_name'),
       ])
-    : Promise.resolve([null, null, null] as const);
+    : Promise.resolve([null, null] as const);
 
-  const [newCount, quoteCount, treated30, unnotified, recent, window, offers, projects, mediaCount, domains, values, profile, contacts] =
+  const [newCount, quoteCount, treated30, unnotified, recent, window, offers, projects, mediaCount, domains, values, profile, contacts, handling] =
     await Promise.all([
       supabase.from('inquiries').select('id', count).eq('status', 'nouveau'),
       supabase.from('inquiries').select('id', count).eq('type', 'demande_devis').in('status', ['nouveau', 'en_cours']),
@@ -91,12 +82,20 @@ export async function loader({ request }: { request: Request }) {
       supabase.from('company_values').select('id, title, publication'),
       supabase.from('company_profile').select('legal_form, rccm, nif, publication_manager, host_name').maybeSingle(),
       supabase.from('company_contacts').select('kind, is_public'),
+      // Premiers changements de statut depuis « nouvelle » (historique inquiry_events, lisible par l'équipe).
+      supabase
+        .from('inquiry_events')
+        .select('created_at, inquiry_id, inquiries (created_at)')
+        .eq('kind', 'statut')
+        .eq('from_value', 'nouveau')
+        .gte('created_at', since90)
+        .order('created_at')
+        .limit(2000),
     ]);
-  for (const r of [newCount, quoteCount, treated30, unnotified, recent, window, offers, projects, mediaCount, domains, values, profile, contacts]) {
+  for (const r of [newCount, quoteCount, treated30, unnotified, recent, window, offers, projects, mediaCount, domains, values, profile, contacts, handling]) {
     if (r.error) throw new Error(r.error.message);
   }
-  const [handling, log, staffNames] = await adminQueries;
-
+  const [log, staffNames] = await adminQueries;
 
   // Demandes par semaine et par type, sur 12 semaines.
   const weeks: WeekBucket[] = Array.from({ length: WEEKS }, (_, i) => ({
@@ -112,17 +111,16 @@ export async function loader({ request }: { request: Request }) {
     byCategory.set(cat, (byCategory.get(cat) ?? 0) + 1);
   }
 
-  // Délai moyen de première prise en charge (passage de « nouvelle » à un autre statut).
+  // Délai moyen de première prise en charge : de la réception au premier changement de statut.
   let avgHandlingHours: number | null = null;
-  if (handling?.data?.length) {
-    const delays = handling.data
-      .map((r) => {
-        const created = (r.new_data as { created_at?: string } | null)?.created_at;
-        return created ? (new Date(r.created_at).getTime() - new Date(created).getTime()) / 3_600_000 : null;
-      })
-      .filter((h): h is number => h !== null && h >= 0);
-    if (delays.length) avgHandlingHours = delays.reduce((a, b) => a + b, 0) / delays.length;
+  const firstChange = new Map<string, number>();
+  for (const e of handling.data ?? []) {
+    const received = e.inquiries?.created_at;
+    if (!received || firstChange.has(e.inquiry_id)) continue;
+    const hours = (new Date(e.created_at).getTime() - new Date(received).getTime()) / 3_600_000;
+    if (hours >= 0) firstChange.set(e.inquiry_id, hours);
   }
+  if (firstChange.size) avgHandlingHours = [...firstChange.values()].reduce((a, b) => a + b, 0) / firstChange.size;
 
   // Activité récente avec le nom des auteurs.
   const names = new Map((staffNames?.data ?? []).map((s) => [s.user_id, s.full_name]));
