@@ -23,6 +23,7 @@ export const adminRoutes: RouteObject = {
         { path: 'categories', lazy: () => import('./pages/CategoriesPage') },
         { path: 'categories/nouvelle', lazy: () => import('./pages/CategoryEditPage') },
         { path: 'categories/:id', lazy: () => import('./pages/CategoryEditPage') },
+        { path: 'medias', lazy: () => import('./pages/MediaPage') },
         { path: 'projets', lazy: () => import('./pages/ProjectsPage') },
         { path: 'projets/nouveau', lazy: () => import('./pages/ProjectEditPage') },
         { path: 'projets/:id', lazy: () => import('./pages/ProjectEditPage') },

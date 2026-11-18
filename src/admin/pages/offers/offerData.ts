@@ -1,5 +1,6 @@
 import { redirect } from 'react-router';
 import { supabase } from '../../../lib/supabase';
+import { MEDIA_SELECT, toMediaAsset } from '../../../lib/media';
 import type { Enums, TablesInsert } from '../../../types/database';
 import { friendlyDbError, slugify } from '../../format';
 
@@ -8,7 +9,7 @@ import { friendlyDbError, slugify } from '../../format';
 
 export const SUMMARY_MAX = 200;
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-const COVER = 'cover:media!activity_services_cover_media_id_fkey (path, kind, alt, credit, width, height)';
+const COVER = `cover:media!activity_services_cover_media_id_fkey (${MEDIA_SELECT})`;
 
 export type ActionResult = { ok: boolean; message: string; fieldErrors?: Record<string, string> };
 
@@ -21,7 +22,7 @@ export async function loadOffers() {
     .select(`id, slug, title, summary, availability, publication, is_featured, sort_order, domain_id, ${COVER}, activity_domains (slug, short_title, sort_order)`)
     .order('sort_order');
   if (error) throw new Error(error.message);
-  return [...data].sort(
+  return data.map((o) => ({ ...o, cover: toMediaAsset(o.cover) })).sort(
     (a, b) => (a.activity_domains?.sort_order ?? 0) - (b.activity_domains?.sort_order ?? 0) || a.sort_order - b.sort_order || a.title.localeCompare(b.title),
   );
 }
@@ -104,7 +105,7 @@ export async function editLoader({ params }: Params) {
     params.id
       ? supabase
           .from('activity_services')
-          .select(`id, slug, title, summary, description, availability, publication, is_featured, quote_enabled, sort_order, domain_id, updated_at, ${COVER}`)
+          .select(`id, slug, title, summary, description, availability, publication, is_featured, quote_enabled, sort_order, domain_id, cover_media_id, updated_at, ${COVER}`)
           .eq('id', params.id)
           .maybeSingle()
       : Promise.resolve({ data: null, error: null }),
@@ -113,7 +114,8 @@ export async function editLoader({ params }: Params) {
   if (offer.error) throw new Error(offer.error.message);
   if (params.id && !offer.data) throw new Response('Offre introuvable', { status: 404 });
   if (domains.error) throw new Error(domains.error.message);
-  return { offer: offer.data, domains: domains.data };
+  const o = offer.data;
+  return { offer: o ? { ...o, cover: toMediaAsset(o.cover) } : null, domains: domains.data };
 }
 
 export type EditData = Awaited<ReturnType<typeof editLoader>>;
@@ -155,6 +157,7 @@ export async function editAction({ request, params }: Params & { request: Reques
     is_featured: form.get('is_featured') === 'on',
     quote_enabled: form.get('quote_enabled') === 'on',
     sort_order: sortOrder,
+    cover_media_id: text(form.get('cover_media_id')) || null,
     updated_by: session?.user.id ?? null,
   };
 

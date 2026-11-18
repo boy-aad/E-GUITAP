@@ -38,7 +38,9 @@ src/
 │   ├── ui/               kit : DataTable, StatCard, FilterTabs, SearchField, FormSection, PublishSwitch,
 │   │                     ConfirmDialog (useConfirm), Toast, StickyActionBar + useUnsavedChanges
 │   │                     charts (StackedColumns, BarList : graphiques maison, sans dépendance)
-│   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Projets fonciers (sous-dossiers : données et sections)
+│   ├── media/            médiathèque : conversion WebP dans le navigateur (1920 + 640 px, 5 Mo max),
+│   │                     Uploader (glisser-déposer, texte alternatif obligatoire), ImagePicker
+│   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Médiathèque, Projets fonciers (sous-dossiers : données et sections)
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
 │   ├── layout/           Header (transparent sur l'accueil), MobileMenu, Footer, SocialLinks, Layout
@@ -74,6 +76,7 @@ Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
 | `…_staff_directory` | l'équipe lit l'annuaire (noms, rôles) pour l'assignation des demandes ; écriture inchangée (admins) |
 | `…_inquiry_events` | historique des demandes (statut, assignation) alimenté par déclencheur, sans données personnelles ; lu par l'équipe |
 | `…_admin_only_deletes` | suppressions réservées aux admins (offres, catégories, valeurs, coordonnées, slides, textes, médias, fichiers `public-media`) ; une catégorie contenant des offres ne peut pas être supprimée |
+| `…_media_variants` | médias : `variants` (déclinaisons par largeur), `bytes`, `updated_at` + déclencheurs `updated_at` et journal |
 
 Note : sur le projet distant, ces quatre migrations sont enregistrées avec l'horodatage de leur application (contenu identique aux fichiers).
 

@@ -1,12 +1,14 @@
 import { useRef, useState } from 'react';
 import { Form, useActionData, useLoaderData, useNavigation, useOutletContext, useSearchParams, useSubmit } from 'react-router';
-import { ExternalLink, ImageIcon, Trash2 } from 'lucide-react';
+import { ExternalLink, Trash2 } from 'lucide-react';
 import { Field, Input, Select, Textarea } from '../../components/ui/Field';
 import type { AdminSession } from '../auth';
 import { AVAILABILITY_LABELS, slugify } from '../format';
 import { AdminPageHeader, FormSection, Notice, PublishSwitch, StickyActionBar, dangerButton, useConfirm, useFlashToast, useUnsavedChanges } from '../ui';
 import { SUMMARY_MAX, editAction, editLoader, type ActionResult, type EditData } from './offers/offerData';
 import { OfferPreview } from './offers/OfferPreview';
+import { adminOfferImage } from './offers/offerImage';
+import { ImagePicker, type PickedMedia } from '../media/ImagePicker';
 
 export const loader = editLoader;
 export const action = editAction;
@@ -43,6 +45,8 @@ function OfferForm({ offer, domains }: EditData) {
   };
   const [f, setF] = useState(initial);
   const [slugTouched, setSlugTouched] = useState(Boolean(offer));
+  const initialCover: PickedMedia | null = offer?.cover_media_id && offer.cover ? { id: offer.cover_media_id, media: offer.cover } : null;
+  const [cover, setCover] = useState<PickedMedia | null>(initialCover);
   const set = <K extends keyof typeof initial>(k: K, v: (typeof initial)[K]) => setF((prev) => ({ ...prev, [k]: v }));
   const domain = domains.find((d) => d.id === f.domainId) ?? null;
 
@@ -148,11 +152,18 @@ function OfferForm({ offer, domains }: EditData) {
               </div>
             </FormSection>
 
-            <FormSection title="Image" description="Sans image téléversée, la carte affiche l'illustration de l'offre (ou de sa catégorie).">
-              <p className="flex items-start gap-2 rounded-lg bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
-                <ImageIcon className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                Le choix d'une photo depuis la médiathèque arrive avec le module Médiathèque (phase 6d).
-              </p>
+            <FormSection title="Image" description="Sans image choisie, la carte affiche l'illustration de l'offre (ou de sa catégorie).">
+              <ImagePicker
+                name="cover_media_id"
+                label="Image de la carte et de la fiche"
+                value={cover}
+                onChange={(next) => {
+                  setCover(next);
+                  unsaved.markDirty();
+                }}
+                fallback={adminOfferImage({ slug: f.slug, cover: null, domainSlug: domain?.slug ?? '' })}
+                hint="Format conseillé : paysage 4:3. Une photo réelle d'E-GUITAP rend l'offre plus crédible."
+              />
             </FormSection>
           </div>
 
@@ -166,7 +177,7 @@ function OfferForm({ offer, domains }: EditData) {
               inDevelopment={f.availability === 'en_developpement'}
               featured={f.featured}
               quoteEnabled={f.quote}
-              cover={offer?.cover ?? null}
+              cover={cover?.media ?? null}
             />
           </aside>
         </div>
@@ -178,6 +189,7 @@ function OfferForm({ offer, domains }: EditData) {
           onCancel={() => {
             formRef.current?.reset();
             setF(initial);
+            setCover(initialCover);
             setSlugTouched(Boolean(offer));
             unsaved.reset();
           }}

@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import { Form, useActionData, useLoaderData, useNavigation, useOutletContext, useSearchParams, useSubmit } from 'react-router';
-import { ImageIcon, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
+import { CATEGORY_PHOTOS, stockImage } from '../../content/stockPhotos';
+import { ImagePicker, type PickedMedia } from '../media/ImagePicker';
 import { Field, Input, Select, Textarea } from '../../components/ui/Field';
 import type { AdminSession } from '../auth';
 import { AVAILABILITY_LABELS, slugify } from '../format';
@@ -32,6 +34,10 @@ function CategoryForm({ category, offers }: EditData) {
   const [shortTitle, setShortTitle] = useState(category?.short_title ?? '');
   const [slug, setSlug] = useState(category?.slug ?? '');
   const [slugTouched, setSlugTouched] = useState(Boolean(category));
+  const [cover, setCover] = useState<PickedMedia | null>(category?.cover_media_id && category.cover ? { id: category.cover_media_id, media: category.cover } : null);
+  // Visuel par défaut : la photo d'illustration de la catégorie, s'il en existe une.
+  const stockKey = CATEGORY_PHOTOS[slug];
+  const fallback = stockKey ? stockImage(stockKey) : null;
 
   const onDelete = async () => {
     if (!category) return;
@@ -112,11 +118,17 @@ function CategoryForm({ category, offers }: EditData) {
           </div>
         </FormSection>
 
-        <FormSection title="Image de couverture" description="Sans image téléversée, le site affiche la photo ou l'illustration par défaut de la catégorie.">
-          <p className="flex items-start gap-2 rounded-lg bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
-            <ImageIcon className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-            Le choix d'une image depuis la médiathèque arrive avec le module Médiathèque (phase 6d).
-          </p>
+        <FormSection title="Image de couverture" description="Affichée sur l'accueil et la page Activités. Sans image choisie, le site garde la photo d'illustration par défaut.">
+          <ImagePicker
+            name="cover_media_id"
+            label="Image de couverture"
+            value={cover}
+            onChange={(next) => {
+              setCover(next);
+              unsaved.markDirty();
+            }}
+            fallback={fallback}
+          />
         </FormSection>
 
         <StickyActionBar

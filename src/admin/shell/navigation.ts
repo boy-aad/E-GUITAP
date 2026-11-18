@@ -53,7 +53,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { to: '/admin/coordonnees', label: 'Coordonnées et réseaux', icon: Phone, soon: true },
       { to: '/admin/textes', label: 'Textes des pages', icon: BookOpenText, soon: true },
       { to: '/admin/projets', label: 'Projets fonciers', icon: LandPlot },
-      { to: '/admin/medias', label: 'Médiathèque', icon: Image, soon: true },
+      { to: '/admin/medias', label: 'Médiathèque', icon: Image },
     ],
   },
   {
@@ -72,5 +72,6 @@ export const SECTION_LABELS: Record<string, string> = {
   offres: 'Offres',
   categories: 'Catégories',
   projets: 'Projets fonciers',
+  medias: 'Médiathèque',
   outils: 'Outils',
 };

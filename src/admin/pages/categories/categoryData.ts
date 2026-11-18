@@ -1,5 +1,6 @@
 import { redirect } from 'react-router';
 import { supabase } from '../../../lib/supabase';
+import { MEDIA_SELECT, toMediaAsset } from '../../../lib/media';
 import type { Enums, TablesInsert } from '../../../types/database';
 import { friendlyDbError, slugify } from '../../format';
 
@@ -30,13 +31,13 @@ export async function editLoader({ params }: Params) {
   if (!params.id) return { category: null, offers: 0 };
   const { data, error } = await supabase
     .from('activity_domains')
-    .select('id, slug, letter, title, short_title, summary, description, availability, publication, sort_order, updated_at, activity_services (id)')
+    .select(`id, slug, letter, title, short_title, summary, description, availability, publication, sort_order, cover_media_id, updated_at, cover:media!activity_domains_cover_media_id_fkey (${MEDIA_SELECT}), activity_services (id)`)
     .eq('id', params.id)
     .maybeSingle();
   if (error) throw new Error(error.message);
   if (!data) throw new Response('Catégorie introuvable', { status: 404 });
-  const { activity_services, ...category } = data;
-  return { category, offers: activity_services.length };
+  const { activity_services, cover, ...category } = data;
+  return { category: { ...category, cover: toMediaAsset(cover) }, offers: activity_services.length };
 }
 
 export type EditData = Awaited<ReturnType<typeof editLoader>>;
@@ -80,6 +81,7 @@ export async function editAction({ request, params }: Params & { request: Reques
     availability: text(form.get('availability')) as Enums<'availability_status'>,
     publication: text(form.get('publication')) as Enums<'publication_status'>,
     sort_order: sortOrder,
+    cover_media_id: text(form.get('cover_media_id')) || null,
   };
 
   if (params.id) {

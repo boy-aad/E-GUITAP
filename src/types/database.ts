@@ -779,6 +779,7 @@ export type Database = {
       media: {
         Row: {
           alt: string
+          bytes: number | null
           created_at: string
           created_by: string | null
           credit: string | null
@@ -786,10 +787,13 @@ export type Database = {
           id: string
           kind: Database["public"]["Enums"]["media_kind"]
           path: string
+          updated_at: string
+          variants: Json | null
           width: number | null
         }
         Insert: {
           alt?: string
+          bytes?: number | null
           created_at?: string
           created_by?: string | null
           credit?: string | null
@@ -797,10 +801,13 @@ export type Database = {
           id?: string
           kind: Database["public"]["Enums"]["media_kind"]
           path: string
+          updated_at?: string
+          variants?: Json | null
           width?: number | null
         }
         Update: {
           alt?: string
+          bytes?: number | null
           created_at?: string
           created_by?: string | null
           credit?: string | null
@@ -808,6 +815,8 @@ export type Database = {
           id?: string
           kind?: Database["public"]["Enums"]["media_kind"]
           path?: string
+          updated_at?: string
+          variants?: Json | null
           width?: number | null
         }
         Relationships: []

@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { socialNetworkOf } from '../lib/social';
+import { MEDIA_SELECT, toMediaAsset } from '../lib/media';
 import type {
   ActivityDomain,
   CompanyContact,
@@ -8,7 +9,6 @@ import type {
   ContentBlockKey,
   HeroSlide,
   LandProject,
-  MediaAsset,
   SiteContent,
 } from '../content/types';
 
@@ -26,11 +26,9 @@ function unwrap<T>(result: { data: T | null; error: { message: string } | null }
 /** Délai maximum de chargement : au-delà, l'écran d'erreur propose de réessayer. */
 const LOAD_TIMEOUT_MS = 15_000;
 
-/** Colonnes publiques d'un média (bucket public-media). */
-const MEDIA_COLUMNS = 'path, kind, alt, credit, width, height';
-
-type MediaRow = Pick<MediaAsset, 'path' | 'kind' | 'alt' | 'credit' | 'width' | 'height'>;
-const toMedia = (row: MediaRow | null): MediaAsset | null => (row ? { ...row } : null);
+/** Colonnes publiques d'un média (bucket public-media), tailles comprises. */
+const MEDIA_COLUMNS = MEDIA_SELECT;
+const toMedia = toMediaAsset;
 
 const bySortOrder = (a: { sort_order: number }, b: { sort_order: number }) => a.sort_order - b.sort_order;
 
