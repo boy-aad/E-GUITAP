@@ -37,7 +37,8 @@ src/
 │   ├── shell/            Sidebar, Topbar (fil d'Ariane, compte), CommandPalette, navigation
 │   ├── ui/               kit : DataTable, StatCard, FilterTabs, SearchField, FormSection, PublishSwitch,
 │   │                     ConfirmDialog (useConfirm), Toast, StickyActionBar + useUnsavedChanges
-│   └── pages/            Tableau de bord, Demandes, Offres, Projets fonciers (pages/project/ : formulaire)
+│   │                     charts (StackedColumns, BarList : graphiques maison, sans dépendance)
+│   └── pages/            Tableau de bord (pages/dashboard/), Demandes, Offres, Projets fonciers (pages/project/)
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
 │   ├── layout/           Header (transparent sur l'accueil), MobileMenu, Footer, SocialLinks, Layout
