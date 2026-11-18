@@ -38,7 +38,7 @@ src/
 │   ├── ui/               kit : DataTable, StatCard, FilterTabs, SearchField, FormSection, PublishSwitch,
 │   │                     ConfirmDialog (useConfirm), Toast, StickyActionBar + useUnsavedChanges
 │   │                     charts (StackedColumns, BarList : graphiques maison, sans dépendance)
-│   └── pages/            Tableau de bord (pages/dashboard/), Demandes, Offres, Projets fonciers (pages/project/)
+│   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Projets fonciers (sous-dossiers : données et sections)
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
 │   ├── layout/           Header (transparent sur l'accueil), MobileMenu, Footer, SocialLinks, Layout
@@ -73,6 +73,7 @@ Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
 | `…_offer_descriptions` | résumé et description des 21 offres (modifiables dans l'administration, menu « Offres ») |
 | `…_staff_directory` | l'équipe lit l'annuaire (noms, rôles) pour l'assignation des demandes ; écriture inchangée (admins) |
 | `…_inquiry_events` | historique des demandes (statut, assignation) alimenté par déclencheur, sans données personnelles ; lu par l'équipe |
+| `…_admin_only_deletes` | suppressions réservées aux admins (offres, catégories, valeurs, coordonnées, slides, textes, médias, fichiers `public-media`) ; une catégorie contenant des offres ne peut pas être supprimée |
 
 Note : sur le projet distant, ces quatre migrations sont enregistrées avec l'horodatage de leur application (contenu identique aux fichiers).
 
@@ -81,7 +82,7 @@ Points clés :
 - Les visiteurs ne lisent que le contenu publié ; ni coordonnées GPS ni statut documentaire des projets.
 - Documents fonciers : table et bucket réservés à l'équipe (lecture) et aux admins (écriture).
 - Un projet ne peut pas passer en « commercialisation ouverte » sans documents validés juridiquement (contrainte SQL).
-- Rôles : `admin` (équipe, documents, suppressions) et `editeur` (contenu). Un compte n'a accès à l'administration que s'il figure dans `staff_profiles`.
+- Rôles : `admin` (équipe, documents, suppressions) et `editeur` (contenu). Les éditeurs créent et modifient ; seuls les admins suppriment (règles RLS), sauf les objectifs, jalons et médias d'un projet, qui font partie de sa modification. Un compte n'a accès à l'administration que s'il figure dans `staff_profiles`.
 - Types TypeScript : `src/types/database.ts`, à régénérer après chaque migration.
 
 ## Catalogue d'offres

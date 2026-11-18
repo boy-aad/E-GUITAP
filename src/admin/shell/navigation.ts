@@ -42,7 +42,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: 'Catalogue',
     items: [
       { to: '/admin/offres', label: 'Offres', icon: Briefcase },
-      { to: '/admin/categories', label: 'Catégories', icon: FolderTree, soon: true },
+      { to: '/admin/categories', label: 'Catégories', icon: FolderTree },
     ],
   },
   {
@@ -70,6 +70,7 @@ export const NAV_GROUPS: NavGroup[] = [
 export const SECTION_LABELS: Record<string, string> = {
   demandes: 'Demandes',
   offres: 'Offres',
+  categories: 'Catégories',
   projets: 'Projets fonciers',
   outils: 'Outils',
 };
