@@ -1,21 +1,17 @@
 import type { ReactNode } from 'react';
-import { Form, Link, redirect, useActionData, useLoaderData, useNavigation, useOutletContext } from 'react-router';
-import { ArrowLeft, Mail, MessageSquare, Phone, Save, Trash2 } from 'lucide-react';
+import { Form, Link, redirect, useActionData, useLoaderData, useNavigation, useOutletContext, useSubmit } from 'react-router';
+import { Mail, MessageSquare, Phone, Save, Trash2 } from 'lucide-react';
 import { Field, Select, Textarea } from '../../components/ui/Field';
 import { supabase } from '../../lib/supabase';
 import { mailtoUrl, telUrl, whatsappUrl } from '../../lib/contact';
 import type { Enums } from '../../types/database';
 import type { AdminSession } from '../auth';
-import {
-  INQUIRY_STATUS_LABELS,
-  INQUIRY_STATUS_TONE as STATUS_TONE,
-  INQUIRY_TYPE_LABELS,
-  formatDateTime,
-  friendlyDbError,
-} from '../format';
-import { AdminPageHeader, Badge, Notice, cardClass, dangerButton, primaryButton } from '../ui';
+import { INQUIRY_STATUS_LABELS, INQUIRY_TYPE_LABELS, formatDateTime, friendlyDbError } from '../format';
+import { AdminPageHeader, InquiryStatusBadge, Notice, cardClass, dangerButton, primaryButton, useConfirm, useResultToast, useUnsavedChanges } from '../ui';
 
 type Params = { params: { id?: string } };
+
+export const handle = { crumb: (data: unknown) => (data as { full_name?: string } | undefined)?.full_name ?? 'Demande' };
 
 export async function loader({ params }: Params) {
   const { data, error } = await supabase
@@ -51,7 +47,21 @@ export function Component() {
   const result = useActionData() as { ok: boolean; message: string } | undefined;
   const navigation = useNavigation();
   const session = useOutletContext<AdminSession>();
-  const saving = navigation.state === 'submitting';
+  const confirm = useConfirm();
+  const submit = useSubmit();
+  const saving = navigation.state !== 'idle';
+  const unsaved = useUnsavedChanges(saving);
+  useResultToast(result);
+
+  const onDelete = async () => {
+    const ok = await confirm({
+      title: 'Supprimer cette demande ?',
+      message: `La demande de ${inquiry.full_name} sera supprimée définitivement. Cette action est irréversible.`,
+      confirmLabel: 'Supprimer',
+      danger: true,
+    });
+    if (ok) submit({ intent: 'delete' }, { method: 'post' });
+  };
 
   const rows: [string, ReactNode][] = [
     ['Reçue le', formatDateTime(inquiry.created_at)],
@@ -76,16 +86,13 @@ export function Component() {
   return (
     <>
       <title>{`${inquiry.full_name} | Demandes | Administration E-GUITAP`}</title>
-      <Link to="/admin/demandes" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold hover:text-gold-hover">
-        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Toutes les demandes
-      </Link>
       <AdminPageHeader
         title={inquiry.full_name}
         description={inquiry.subject ?? undefined}
-        actions={<Badge tone={STATUS_TONE[inquiry.status]}>{INQUIRY_STATUS_LABELS[inquiry.status]}</Badge>}
+        actions={<InquiryStatusBadge value={inquiry.status} />}
       />
 
-      {result && <Notice tone={result.ok ? 'success' : 'error'}>{result.message}</Notice>}
+      {result && !result.ok && <Notice tone="error">{result.message}</Notice>}
       {!inquiry.notified_at && (
         <Notice tone="error">
           La notification e-mail de cette demande n'a pas été envoyée.
@@ -136,7 +143,7 @@ export function Component() {
             )}
           </section>
 
-          <Form method="post" className={`${cardClass} space-y-4 p-5`}>
+          <Form method="post" onChange={unsaved.markDirty} onSubmit={unsaved.reset} className={`${cardClass} space-y-4 p-5`}>
             <h2 className="font-poppins text-base font-bold">Suivi</h2>
             <Field label="Statut">
               <Select name="status" defaultValue={inquiry.status}>
@@ -150,22 +157,16 @@ export function Component() {
             <Field label="Notes internes" hint="Visibles uniquement par l'équipe.">
               <Textarea name="internal_notes" rows={5} defaultValue={inquiry.internal_notes ?? ''} />
             </Field>
+            {unsaved.dirty && <p className="text-xs font-semibold text-amber-800">Modifications non enregistrées</p>}
             <button type="submit" name="intent" value="update" disabled={saving} className={`${primaryButton} w-full`}>
-              <Save className="h-4 w-4" aria-hidden="true" /> Enregistrer
+              <Save className="h-4 w-4" aria-hidden="true" /> {saving ? 'Enregistrement…' : 'Enregistrer'}
             </button>
           </Form>
 
           {session.staff.role === 'admin' && (
-            <Form
-              method="post"
-              onSubmit={(e) => {
-                if (!window.confirm('Supprimer définitivement cette demande ? Cette action est irréversible.')) e.preventDefault();
-              }}
-            >
-              <button type="submit" name="intent" value="delete" className={`${dangerButton} w-full`}>
-                <Trash2 className="h-4 w-4" aria-hidden="true" /> Supprimer la demande
-              </button>
-            </Form>
+            <button type="button" onClick={onDelete} className={`${dangerButton} w-full`}>
+              <Trash2 className="h-4 w-4" aria-hidden="true" /> Supprimer la demande
+            </button>
           )}
         </div>
       </div>

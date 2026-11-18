@@ -1,45 +1,51 @@
-import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
-import {
-  Briefcase,
-  Building2,
-  ExternalLink,
-  Image,
-  Inbox,
-  LandPlot,
-  LayoutDashboard,
-  LogOut,
-  Menu,
-  Users,
-  X,
-  type LucideIcon,
-} from 'lucide-react';
-import { Logo } from '../components/brand/Logo';
-import { TricolorBand } from '../components/brand/Skyline';
+import { useEffect, useRef, useState } from 'react';
+import { Outlet, useLoaderData, useLocation, useNavigate } from 'react-router';
+import { X } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { LOGIN_PATH, requireStaff, type AdminSession } from './auth';
+import { CommandPalette } from './shell/CommandPalette';
+import { Sidebar, type ShellCounts } from './shell/Sidebar';
+import { Topbar } from './shell/Topbar';
+import { ConfirmProvider, ToastProvider } from './ui';
 
 export async function loader({ request }: { request: Request }) {
-  return requireStaff(request);
+  const session = await requireStaff(request);
+  // Compteurs du menu (rechargés après chaque action : un changement de statut les met à jour).
+  const [inquiries, quotes] = await Promise.all([
+    supabase.from('inquiries').select('id', { count: 'exact', head: true }).eq('status', 'nouveau'),
+    supabase.from('inquiries').select('id', { count: 'exact', head: true }).eq('status', 'nouveau').eq('type', 'demande_devis'),
+  ]);
+  const counts: ShellCounts = { newInquiries: inquiries.count ?? 0, newQuotes: quotes.count ?? 0 };
+  return { session, counts };
 }
 
-type NavItem = { to: string; label: string; icon: LucideIcon; end?: boolean; soon?: boolean; adminOnly?: boolean };
+const COLLAPSED_KEY = 'eguitap-admin-menu-reduit';
 
-const NAV: NavItem[] = [
-  { to: '/admin', label: 'Tableau de bord', icon: LayoutDashboard, end: true },
-  { to: '/admin/demandes', label: 'Demandes', icon: Inbox },
-  { to: '/admin/projets', label: 'Projets fonciers', icon: LandPlot },
-  { to: '/admin/offres', label: 'Offres', icon: Briefcase },
-  { to: '/admin/entreprise', label: 'Entreprise et accueil', icon: Building2, soon: true },
-  { to: '/admin/medias', label: 'Médias', icon: Image, soon: true },
-  { to: '/admin/equipe', label: 'Équipe', icon: Users, soon: true, adminOnly: true },
-];
+function readCollapsed(): boolean {
+  try {
+    return window.localStorage.getItem(COLLAPSED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function writeCollapsed(value: boolean) {
+  try {
+    window.localStorage.setItem(COLLAPSED_KEY, value ? '1' : '0');
+  } catch {
+    // Stockage indisponible (navigation privée…) : la préférence n'est simplement pas mémorisée.
+  }
+}
 
 export function Component() {
-  const session = useLoaderData() as AdminSession;
+  const { session, counts } = useLoaderData() as { session: AdminSession; counts: ShellCounts };
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const [collapsed, setCollapsed] = useState(readCollapsed);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const drawerRef = useRef<HTMLDialogElement>(null);
+  const isAdmin = session.staff.role === 'admin';
 
   // Déconnexion (ici ou dans un autre onglet) : retour à l'écran de connexion.
   useEffect(() => {
@@ -49,92 +55,83 @@ export function Component() {
     return () => data.subscription.unsubscribe();
   }, [navigate]);
 
-  const [lastPath, setLastPath] = useState(pathname);
-  if (pathname !== lastPath) {
-    setLastPath(pathname);
+  // Le tiroir mobile se ferme à chaque navigation.
+  const [lastLocation, setLastLocation] = useState(pathname + search);
+  if (pathname + search !== lastLocation) {
+    setLastLocation(pathname + search);
     setMenuOpen(false);
   }
 
-  const items = NAV.filter((i) => !i.adminOnly || session.staff.role === 'admin');
+  useEffect(() => {
+    const dialog = drawerRef.current;
+    if (!dialog) return;
+    if (menuOpen && !dialog.open) dialog.showModal();
+    else if (!menuOpen && dialog.open) dialog.close();
+  }, [menuOpen]);
 
-  const nav = (
-    <nav aria-label="Administration" className="space-y-1 p-3">
-      {items.map(({ to, label, icon: Icon, end, soon }) =>
-        soon ? (
-          <span key={to} className="flex items-center gap-3 rounded px-3 py-2.5 text-sm text-white/40" title="Bientôt disponible">
-            <Icon className="h-4 w-4" aria-hidden="true" />
-            {label}
-            <span className="ml-auto text-[10px] uppercase tracking-wider">bientôt</span>
-          </span>
-        ) : (
-          <NavLink
-            key={to}
-            to={to}
-            end={end}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded px-3 py-2.5 text-sm font-semibold transition-colors ${
-                isActive ? 'bg-white/10 text-gold' : 'text-white/80 hover:bg-white/5 hover:text-white'
-              }`
-            }
-          >
-            <Icon className="h-4 w-4" aria-hidden="true" />
-            {label}
-          </NavLink>
-        ),
-      )}
-    </nav>
-  );
+  // Ctrl/⌘ + K : recherche globale.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-paper font-inter text-marine lg:flex">
-      <meta name="robots" content="noindex, nofollow" />
+    <ToastProvider>
+      <ConfirmProvider>
+        <div className="min-h-screen bg-slate-50 font-inter text-[14px] text-slate-800 lg:flex">
+          <meta name="robots" content="noindex, nofollow" />
+          <a href="#contenu-admin" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[70] focus:rounded focus:bg-marine focus:px-4 focus:py-2 focus:text-white">
+            Aller au contenu
+          </a>
 
-      {/* Barre latérale (bureau) / tiroir (mobile) */}
-      <aside
-        className={`${menuOpen ? 'flex' : 'hidden'} fixed inset-0 z-40 flex-col bg-marine text-white lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0`}
-      >
-        <TricolorBand className="h-1" />
-        <div className="flex items-center justify-between px-5 py-5">
-          <Logo variant="horizontal-compact" theme="dark" className="h-10" />
-          <button type="button" className="rounded p-1.5 lg:hidden" onClick={() => setMenuOpen(false)} aria-label="Fermer le menu">
-            <X className="h-5 w-5" aria-hidden="true" />
-          </button>
-        </div>
-        <div className="flex-1 overflow-y-auto">{nav}</div>
-        <div className="space-y-2 border-t border-marine-light p-4 text-xs">
-          <p className="truncate font-semibold">{session.staff.full_name}</p>
-          <p className="truncate text-white/60">
-            {session.staff.role === 'admin' ? 'Administrateur' : 'Éditeur'}
-            {session.email ? ` · ${session.email}` : ''}
-          </p>
-          <div className="flex gap-3 pt-1">
-            <a href="/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-white/80 hover:text-gold">
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-              Voir le site
-            </a>
-            <button
-              type="button"
-              onClick={() => supabase.auth.signOut()}
-              className="inline-flex items-center gap-1 text-white/80 hover:text-gold"
-            >
-              <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
-              Déconnexion
-            </button>
+          {/* Bureau : barre latérale fixe, repliable. */}
+          <aside className={`sticky top-0 hidden h-screen shrink-0 transition-[width] duration-200 lg:block ${collapsed ? 'w-[72px]' : 'w-64'}`}>
+            <Sidebar
+              isAdmin={isAdmin}
+              counts={counts}
+              collapsed={collapsed}
+              onToggleCollapsed={() => {
+                setCollapsed((c) => {
+                  writeCollapsed(!c);
+                  return !c;
+                });
+              }}
+            />
+          </aside>
+
+          {/* Mobile : tiroir modal (focus piégé, Échap pour fermer). */}
+          {/* oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- clic sur le fond ; Échap ferme au clavier. */}
+          <dialog
+            ref={drawerRef}
+            aria-label="Menu de l'administration"
+            onClose={() => setMenuOpen(false)}
+            onClick={(e) => e.target === e.currentTarget && setMenuOpen(false)}
+            className="m-0 h-full max-h-none w-72 max-w-[85vw] p-0 backdrop:bg-slate-900/50 lg:hidden"
+          >
+            <div className="relative h-full">
+              <Sidebar isAdmin={isAdmin} counts={counts} collapsed={false} />
+              <button type="button" onClick={() => setMenuOpen(false)} className="absolute right-3 top-4 rounded-md p-1.5 text-white/80 hover:bg-white/10" aria-label="Fermer le menu">
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+          </dialog>
+
+          <div className="min-w-0 flex-1">
+            <Topbar session={session} onOpenMenu={() => setMenuOpen(true)} onOpenSearch={() => setSearchOpen(true)} />
+            <main id="contenu-admin" className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-10">
+              <Outlet context={session} />
+            </main>
           </div>
-        </div>
-      </aside>
 
-      <div className="min-w-0 flex-1">
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
-          <Logo variant="horizontal-compact" className="h-9" />
-          <button type="button" onClick={() => setMenuOpen(true)} className="rounded p-2" aria-label="Ouvrir le menu">
-            <Menu className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </header>
-        <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-10">
-          <Outlet context={session} />
-        </main>
-      </div>
-    </div>
+          <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
+        </div>
+      </ConfirmProvider>
+    </ToastProvider>
   );
 }

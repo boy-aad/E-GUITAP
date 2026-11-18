@@ -32,6 +32,12 @@ npm run dev                  # http://localhost:3000
 ```
 src/
 ├── app/router.tsx        routes ; le loader racine charge tout le contenu depuis Supabase
+├── admin/                administration (chargée à la demande, jamais importée par le site public)
+│   ├── AdminLayout.tsx   coque : barre latérale repliable, barre supérieure, tiroir mobile, Ctrl/⌘ + K
+│   ├── shell/            Sidebar, Topbar (fil d'Ariane, compte), CommandPalette, navigation
+│   ├── ui/               kit : DataTable, StatCard, FilterTabs, SearchField, FormSection, PublishSwitch,
+│   │                     ConfirmDialog (useConfirm), Toast, StickyActionBar + useUnsavedChanges
+│   └── pages/            Tableau de bord, Demandes, Offres, Projets fonciers (pages/project/ : formulaire)
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
 │   ├── layout/           Header (transparent sur l'accueil), MobileMenu, Footer, SocialLinks, Layout

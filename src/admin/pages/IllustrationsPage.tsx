@@ -15,6 +15,8 @@ const PROJECT_ILLUSTRATIONS = ['amaria-ouassou', 'site-de-forecariah', 'bady'];
 
 type Item = { group: string; slug: string; src: string; bytes: number | null };
 
+export const handle = { crumb: 'Illustrations' };
+
 export async function loader({ request }: { request: Request }) {
   const session = await requireStaff(request);
   if (session.staff.role !== 'admin') throw redirect('/admin');
