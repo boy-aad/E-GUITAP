@@ -2,7 +2,8 @@ import { Facebook, Globe, Instagram, Linkedin, Music2, Twitter, Youtube, type Lu
 import type { SocialLink, SocialNetwork } from '../../content/types';
 import { SOCIAL_NETWORK_NAMES } from '../../lib/social';
 
-const ICONS: Record<SocialNetwork, LucideIcon> = {
+/** Icône de chaque réseau (aussi utilisée par la page Contact). */
+export const SOCIAL_ICONS: Record<SocialNetwork, LucideIcon> = {
   facebook: Facebook,
   linkedin: Linkedin,
   instagram: Instagram,
@@ -18,7 +19,7 @@ export function SocialLinks({ links }: { links: SocialLink[] }) {
   return (
     <ul className="flex flex-wrap gap-2" aria-label="Réseaux sociaux">
       {links.map(({ network, label, url }) => {
-        const Icon = ICONS[network];
+        const Icon = SOCIAL_ICONS[network];
         return (
           <li key={url}>
             <a

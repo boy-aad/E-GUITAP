@@ -7,7 +7,8 @@ import { InquiryForm } from '../features/inquiry/InquiryForm';
 import { Section } from '../components/ui/Section';
 import { Card } from '../components/ui/Card';
 import { Reveal } from '../components/ui/Reveal';
-import { SocialLinks } from '../components/layout/SocialLinks';
+import { SOCIAL_ICONS } from '../components/layout/SocialLinks';
+import { SOCIAL_NETWORK_NAMES } from '../lib/social';
 import { mailtoUrl, telUrl, whatsappUrl } from '../lib/contact';
 
 export function ContactPage() {
@@ -25,6 +26,14 @@ export function ContactPage() {
       external: true,
     },
     contacts.email && { icon: Mail, ...contacts.email, href: mailtoUrl(contacts.email.raw), external: false },
+    // Réseaux sociaux : même carte que les autres coordonnées (lisible qu'il y en ait un ou plusieurs).
+    ...contacts.social.map((s) => ({
+      icon: SOCIAL_ICONS[s.network],
+      label: s.label || SOCIAL_NETWORK_NAMES[s.network],
+      value: 'Suivre E-GUITAP',
+      href: s.url,
+      external: true,
+    })),
   ].filter((c) => c !== null);
 
   return (
@@ -63,7 +72,7 @@ export function ContactPage() {
               );
               const box = 'flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-5';
               return (
-                <Reveal as="li" variant="left" delay={i * 80} key={label}>
+                <Reveal as="li" variant="left" delay={i * 80} key={href ?? label}>
                   {href ? (
                     <a
                       href={href}
@@ -79,12 +88,6 @@ export function ContactPage() {
               );
             })}
           </ul>
-          {contacts.social.length > 0 && (
-            <div className="rounded-xl bg-marine p-5">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-gold">Suivez-nous</p>
-              <SocialLinks links={contacts.social} />
-            </div>
-          )}
         </section>
 
         <Reveal variant="right" delay={120} className="lg:col-span-3">
