@@ -21,7 +21,7 @@ export function CompanyPage() {
     <>
       <Seo
         title="L'entreprise"
-        description="E-GUITAP, Entreprise Guinéenne de Terrassement, d'Aménagement et de Prestations : présentation, mission, vision et valeurs."
+        description="E-GUITAP : présentation, mission, vision et valeurs de l'entreprise."
       />
       <PageHero
         eyebrow="L'entreprise"
@@ -29,7 +29,8 @@ export function CompanyPage() {
         crumbs={[{ label: "L'entreprise" }]}
         image={stockImage('pageEntreprise')}
       >
-        <p>{company.fullName}</p>
+        {/* La dénomination développée est réservée aux mentions légales. */}
+        {company.signatures.institutional && <p>{company.signatures.institutional}</p>}
       </PageHero>
 
       {/* Présentation éditoriale : chapeau, colonne de lecture et repères. */}

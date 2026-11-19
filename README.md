@@ -149,6 +149,33 @@ Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECR
 
 Application monopage : l'hébergeur doit renvoyer `index.html` pour toutes les routes.
 
+### Liste de mise en ligne (secrets et paramètres)
+
+| Où | Paramètre | Rôle |
+|---|---|---|
+| Hébergeur (variables de build) | `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` | connexion à Supabase (valeurs publiques) |
+| Hébergeur | `VITE_TURNSTILE_SITE_KEY` | anti-robot du formulaire (clé publique) |
+| Hébergeur | `VITE_SITE_URL` | adresse publique : canonique, partage, `sitemap.xml` |
+| Hébergeur | réécriture de toutes les routes vers `index.html` | application monopage |
+| Supabase → Edge Functions → Secrets | `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY` | `submit-inquiry` (obligatoires) |
+| Supabase → Edge Functions → Secrets | `RESEND_FROM`, `INQUIRY_NOTIFY_TO` | expéditeur et destinataire des notifications (facultatifs) |
+| Supabase → Edge Functions → Secrets | `ALLOWED_ORIGINS` | domaine(s) de production, séparés par des virgules (`submit-inquiry` et `admin-users`) |
+| Resend | domaine d'envoi vérifié (Q5) | notifications réellement délivrées |
+| Supabase → Authentication → URL Configuration | Site URL + `https://<domaine>/admin/reinitialisation` (et `http://localhost:3000/admin/reinitialisation` en développement) | liens d'invitation et de mot de passe oublié |
+| Supabase → Authentication → SMTP | SMTP Resend | envoi fiable des e-mails d'invitation et de réinitialisation |
+| Supabase → Authentication → Passwords | protection contre les mots de passe divulgués | alerte du conseiller de sécurité |
+| Cloudflare Turnstile | domaine de production ajouté au widget | captcha valide en production |
+
+Aucune clé secrète (`service_role`, `sb_secret_…`, `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`) ne doit figurer dans une variable `VITE_*`.
+
+### Recette de sécurité (RLS)
+
+`supabase/tests/rls_checks.sql` vérifie 31 règles pour les profils visiteur, éditeur et administrateur
+(lecture du publié seulement, données internes inaccessibles, aucune suppression par un éditeur,
+journal réservé, garde-fou du dernier administrateur). Le script n'écrit rien : chaque écriture testée
+est annulée. Renseigner un éditeur et un administrateur actifs en tête du script, puis l'exécuter dans
+l'éditeur SQL de Supabase : toutes les lignes doivent indiquer `ok = true`.
+
 ## Référencement (SEO)
 
 - `VITE_SITE_URL` (adresse publique, sans « / » final) : liens canoniques, balises de partage et `sitemap.xml`. À définir sur l'hébergeur de production ; sans elle, l'adresse du navigateur est utilisée et aucun sitemap n'est généré.

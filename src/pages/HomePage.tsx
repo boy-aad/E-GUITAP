@@ -44,7 +44,8 @@ export function HomePage() {
               L'entreprise
             </p>
             <h2 className="font-poppins text-3xl font-bold leading-tight tracking-tight text-marine sm:text-4xl">
-              {presentation?.title ?? company.fullName}
+              {/* Jamais la dénomination développée (réservée aux mentions légales). */}
+              {presentation?.title ?? company.brandName}
             </h2>
             {presentation?.body ? (
               <p className="whitespace-pre-line text-base leading-relaxed text-slate-text sm:text-lg">{presentation.body}</p>
