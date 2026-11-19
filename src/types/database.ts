@@ -223,6 +223,8 @@ export type Database = {
           legal_form: string | null
           mission: string | null
           nif: string | null
+          office_lat: number | null
+          office_lng: number | null
           presentation: string[]
           publication_manager: string | null
           rccm: string | null
@@ -244,6 +246,8 @@ export type Database = {
           legal_form?: string | null
           mission?: string | null
           nif?: string | null
+          office_lat?: number | null
+          office_lng?: number | null
           presentation?: string[]
           publication_manager?: string | null
           rccm?: string | null
@@ -265,6 +269,8 @@ export type Database = {
           legal_form?: string | null
           mission?: string | null
           nif?: string | null
+          office_lat?: number | null
+          office_lng?: number | null
           presentation?: string[]
           publication_manager?: string | null
           rccm?: string | null
@@ -347,6 +353,8 @@ export type Database = {
           background_media_id: string | null
           created_at: string
           eyebrow: string | null
+          focal_x: number
+          focal_y: number
           id: string
           is_active: boolean
           primary_cta_href: string | null
@@ -364,6 +372,8 @@ export type Database = {
           background_media_id?: string | null
           created_at?: string
           eyebrow?: string | null
+          focal_x?: number
+          focal_y?: number
           id?: string
           is_active?: boolean
           primary_cta_href?: string | null
@@ -381,6 +391,8 @@ export type Database = {
           background_media_id?: string | null
           created_at?: string
           eyebrow?: string | null
+          focal_x?: number
+          focal_y?: number
           id?: string
           is_active?: boolean
           primary_cta_href?: string | null

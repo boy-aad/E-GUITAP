@@ -1,7 +1,7 @@
 import { Link, useActionData, useLoaderData, useNavigation, useSearchParams, useSubmit } from 'react-router';
 import { ArrowDown, ArrowUp, Copy, ExternalLink, Plus, Star } from 'lucide-react';
 import { AVAILABILITY_LABELS } from '../format';
-import { AdminPageHeader, Badge, DataTable, Notice, PublicationBadge, primaryButton, useFlashToast, useResultToast, type Column } from '../ui';
+import { AdminPageHeader, Badge, DataTable, Notice, PublicationBadge, iconButton, primaryButton, useFlashToast, useResultToast, type Column } from '../ui';
 import { listAction, loadOffers, type ActionResult } from './offers/offerData';
 import { adminOfferImage } from './offers/offerImage';
 
@@ -10,9 +10,6 @@ export const loader = loadOffers;
 export const action = listAction;
 
 type Row = Awaited<ReturnType<typeof loadOffers>>[number];
-
-const iconButton =
-  'rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-marine disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-gold';
 
 /** Colonnes du tableau (définies hors du composant : les cellules ne sont pas des composants). */
 function buildColumns(offers: Row[], busy: boolean, post: (fields: Record<string, string | string[]>) => void): Column<Row>[] {

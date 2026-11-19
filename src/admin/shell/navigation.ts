@@ -48,10 +48,10 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Contenus',
     items: [
-      { to: '/admin/accueil', label: "Page d'accueil", icon: Home, soon: true },
-      { to: '/admin/entreprise', label: 'Entreprise', icon: Building2, soon: true },
-      { to: '/admin/coordonnees', label: 'Coordonnées et réseaux', icon: Phone, soon: true },
-      { to: '/admin/textes', label: 'Textes des pages', icon: BookOpenText, soon: true },
+      { to: '/admin/accueil', label: "Page d'accueil", icon: Home },
+      { to: '/admin/entreprise', label: 'Entreprise', icon: Building2 },
+      { to: '/admin/coordonnees', label: 'Coordonnées et réseaux', icon: Phone },
+      { to: '/admin/textes', label: 'Textes des pages', icon: BookOpenText },
       { to: '/admin/projets', label: 'Projets fonciers', icon: LandPlot },
       { to: '/admin/medias', label: 'Médiathèque', icon: Image },
     ],
@@ -73,5 +73,9 @@ export const SECTION_LABELS: Record<string, string> = {
   categories: 'Catégories',
   projets: 'Projets fonciers',
   medias: 'Médiathèque',
+  accueil: "Page d'accueil",
+  entreprise: 'Entreprise',
+  coordonnees: 'Coordonnées et réseaux',
+  textes: 'Textes des pages',
   outils: 'Outils',
 };

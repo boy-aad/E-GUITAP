@@ -72,7 +72,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     supabase
       .from('hero_slides')
       .select(
-        `eyebrow, title, title_highlight, subtitle, show_signature, primary_cta_label, primary_cta_href, secondary_cta_label, secondary_cta_href, background:media!hero_slides_background_media_id_fkey (${MEDIA_COLUMNS})`,
+        `eyebrow, title, title_highlight, subtitle, show_signature, focal_x, focal_y, primary_cta_label, primary_cta_href, secondary_cta_label, secondary_cta_href, background:media!hero_slides_background_media_id_fkey (${MEDIA_COLUMNS})`,
       )
       .eq('is_active', true)
       .order('sort_order')
@@ -149,6 +149,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
 
   const heroSlides: HeroSlide[] = heroRows.map((h) => ({
     background: toMedia(h.background),
+    focal: { x: Number(h.focal_x), y: Number(h.focal_y) },
     eyebrow: h.eyebrow,
     title: h.title,
     titleHighlight: h.title_highlight,

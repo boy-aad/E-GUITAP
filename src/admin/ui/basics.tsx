@@ -64,6 +64,10 @@ export const dangerButton = `${buttonBase} border border-red-300 bg-white text-r
 export const dangerSolidButton = `${buttonBase} bg-red-700 text-white hover:bg-red-800`;
 export const ghostButton = `${buttonBase} text-slate-700 hover:bg-slate-100`;
 
+/** Petit bouton icône (monter, descendre, dupliquer…) ; toujours avec aria-label. */
+export const iconButton =
+  'rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-marine disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-gold';
+
 export const cardClass = 'rounded-xl border border-slate-200 bg-white';
 
 /** Bloc de formulaire : titre, explication, champs. */

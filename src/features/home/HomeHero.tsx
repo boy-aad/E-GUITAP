@@ -28,6 +28,7 @@ export function HomeHero() {
     : [
         {
           background: null,
+          focal: { x: 0.5, y: 0.5 },
           eyebrow: null,
           title: company.brandName,
           titleHighlight: null,
@@ -84,6 +85,7 @@ export function HomeHero() {
         <HeroBackground
           key={i}
           source={source ?? null}
+          focal={slides[i]?.focal ?? null}
           failed={failed.has(i)}
           onError={() => setFailed((prev) => new Set(prev).add(i))}
           active={i === carousel.index}

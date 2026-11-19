@@ -35,12 +35,14 @@ src/
 ├── admin/                administration (chargée à la demande, jamais importée par le site public)
 │   ├── AdminLayout.tsx   coque : barre latérale repliable, barre supérieure, tiroir mobile, Ctrl/⌘ + K
 │   ├── shell/            Sidebar, Topbar (fil d'Ariane, compte), CommandPalette, navigation
-│   ├── ui/               kit : DataTable, StatCard, FilterTabs, SearchField, FormSection, PublishSwitch,
+│   ├── ui/               kit : DataTable, Tabs (useTabs), StatCard, FilterTabs, SearchField, FormSection, PublishSwitch,
 │   │                     ConfirmDialog (useConfirm), Toast, StickyActionBar + useUnsavedChanges
 │   │                     charts (StackedColumns, BarList : graphiques maison, sans dépendance)
 │   ├── media/            médiathèque : conversion WebP dans le navigateur (1920 + 640 px, 5 Mo max),
 │   │                     Uploader (glisser-déposer, texte alternatif obligatoire), ImagePicker
-│   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Médiathèque, Projets fonciers (sous-dossiers : données et sections)
+│   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Page d'accueil (slides), Entreprise,
+│                         Coordonnées et réseaux, Textes des pages, Médiathèque, Projets fonciers
+│                         (sous-dossiers : données et sections ; content/ pour les pages « Contenus »)
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
 │   ├── layout/           Header (transparent sur l'accueil), MobileMenu, Footer, SocialLinks, Layout
@@ -77,6 +79,7 @@ Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
 | `…_inquiry_events` | historique des demandes (statut, assignation) alimenté par déclencheur, sans données personnelles ; lu par l'équipe |
 | `…_admin_only_deletes` | suppressions réservées aux admins (offres, catégories, valeurs, coordonnées, slides, textes, médias, fichiers `public-media`) ; une catégorie contenant des offres ne peut pas être supprimée |
 | `…_media_variants` | médias : `variants` (déclinaisons par largeur), `bytes`, `updated_at` + déclencheurs `updated_at` et journal |
+| `…_hero_and_company` | point focal des slides (`focal_x`, `focal_y`), position publique du siège (`office_lat`, `office_lng`, carte non affichée tant que Q3 n'est pas tranchée), réseaux sociaux en https obligatoire, journal d'activité sur slides, valeurs et textes |
 
 Note : sur le projet distant, ces quatre migrations sont enregistrées avec l'horodatage de leur application (contenu identique aux fichiers).
 

@@ -136,6 +136,8 @@ export interface LandProject {
 export interface HeroSlide {
   /** Image de fond téléversée (sinon : photo par défaut de la slide). */
   background: MediaAsset | null;
+  /** Point focal de l'image (0 à 1) : le cadrage reste centré dessus. */
+  focal: { x: number; y: number };
   eyebrow: string | null;
   title: string;
   titleHighlight: string | null;

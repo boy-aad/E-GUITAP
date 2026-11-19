@@ -7,3 +7,4 @@ export * from './unsaved';
 export * from './DataTable';
 export * from './controls';
 export * from './charts';
+export * from './tabs';
