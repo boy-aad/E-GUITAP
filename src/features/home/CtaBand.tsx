@@ -15,7 +15,7 @@ export function CtaBand() {
   const cta = blocks['home.cta'];
 
   return (
-    <section className="relative isolate overflow-hidden bg-marine py-20 text-white lg:py-28">
+    <section className="relative isolate overflow-hidden bg-marine py-12 text-white lg:py-16">
       <SmartImage
         image={{ ...stockImage('ctaDevis'), alt: '' }}
         ratio="auto"

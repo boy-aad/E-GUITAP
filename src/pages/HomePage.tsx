@@ -17,10 +17,20 @@ import { CtaBand } from '../features/home/CtaBand';
 import { QuickContact } from '../features/home/QuickContact';
 import { organizationJsonLd } from '../lib/seo';
 
+/**
+ * Offres de l'accueil : une par domaine, l'immobilier en premier (activité principale actuelle),
+ * puis le BTP et le commerce général. Dans chaque domaine : l'offre « mise en avant » dans
+ * l'administration, sinon la première du catalogue.
+ */
+const HOME_OFFER_DOMAINS = ['immobilier-amenagement', 'btp', 'commerce-general'];
+
 export function HomePage() {
   const { company, contacts, domains, projects, blocks, offers } = useSiteContent();
-  const featured = offers.filter((o) => o.isFeatured);
-  const featuredOffers = (featured.length ? featured : offers).slice(0, 6);
+  const featuredOffers = HOME_OFFER_DOMAINS.flatMap((slug) => {
+    const inDomain = offers.filter((o) => o.domainSlug === slug);
+    const pick = inDomain.find((o) => o.isFeatured) ?? inDomain[0];
+    return pick ? [pick] : [];
+  });
   const totalHa = totalAreaHa(projects);
   const presentation = blocks['home.presentation'];
 
@@ -36,7 +46,7 @@ export function HomePage() {
       <KeyFacts />
 
       {/* Présentation */}
-      <Section tone="paper">
+      <Section tone="paper" compact>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           <Reveal className="space-y-6">
             <p className="flex items-center gap-2.5 font-inter text-xs font-semibold uppercase tracking-[0.15em] text-slate-text">
@@ -75,6 +85,7 @@ export function HomePage() {
       {/* Domaines d'activité */}
       {domains.length > 0 && (
         <Section
+          compact
           tone="white"
           id="domaines"
           eyebrow="Nos activités"
@@ -95,9 +106,10 @@ export function HomePage() {
         </Section>
       )}
 
-      {/* Offres phares : mises en avant, sinon les premières du catalogue. */}
+      {/* Offres phares : une par domaine (immobilier, BTP, commerce), sur une seule ligne. */}
       {featuredOffers.length > 0 && (
         <Section
+          compact
           tone="paper"
           id="offres"
           eyebrow="Catalogue"
@@ -108,9 +120,9 @@ export function HomePage() {
             </Button>
           }
         >
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
             {featuredOffers.map((offer, i) => (
-              <Reveal key={offer.slug} delay={(i % 3) * 80} className="h-full">
+              <Reveal key={offer.slug} delay={i * 80} className="h-full">
                 <OfferCard offer={offer} compact />
               </Reveal>
             ))}
@@ -121,6 +133,7 @@ export function HomePage() {
       {/* Projets fonciers */}
       {projects.length > 0 && (
         <Section
+          compact
           tone="white"
           id="projets"
           eyebrow="Nos projets fonciers"
@@ -145,7 +158,7 @@ export function HomePage() {
 
       {/* Mission, vision, valeurs */}
       {(company.mission || company.vision || company.values.length > 0) && (
-        <Section tone="marine" eyebrow="Ce qui nous guide" title="Mission, vision et valeurs">
+        <Section compact tone="marine" eyebrow="Ce qui nous guide" title="Mission, vision et valeurs">
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="space-y-8">
               {company.mission && (

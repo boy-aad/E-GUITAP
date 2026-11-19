@@ -62,11 +62,11 @@ export function Section({
       id={id}
       aria-labelledby={headingId}
       aria-label={headingId ? undefined : ariaLabel}
-      className={`${TONES[tone]} ${compact ? 'py-14 lg:py-20' : 'py-20 lg:py-28'} scroll-mt-24 ${className}`}
+      className={`${TONES[tone]} ${compact ? 'py-12 lg:py-16' : 'py-20 lg:py-28'} scroll-mt-24 ${className}`}
     >
       <Container>
         {hasHeader && (
-          <Reveal className="mb-10 flex flex-col justify-between gap-6 lg:mb-14 lg:flex-row lg:items-end">
+          <Reveal className={`${compact ? 'mb-8 lg:mb-10' : 'mb-10 lg:mb-14'} flex flex-col justify-between gap-6 lg:flex-row lg:items-end`}>
             <div className="max-w-3xl space-y-4">
               {eyebrow && <Eyebrow tone={dark ? 'dark' : 'light'}>{eyebrow}</Eyebrow>}
               {title && (
