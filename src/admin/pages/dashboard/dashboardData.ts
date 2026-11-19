@@ -36,7 +36,8 @@ export async function loader({ request }: { request: Request }) {
   // Journal (admin uniquement : RLS « audit : lecture admin »), lu en parallèle.
   const adminQueries = isAdmin
     ? Promise.all([
-        supabase.from('audit_log').select('id, created_at, actor_id, table_name, action, old_data, new_data').order('created_at', { ascending: false }).limit(10),
+        // Écritures des membres de l'équipe uniquement (comme la page Journal).
+        supabase.from('audit_log').select('id, created_at, actor_id, table_name, action, old_data, new_data').not('actor_id', 'is', null).order('created_at', { ascending: false }).limit(10),
         supabase.from('staff_profiles').select('user_id, full_name'),
       ])
     : Promise.resolve([null, null] as const);
@@ -102,7 +103,7 @@ export async function loader({ request }: { request: Request }) {
   const activity: ActivityItem[] = (log?.data ?? []).map((l) => ({
     id: l.id,
     at: l.created_at,
-    who: actorLabel(l, names),
+    who: actorLabel(l.actor_id, names),
     what: `${ACTION_VERBS[l.action] ?? l.action} ${tablePhrase(l.table_name)}`,
     item: itemLabel(l.new_data ?? l.old_data),
   }));

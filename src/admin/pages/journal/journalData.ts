@@ -4,11 +4,11 @@ import { tableParams } from '../../ui';
 import { actorLabel, itemLabel } from './auditLabels';
 
 // Journal d'activité (PRD § 6.9) : lecture de audit_log, réservée aux administrateurs (RLS
-// « audit : lecture admin »). Filtres dans l'adresse : rubrique, auteur, période.
+// « audit : lecture admin »). Seules les écritures d'un membre connecté sont affichées : les
+// opérations sans utilisateur (formulaire public, migrations, Edge Functions) restent en base
+// mais n'apparaissent pas. Filtres dans l'adresse : rubrique, auteur, période.
 
 export const PAGE_SIZE = 25;
-/** Valeur du filtre « auteur » pour les opérations sans utilisateur connecté. */
-export const SYSTEM_ACTOR = 'systeme';
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -38,8 +38,8 @@ export async function listLoader({ request }: { request: Request }) {
 
   let query = supabase.from('audit_log').select('id, created_at, actor_id, table_name, action, old_data, new_data', { count: 'exact' });
   if (filters.table) query = query.eq('table_name', filters.table);
-  if (filters.actor === SYSTEM_ACTOR) query = query.is('actor_id', null);
-  else if (UUID_RE.test(filters.actor)) query = query.eq('actor_id', filters.actor);
+  query = query.not('actor_id', 'is', null);
+  if (UUID_RE.test(filters.actor)) query = query.eq('actor_id', filters.actor);
   if (filters.since) query = query.gte('created_at', new Date(`${filters.since}T00:00:00`).toISOString());
   if (filters.until) query = query.lt('created_at', nextDay(filters.until));
 
@@ -49,7 +49,7 @@ export async function listLoader({ request }: { request: Request }) {
   const rows = log.data.map((l) => ({
     id: String(l.id),
     at: l.created_at,
-    who: actorLabel(l, names),
+    who: actorLabel(l.actor_id, names),
     table: l.table_name,
     action: l.action,
     item: itemLabel(l.new_data ?? l.old_data),
@@ -64,11 +64,11 @@ export async function entryLoader({ params }: { params: { id?: string } }) {
   await requireAdmin();
   const id = Number(params.id);
   if (!Number.isInteger(id)) throw new Response('Entrée introuvable', { status: 404 });
-  const [entry, staff] = await Promise.all([supabase.from('audit_log').select('*').eq('id', id).maybeSingle(), staffNames()]);
+  const [entry, staff] = await Promise.all([supabase.from('audit_log').select('*').eq('id', id).not('actor_id', 'is', null).maybeSingle(), staffNames()]);
   if (entry.error) throw new Error(entry.error.message);
   if (!entry.data) throw new Response('Entrée introuvable', { status: 404 });
   const names = new Map(staff.map((s) => [s.user_id, s.full_name]));
-  return { entry: entry.data, who: actorLabel(entry.data, names), item: itemLabel(entry.data.new_data ?? entry.data.old_data) };
+  return { entry: entry.data, who: actorLabel(entry.data.actor_id, names), item: itemLabel(entry.data.new_data ?? entry.data.old_data) };
 }
 
 export type EntryData = Awaited<ReturnType<typeof entryLoader>>;

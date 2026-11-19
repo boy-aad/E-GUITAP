@@ -4,7 +4,7 @@ import { Field, Input, Select } from '../../components/ui/Field';
 import { formatDateTime } from '../format';
 import { AdminPageHeader, Badge, DataTable, cardClass, ghostButton, secondaryButton, type Column } from '../ui';
 import { ACTION_LABELS, AUDIT_TABLES, tableLabel } from './journal/auditLabels';
-import { PAGE_SIZE, SYSTEM_ACTOR, listLoader, type JournalData, type JournalRow } from './journal/journalData';
+import { PAGE_SIZE, listLoader, type JournalData, type JournalRow } from './journal/journalData';
 
 export const loader = listLoader;
 export const handle = { crumb: "Journal d'activité" };
@@ -38,7 +38,7 @@ export function Component() {
       <title>Journal d'activité | Administration E-GUITAP</title>
       <AdminPageHeader
         title="Journal d'activité"
-        description="Toutes les créations, modifications et suppressions enregistrées dans l'administration. Ouvrez une ligne pour voir le détail avant / après."
+        description="Créations, modifications et suppressions faites par les membres de l'équipe. Ouvrez une ligne pour voir le détail avant / après."
       />
 
       {/* Filtres dans l'adresse : la page filtrée peut être partagée ou rechargée. */}
@@ -63,7 +63,6 @@ export function Component() {
                 {s.full_name}
               </option>
             ))}
-            <option value={SYSTEM_ACTOR}>Site et système (sans utilisateur)</option>
           </Select>
         </Field>
         <Field label="Du">

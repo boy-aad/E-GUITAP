@@ -32,12 +32,5 @@ export function itemLabel(data: unknown): string | null {
   return null;
 }
 
-/** Auteur d'une entrée : membre de l'équipe, formulaire public ou opération technique. */
-export function actorLabel(entry: { actor_id: string | null; table_name: string; action: string }, names: Map<string, string>): string {
-  if (entry.actor_id) return names.get(entry.actor_id) ?? 'Un membre de l’équipe';
-  // Sans utilisateur connecté : formulaire public (nouvelle demande) ou opération technique (migration, script, Edge Function).
-  if (entry.table_name === 'inquiries' && entry.action === 'INSERT') return 'Le formulaire du site';
-  // Profil créé par l'Edge Function admin-users (clé service_role, donc sans utilisateur) lors d'une invitation.
-  if (entry.table_name === 'staff_profiles' && entry.action === 'INSERT') return 'Invitation (page Équipe)';
-  return 'Système (migration, script ou service)';
-}
+/** Auteur d'une entrée (le journal n'affiche que les écritures faites par un membre connecté). */
+export const actorLabel = (actorId: string | null, names: Map<string, string>) => (actorId && names.get(actorId)) || 'Un membre de l’équipe';

@@ -128,10 +128,11 @@ Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECR
 
 ## Journal d'activité
 
-- `/admin/journal` (administrateurs) : toutes les écritures enregistrées par les triggers `write_audit_log`,
+- `/admin/journal` (administrateurs) : écritures faites par un membre connecté (enregistrées par les triggers `write_audit_log`),
   filtrables par rubrique, auteur et période (paramètres d'URL `rubrique`, `auteur`, `du`, `au`), 25 par page.
 - `/admin/journal/:id` : détail avant / après, limité aux champs modifiés pour une modification.
-- Écritures sans utilisateur connecté : formulaire public (demandes), invitation via `admin-users`, migrations et scripts.
+- Écritures sans utilisateur connecté (formulaire public, invitation via `admin-users`, migrations, scripts) : conservées
+  en base mais non affichées (journal et activité récente du tableau de bord).
 
 ## Règles de contenu
 
