@@ -1,6 +1,8 @@
+import { mediaImage } from '../lib/media';
 import type { ImageSource, LandProject } from './types';
 
-// Images des projets fonciers en attendant la médiathèque (phase 6) :
+// Images des projets fonciers : galerie de la médiathèque si elle existe (couverture en premier).
+// Sinon, visuels intégrés au site :
 // - photos réelles communiquées par E-GUITAP (public/assets/projets/), retouchées
 //   (rognage, désembuage, contraste) mais non modifiées sur le fond ;
 // - sinon, illustration générée propre au projet (public/assets/illustrations/projets/),
@@ -30,9 +32,12 @@ const ILLUSTRATED = new Set(['amaria-ouassou', 'site-de-forecariah', 'bady']);
 
 const photoUrl = (p: RealPhoto, w: number) => `/assets/projets/${p.file}-${w}.webp`;
 
-/** Photos réelles d'un projet (galerie) ; vide s'il n'y en a pas. */
-export function projectPhotos(slug: string): ImageSource[] {
-  return (REAL_PHOTOS[slug] ?? []).map((p) => {
+type ProjectVisuals = Pick<LandProject, 'slug' | 'media'>;
+
+/** Galerie d'un projet : médiathèque, sinon photos réelles intégrées ; vide s'il n'y en a pas. */
+export function projectPhotos(project: ProjectVisuals): ImageSource[] {
+  if (project.media.length) return project.media.map(mediaImage);
+  return (REAL_PHOTOS[project.slug] ?? []).map((p) => {
     const [large, small] = p.widths;
     return {
       src: photoUrl(p, large),
@@ -46,9 +51,9 @@ export function projectPhotos(slug: string): ImageSource[] {
   });
 }
 
-/** Image de couverture : première photo réelle, sinon illustration du projet, sinon rien. */
-export function projectCover(project: Pick<LandProject, 'slug'>): ImageSource | null {
-  const [first] = projectPhotos(project.slug);
+/** Image de couverture : première image de la galerie, sinon illustration du projet, sinon rien. */
+export function projectCover(project: ProjectVisuals): ImageSource | null {
+  const [first] = projectPhotos(project);
   if (first) return first;
   if (!ILLUSTRATED.has(project.slug)) return null;
   return {

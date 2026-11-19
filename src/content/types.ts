@@ -128,6 +128,10 @@ export interface LandProject {
   summary: string;
   description: string;
   objectives: string[];
+  /** Galerie de la médiathèque, couverture en premier (vide : visuels du site). */
+  media: MediaAsset[];
+  /** Jalons publics, par date (date au format AAAA-MM-JJ, ou null). */
+  milestones: { title: string; description: string | null; date: string | null }[];
   /** null = non communiqué : rien n'est affiché. */
   developmentStatus: LandDevelopmentStatus | null;
   commercialStatus: LandCommercialStatus | null;

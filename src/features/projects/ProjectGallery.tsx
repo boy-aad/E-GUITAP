@@ -9,7 +9,7 @@ import type { LandProject } from '../../content/types';
  * réelles ; sinon, son illustration (avec mention) ou le visuel neutre de la charte.
  */
 export function ProjectGallery({ project }: { project: LandProject }) {
-  const photos = projectPhotos(project.slug);
+  const photos = projectPhotos(project);
   const [selected, setSelected] = useState(0);
   const main = photos[selected] ?? projectCover(project);
 
@@ -42,7 +42,8 @@ export function ProjectGallery({ project }: { project: LandProject }) {
           ))}
         </ul>
       )}
-      {photos.length > 0 && <p className="text-xs text-slate-text">Photos du site communiquées par E-GUITAP.</p>}
+      {/* Mention réservée aux vraies photos (illustrations et plans n'en sont pas). */}
+      {photos.length > 0 && project.media.every((m) => m.kind === 'photo_reelle') && <p className="text-xs text-slate-text">Photos du site communiquées par E-GUITAP.</p>}
     </div>
   );
 }

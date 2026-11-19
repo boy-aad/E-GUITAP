@@ -14,6 +14,7 @@ import {
 } from '../content/landProjects';
 import { ProjectCard } from '../features/projects/ProjectCard';
 import { ProjectGallery } from '../features/projects/ProjectGallery';
+import { ProjectMilestones } from '../features/projects/ProjectMilestones';
 import { projectPhotos } from '../content/projectImages';
 import { useInquiry } from '../features/inquiry/InquiryContext';
 import { NotFoundPage } from './NotFoundPage';
@@ -34,7 +35,7 @@ export function ProjectDetailPage() {
       <Seo
         title={project.name}
         description={`${project.name} — projet foncier E-GUITAP, superficie annoncée de ${formatHectares(project.areaHa)}. ${project.summary}`}
-        image={projectPhotos(project.slug)[0]?.src}
+        image={projectPhotos(project)[0]?.src}
       />
       <PageHero
         eyebrow="Projet foncier"
@@ -67,6 +68,7 @@ export function ProjectDetailPage() {
                 ))}
               </ul>
             </section>
+            <ProjectMilestones milestones={project.milestones} />
           </div>
 
           <aside className="space-y-4 self-start lg:sticky lg:top-28">

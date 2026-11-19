@@ -39,10 +39,12 @@ src/
 │   │                     ConfirmDialog (useConfirm), Toast, StickyActionBar + useUnsavedChanges
 │   │                     charts (StackedColumns, BarList : graphiques maison, sans dépendance)
 │   ├── media/            médiathèque : conversion WebP dans le navigateur (1920 + 640 px, 5 Mo max),
-│   │                     Uploader (glisser-déposer, texte alternatif obligatoire), ImagePicker
+│   │                     Uploader (glisser-déposer, texte alternatif obligatoire), MediaPickerDialog, ImagePicker
 │   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Page d'accueil (slides), Entreprise,
 │                         Coordonnées et réseaux, Textes des pages, Médiathèque, Projets fonciers
-│                         (sous-dossiers : données et sections ; content/ pour les pages « Contenus »)
+│                         (sous-dossiers : données et sections ; content/ pour les pages « Contenus » ;
+│                         project/ : fiche en onglets, galerie, jalons, documents fonciers en bucket privé
+│                         consultés par lien signé de 60 s, réservés aux administrateurs)
 ├── components/
 │   ├── brand/            Logo officiel (charte v1.3), skyline, bande tricolore
 │   ├── layout/           Header (transparent sur l'accueil), MobileMenu, Footer, SocialLinks, Layout

@@ -64,7 +64,7 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     supabase
       .from('land_projects')
       .select(
-        'slug, name, prefecture, area_ha, summary, description, development_status, commercial_status, sort_order, land_project_objectives (label, sort_order)',
+        `slug, name, prefecture, area_ha, summary, description, development_status, commercial_status, sort_order, land_project_objectives (label, sort_order), land_project_media (sort_order, is_cover, media (${MEDIA_COLUMNS})), land_project_milestones (title, description, occurred_on, is_public)`,
       )
       .eq('publication', 'publie')
       .order('sort_order')
@@ -143,6 +143,15 @@ export async function loadSiteContent({ request }: { request: Request }): Promis
     summary: p.summary,
     description: p.description,
     objectives: [...p.land_project_objectives].sort(bySortOrder).map((o) => o.label),
+    // Galerie : couverture d'abord, puis ordre choisi.
+    media: [...p.land_project_media]
+      .sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order)
+      .flatMap((m) => toMedia(m.media) ?? []),
+    // Jalons publics uniquement (un membre de l'équipe connecté lit aussi les jalons internes).
+    milestones: p.land_project_milestones
+      .filter((m) => m.is_public)
+      .sort((a, b) => (a.occurred_on ?? '9999').localeCompare(b.occurred_on ?? '9999'))
+      .map((m) => ({ title: m.title, description: m.description, date: m.occurred_on })),
     developmentStatus: p.development_status,
     commercialStatus: p.commercial_status,
   }));

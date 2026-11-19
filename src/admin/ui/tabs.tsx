@@ -1,4 +1,4 @@
-import { useId, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 
 export type TabItem = { id: string; label: string; /** Pastille d'alerte (ex. champ en erreur). */ flagged?: boolean };
 
@@ -29,6 +29,11 @@ type TabsState = ReturnType<typeof useTabs>;
 export function Tabs({ items, state, label }: { items: TabItem[]; state: TabsState; label: string }) {
   const listRef = useRef<HTMLDivElement>(null);
   const { base, current, setCurrent } = state;
+
+  // Barre défilante sur mobile : l'onglet courant reste visible (y compris ouvert par programme).
+  useEffect(() => {
+    document.getElementById(`${base}-tab-${current}`)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, [base, current]);
 
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     const i = items.findIndex((t) => t.id === current);

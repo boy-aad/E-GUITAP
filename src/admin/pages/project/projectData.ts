@@ -1,7 +1,9 @@
 import { redirect } from 'react-router';
 import { supabase } from '../../../lib/supabase';
 import type { Enums, TablesInsert } from '../../../types/database';
+import { MEDIA_SELECT, toMediaAsset } from '../../../lib/media';
 import { friendlyDbError, slugify } from '../../format';
+import { DOCUMENTS_BUCKET, relationAction } from './projectRelations';
 
 // Lecture et enregistrement d'un projet foncier (logique inchangée depuis l'étape E2).
 
@@ -10,19 +12,32 @@ export type ActionResult = { ok: boolean; message: string; fieldErrors?: Record<
 
 const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
+const EMPTY = { project: null, objectives: [] as string[], media: [] as GalleryItem[], milestones: [] as MilestoneRow[], documents: [] as DocumentRow[] };
+
 export async function loader({ params }: Params) {
-  if (!params.id) return { project: null, objectives: [] as string[] };
-  const { data, error } = await supabase
-    .from('land_projects')
-    .select('*, land_project_objectives (label, sort_order)')
-    .eq('id', params.id)
-    .maybeSingle();
-  if (error) throw new Error(error.message);
-  if (!data) throw new Response('Projet introuvable', { status: 404 });
-  const { land_project_objectives, ...project } = data;
+  if (!params.id) return EMPTY;
+  const [main, gallery, milestones, documents] = await Promise.all([
+    supabase.from('land_projects').select('*, land_project_objectives (label, sort_order)').eq('id', params.id).maybeSingle(),
+    supabase.from('land_project_media').select(`media_id, sort_order, is_cover, media (${MEDIA_SELECT})`).eq('project_id', params.id).order('sort_order'),
+    supabase.from('land_project_milestones').select('id, title, description, occurred_on, is_public').eq('project_id', params.id).order('occurred_on', { nullsFirst: false }).order('created_at'),
+    // Documents : lisibles par l'équipe (RLS) ; l'onglet n'est proposé qu'aux administrateurs.
+    supabase.from('land_project_documents').select('id, doc_type, title, storage_path, status, notes, created_at').eq('project_id', params.id).order('created_at', { ascending: false }),
+  ]);
+  const failed = [main, gallery, milestones, documents].find((r) => r.error)?.error;
+  if (failed) throw new Error(failed.message);
+  if (!main.data) throw new Response('Projet introuvable', { status: 404 });
+  const { land_project_objectives, ...project } = main.data;
   const objectives = [...land_project_objectives].sort((a, b) => a.sort_order - b.sort_order).map((o) => o.label);
-  return { project, objectives };
+  const media = (gallery.data ?? []).flatMap((g) => {
+    const asset = toMediaAsset(g.media);
+    return asset ? [{ id: g.media_id, isCover: g.is_cover, media: asset }] : [];
+  });
+  return { project, objectives, media, milestones: milestones.data ?? [], documents: documents.data ?? [] };
 }
+
+export type GalleryItem = { id: string; isCover: boolean; media: NonNullable<ReturnType<typeof toMediaAsset>> };
+export type MilestoneRow = { id: string; title: string; description: string | null; occurred_on: string | null; is_public: boolean };
+export type DocumentRow = { id: string; doc_type: Enums<'land_document_type'>; title: string; storage_path: string; status: Enums<'document_status'>; notes: string | null; created_at: string };
 
 /** « 1 000,5 » → 1000.5 ; null si vide ou invalide. */
 function parseNumber(raw: FormDataEntryValue | null): number | null {
@@ -38,7 +53,19 @@ const optionalText = (raw: FormDataEntryValue | null) => text(raw) || null;
 export async function action({ request, params }: Params & { request: Request }): Promise<ActionResult | Response> {
   const form = await request.formData();
 
+  if (params.id) {
+    const related = await relationAction(params.id, form);
+    if (related) return related;
+  }
+
   if (form.get('intent') === 'delete' && params.id) {
+    // Fichiers des documents d'abord : la suppression du projet efface leurs fiches en cascade.
+    const { data: docs, error: docsError } = await supabase.from('land_project_documents').select('storage_path').eq('project_id', params.id);
+    if (docsError) return { ok: false, message: friendlyDbError(docsError) };
+    if (docs.length) {
+      const removed = await supabase.storage.from(DOCUMENTS_BUCKET).remove(docs.map((d) => d.storage_path));
+      if (removed.error) return { ok: false, message: `Documents non supprimés : ${removed.error.message}` };
+    }
     const { error } = await supabase.from('land_projects').delete().eq('id', params.id);
     if (error) return { ok: false, message: friendlyDbError(error) };
     throw redirect('/admin/projets?supprime=1');
