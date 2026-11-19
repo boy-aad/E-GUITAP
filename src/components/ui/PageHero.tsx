@@ -28,7 +28,7 @@ function BrandScene() {
 }
 
 /**
- * Bannière des pages intérieures (format 21:9 sur grand écran) : image si disponible,
+ * Bannière des pages intérieures, contenu centré verticalement : image si disponible,
  * sinon scène de marque, avec fil d'Ariane, eyebrow, titre et introduction.
  */
 export function PageHero({ eyebrow, title, children, crumbs, image }: PageHeroProps) {
@@ -54,7 +54,8 @@ export function PageHero({ eyebrow, title, children, crumbs, image }: PageHeroPr
           <BrandScene />
         </div>
       )}
-      <div className="relative mx-auto flex min-h-[300px] max-w-7xl flex-col justify-end px-4 pb-14 pt-12 sm:min-h-[340px] sm:px-6 lg:aspect-[21/9] lg:max-h-[520px] lg:min-h-[400px] lg:px-8 lg:pb-20">
+      {/* Contenu centré verticalement, hauteur réglée par le contenu (pas de format imposé : pas de vide sous l'en-tête). */}
+      <div className="relative mx-auto flex min-h-[280px] max-w-7xl flex-col justify-center px-4 py-12 sm:min-h-[320px] sm:px-6 lg:min-h-[380px] lg:px-8 lg:py-16">
         <div className="max-w-3xl space-y-5">
           <Breadcrumbs items={trail} onDark />
           <Eyebrow tone="dark">{eyebrow}</Eyebrow>
