@@ -60,7 +60,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: 'Administration',
     adminOnly: true,
     items: [
-      { to: '/admin/equipe', label: 'Équipe', icon: Users, soon: true },
+      { to: '/admin/equipe', label: 'Équipe', icon: Users },
       { to: '/admin/journal', label: "Journal d'activité", icon: History, soon: true },
     ],
   },
@@ -77,5 +77,6 @@ export const SECTION_LABELS: Record<string, string> = {
   entreprise: 'Entreprise',
   coordonnees: 'Coordonnées et réseaux',
   textes: 'Textes des pages',
+  equipe: 'Équipe',
   outils: 'Outils',
 };

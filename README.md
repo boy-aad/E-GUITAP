@@ -41,7 +41,8 @@ src/
 │   ├── media/            médiathèque : conversion WebP dans le navigateur (1920 + 640 px, 5 Mo max),
 │   │                     Uploader (glisser-déposer, texte alternatif obligatoire), MediaPickerDialog, ImagePicker
 │   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Page d'accueil (slides), Entreprise,
-│                         Coordonnées et réseaux, Textes des pages, Médiathèque, Projets fonciers
+│                         Coordonnées et réseaux, Textes des pages, Médiathèque, Projets fonciers, Équipe,
+│                         Connexion, Mot de passe oublié, Réinitialisation (AuthShell)
 │                         (sous-dossiers : données et sections ; content/ pour les pages « Contenus » ;
 │                         project/ : fiche en onglets, galerie, jalons, documents fonciers en bucket privé
 │                         consultés par lien signé de 60 s, réservés aux administrateurs)
@@ -82,6 +83,7 @@ Migrations versionnées dans `supabase/migrations/` (appliquées dans l'ordre) :
 | `…_admin_only_deletes` | suppressions réservées aux admins (offres, catégories, valeurs, coordonnées, slides, textes, médias, fichiers `public-media`) ; une catégorie contenant des offres ne peut pas être supprimée |
 | `…_media_variants` | médias : `variants` (déclinaisons par largeur), `bytes`, `updated_at` + déclencheurs `updated_at` et journal |
 | `…_hero_and_company` | point focal des slides (`focal_x`, `focal_y`), position publique du siège (`office_lat`, `office_lng`, carte non affichée tant que Q3 n'est pas tranchée), réseaux sociaux en https obligatoire, journal d'activité sur slides, valeurs et textes |
+| `…_staff_admin` | garde-fou SQL « au moins un administrateur actif » (trigger `private.ensure_active_admin` sur `staff_profiles`) |
 
 Note : sur le projet distant, ces quatre migrations sont enregistrées avec l'horodatage de leur application (contenu identique aux fichiers).
 
@@ -113,13 +115,24 @@ Le formulaire appelle l'Edge Function `supabase/functions/submit-inquiry` (dépl
 
 Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECRET_KEY`, `RESEND_API_KEY` ; facultatifs : `RESEND_FROM`, `INQUIRY_NOTIFY_TO`, `ALLOWED_ORIGINS` (domaine de production).
 
+## Équipe et comptes
+
+- Page `/admin/equipe` (administrateurs) : liste, invitation, rôle, désactivation / réactivation (aucune suppression de compte).
+- Edge Function `supabase/functions/admin-users` (`verify_jwt: true`) : vérifie que l'appelant est un administrateur actif,
+  puis `list` (e-mail et dernière connexion lus dans `auth.users`) ou `invite` (`inviteUserByEmail` + profil d'équipe).
+  Même secret facultatif `ALLOWED_ORIGINS` que `submit-inquiry`.
+- Mot de passe oublié : `/admin/mot-de-passe-oublie` → e-mail Supabase → `/admin/reinitialisation` (aussi page d'accueil des invités).
+- À configurer dans Supabase (Authentication → URL Configuration) : ajouter `http://localhost:3000/admin/reinitialisation`
+  et l'adresse de production équivalente aux URL de redirection autorisées. Pour des envois fiables, brancher le SMTP
+  d'Authentication sur Resend (le service intégré de Supabase est très limité).
+
 ## Règles de contenu
 
 - Le nom s'écrit toujours **E-GUITAP** (trait d'union) ; la dénomination développée est réservée aux mentions légales.
 - Aucune information non communiquée par l'entreprise (réalisations, chiffres, certifications, titres fonciers…).
 - Les projets fonciers sont présentés avec leur superficie **annoncée** et l'avertissement `LAND_DISCLAIMER`.
 - Visuels en attendant de vraies photos : illustrations de la charte (mention « Visuel d'illustration ») ou photos libres de droits Unsplash / Pexels (licence vérifiée, crédit enregistré, mention « Photo d'illustration »), jamais présentées comme des chantiers, terrains ou équipes d'E-GUITAP.
-- Projets fonciers : photos réelles communiquées par l'entreprise (`public/assets/projets/`), sinon illustration générée du projet (`public/assets/illustrations/projets/`, mention « Visuel d'illustration ») ; correspondances dans `src/content/projectImages.ts`.
+- Projets fonciers : galerie de la médiathèque (onglet Médias du projet) ; à défaut, photos réelles communiquées par l'entreprise (`public/assets/projets/`), sinon illustration générée du projet (`public/assets/illustrations/projets/`, mention « Visuel d'illustration ») ; correspondances dans `src/content/projectImages.ts`.
 - Photos d'illustration actuelles : `public/assets/photos/` (WebP), crédits dans `docs/CREDITS-PHOTOS.md` et dans les mentions légales. Une image téléversée en base reste prioritaire.
 - Aucun prix ni budget affiché : les offres sont « Sur devis ».
 - Règles complètes pour les agents de code : `CLAUDE.md`.

@@ -65,6 +65,8 @@ export function friendlyDbError(error: { code?: string; message: string }): stri
       return 'La commercialisation ne peut être « ouverte » que si les documents sont « validés juridiquement ».';
     return 'Une valeur ne respecte pas les règles attendues (format ou plage autorisée).';
   }
+  // Garde-fous SQL (raise exception) : message déjà rédigé pour l'utilisateur.
+  if (error.code === 'P0001') return error.message;
   if (error.code === '42501') return "Vous n'avez pas les droits nécessaires pour cette action.";
   if (error.code === '23503' && error.message.includes('Catégorie non vide'))
     return `${error.message} Déplacez ou supprimez d'abord ses offres.`;
