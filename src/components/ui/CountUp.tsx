@@ -7,6 +7,8 @@ type CountUpProps = {
   /** Mise en forme de la valeur (ex. formatHectares). */
   format?: (n: number) => string;
   durationMs?: number;
+  /** Attente avant le départ, une fois visible (décalage entre plusieurs compteurs). */
+  delayMs?: number;
   className?: string;
 };
 
@@ -17,7 +19,7 @@ const defaultFormat = (n: number) => new Intl.NumberFormat('fr-FR').format(n);
  * annoncée aux lecteurs d'écran dès le départ ; l'animation est désactivée si
  * l'utilisateur a demandé à réduire les mouvements.
  */
-export function CountUp({ value, format = defaultFormat, durationMs = 1400, className = '' }: CountUpProps) {
+export function CountUp({ value, format = defaultFormat, durationMs = 1800, delayMs = 0, className = '' }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduced = usePrefersReducedMotion();
   const [current, setCurrent] = useState<number | null>(null);
@@ -26,25 +28,29 @@ export function CountUp({ value, format = defaultFormat, durationMs = 1400, clas
     const el = ref.current;
     if (!el || reduced || typeof IntersectionObserver === 'undefined') return;
     let frame = 0;
+    let timer = 0;
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry?.isIntersecting) return;
       observer.disconnect();
-      const start = performance.now();
-      const decimals = Number.isInteger(value) ? 0 : 1;
-      const tick = (now: number) => {
-        const t = Math.min(1, (now - start) / durationMs);
-        const eased = 1 - Math.pow(1 - t, 3);
-        setCurrent(t < 1 ? Number((value * eased).toFixed(decimals)) : value);
-        if (t < 1) frame = requestAnimationFrame(tick);
-      };
-      frame = requestAnimationFrame(tick);
+      timer = window.setTimeout(() => {
+        const start = performance.now();
+        const decimals = Number.isInteger(value) ? 0 : 1;
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - start) / durationMs);
+          const eased = 1 - Math.pow(1 - t, 3);
+          setCurrent(t < 1 ? Number((value * eased).toFixed(decimals)) : value);
+          if (t < 1) frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      }, delayMs);
     }, { threshold: 0.4 });
     observer.observe(el);
     return () => {
       observer.disconnect();
+      window.clearTimeout(timer);
       cancelAnimationFrame(frame);
     };
-  }, [value, durationMs, reduced]);
+  }, [value, durationMs, delayMs, reduced]);
 
   // Sans animation possible, la valeur finale s'affiche directement.
   const animated = !reduced && typeof IntersectionObserver !== 'undefined';

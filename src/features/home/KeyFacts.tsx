@@ -10,11 +10,12 @@ export function KeyFacts() {
   const totalHa = totalAreaHa(projects);
 
   const facts: { label: string; value: ReactNode }[] = [
-    { label: "domaines d'activité", value: <CountUp value={domains.length} /> },
+    // Départs décalés : les compteurs démarrent l'un après l'autre, après l'apparition de la carte.
+    { label: "domaines d'activité", value: <CountUp value={domains.length} delayMs={300} /> },
     ...(projects.length > 0
       ? [
-          { label: 'projets fonciers', value: <CountUp value={projects.length} /> },
-          { label: 'de superficie annoncée', value: <CountUp value={totalHa} format={formatHectares} /> },
+          { label: 'projets fonciers', value: <CountUp value={projects.length} delayMs={450} /> },
+          { label: 'de superficie annoncée', value: <CountUp value={totalHa} format={formatHectares} delayMs={600} /> },
         ]
       : []),
     { label: 'siège et zone principale', value: company.headOffice },
@@ -27,12 +28,12 @@ export function KeyFacts() {
           {facts.map((fact, i) => (
             <div
               key={fact.label}
-              className={`flex flex-col-reverse gap-1.5 px-4 py-6 text-center sm:px-6 sm:py-8 ${
+              className={`flex flex-col-reverse justify-center gap-1 px-3 py-4 text-center sm:px-5 sm:py-5 ${
                 i % 2 === 1 ? 'border-l border-slate-200' : ''
               } ${i >= 2 ? 'border-t border-slate-200 lg:border-t-0' : ''} ${i === 2 ? 'lg:border-l' : ''}`}
             >
               <dt className="text-xs text-slate-text sm:text-sm">{fact.label}</dt>
-              <dd className="font-poppins text-xl font-bold text-marine sm:text-3xl">{fact.value}</dd>
+              <dd className="font-poppins text-lg font-bold leading-tight text-marine sm:text-2xl">{fact.value}</dd>
             </div>
           ))}
         </dl>
