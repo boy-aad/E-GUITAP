@@ -41,7 +41,7 @@ src/
 │   ├── media/            médiathèque : conversion WebP dans le navigateur (1920 + 640 px, 5 Mo max),
 │   │                     Uploader (glisser-déposer, texte alternatif obligatoire), MediaPickerDialog, ImagePicker
 │   └── pages/            Tableau de bord, Demandes, Offres, Catégories, Page d'accueil (slides), Entreprise,
-│                         Coordonnées et réseaux, Textes des pages, Médiathèque, Projets fonciers, Équipe,
+│                         Coordonnées et réseaux, Textes des pages, Médiathèque, Projets fonciers, Équipe, Journal d'activité,
 │                         Connexion, Mot de passe oublié, Réinitialisation (AuthShell)
 │                         (sous-dossiers : données et sections ; content/ pour les pages « Contenus » ;
 │                         project/ : fiche en onglets, galerie, jalons, documents fonciers en bucket privé
@@ -125,6 +125,13 @@ Secrets à définir dans Supabase (Edge Functions → Secrets) : `TURNSTILE_SECR
 - À configurer dans Supabase (Authentication → URL Configuration) : ajouter `http://localhost:3000/admin/reinitialisation`
   et l'adresse de production équivalente aux URL de redirection autorisées. Pour des envois fiables, brancher le SMTP
   d'Authentication sur Resend (le service intégré de Supabase est très limité).
+
+## Journal d'activité
+
+- `/admin/journal` (administrateurs) : toutes les écritures enregistrées par les triggers `write_audit_log`,
+  filtrables par rubrique, auteur et période (paramètres d'URL `rubrique`, `auteur`, `du`, `au`), 25 par page.
+- `/admin/journal/:id` : détail avant / après, limité aux champs modifiés pour une modification.
+- Écritures sans utilisateur connecté : formulaire public (demandes), invitation via `admin-users`, migrations et scripts.
 
 ## Règles de contenu
 

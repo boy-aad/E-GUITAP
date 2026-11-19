@@ -89,10 +89,10 @@ export function RecentActivity({ items }: { items: DashboardData['activity'] }) 
     <ol className="divide-y divide-slate-100">
       {items.map((a) => (
         <li key={a.id} className="px-5 py-3 text-sm">
-          <p className="text-slate-800">
+          <Link to={`/admin/journal/${a.id}`} className="block text-slate-800 hover:underline focus-visible:outline-2 focus-visible:outline-gold">
             <span className="font-semibold">{a.who}</span> {a.what}
             {a.item && <span className="text-slate-600"> : « {a.item} »</span>}
-          </p>
+          </Link>
           <p className="text-xs text-slate-500">{formatDateTime(a.at)}</p>
         </li>
       ))}

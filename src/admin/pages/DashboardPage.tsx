@@ -108,7 +108,7 @@ export function Component() {
           <OffersWithoutImage items={data.offersWithoutImage} />
         </Panel>
         {data.isAdmin && (
-          <Panel title="Activité récente">
+          <Panel title="Activité récente" link={{ to: '/admin/journal', label: 'Tout le journal' }}>
             <RecentActivity items={data.activity} />
           </Panel>
         )}

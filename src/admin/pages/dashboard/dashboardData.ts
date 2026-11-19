@@ -1,6 +1,7 @@
 import { supabase } from '../../../lib/supabase';
 import type { Enums } from '../../../types/database';
 import { requireStaff } from '../../auth';
+import { ACTION_VERBS, actorLabel, itemLabel, tablePhrase } from '../journal/auditLabels';
 
 // Données du tableau de bord (PRD § 6.3), toutes lues avec les droits de l'utilisateur :
 // un éditeur ne voit pas le journal d'activité (RLS « audit : lecture admin »).
@@ -22,32 +23,6 @@ export type DraftItem = { kind: string; label: string; to: string };
 export type ActivityItem = { id: number; at: string; who: string; what: string; item: string | null };
 
 const emptyCounts = (): Record<InquiryType, number> => ({ contact: 0, renseignement_activite: 0, renseignement_projet: 0, demande_devis: 0 });
-
-const TABLE_LABELS: Record<string, string> = {
-  inquiries: 'une demande',
-  activity_services: 'une offre',
-  activity_domains: 'une catégorie',
-  land_projects: 'un projet foncier',
-  land_project_objectives: "l'objectif d'un projet",
-  land_project_documents: "un document foncier",
-  land_project_media: "un média de projet",
-  company_profile: "le profil de l'entreprise",
-  company_values: 'une valeur',
-  company_contacts: 'une coordonnée',
-  hero_slides: "une slide d'accueil",
-  content_blocks: 'un texte de page',
-  media: 'un média',
-  staff_profiles: "un membre de l'équipe",
-};
-const ACTION_LABELS: Record<string, string> = { INSERT: 'a créé', UPDATE: 'a modifié', DELETE: 'a supprimé' };
-
-/** Libellé lisible d'une ligne du journal (titre, nom…), sans jamais afficher de données privées. */
-function itemLabel(data: unknown): string | null {
-  if (!data || typeof data !== 'object') return null;
-  const d = data as Record<string, unknown>;
-  for (const k of ['title', 'name', 'full_name', 'label', 'key']) if (typeof d[k] === 'string') return d[k] as string;
-  return null;
-}
 
 export async function loader({ request }: { request: Request }) {
   const session = await requireStaff(request);
@@ -127,13 +102,8 @@ export async function loader({ request }: { request: Request }) {
   const activity: ActivityItem[] = (log?.data ?? []).map((l) => ({
     id: l.id,
     at: l.created_at,
-    // Sans utilisateur connecté : formulaire public (nouvelle demande) ou opération technique (migration, script).
-    who: l.actor_id
-      ? (names.get(l.actor_id) ?? 'Un membre de l’équipe')
-      : l.table_name === 'inquiries' && l.action === 'INSERT'
-        ? 'Le formulaire du site'
-        : 'Système (migration ou script)',
-    what: `${ACTION_LABELS[l.action] ?? l.action} ${TABLE_LABELS[l.table_name] ?? l.table_name}`,
+    who: actorLabel(l, names),
+    what: `${ACTION_VERBS[l.action] ?? l.action} ${tablePhrase(l.table_name)}`,
     item: itemLabel(l.new_data ?? l.old_data),
   }));
 

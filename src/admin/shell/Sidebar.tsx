@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router';
-import { ChevronsLeft, ChevronsRight, Clock3 } from 'lucide-react';
+import { ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Logo } from '../../components/brand/Logo';
 import { TricolorBand } from '../../components/brand/Skyline';
 import { NAV_GROUPS, type NavItem } from './navigation';
@@ -59,7 +59,6 @@ export function Sidebar({ isAdmin, counts, collapsed, onToggleCollapsed }: Sideb
                   <>
                     <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
                     {!collapsed && <span className="truncate">{item.label}</span>}
-                    {!collapsed && item.soon && <Clock3 className="ml-auto h-3.5 w-3.5 shrink-0 text-white/35" aria-hidden="true" />}
                     {count > 0 && (
                       <span
                         className={`rounded-full bg-gold px-1.5 text-[11px] font-bold leading-5 text-marine ${collapsed ? 'absolute right-1 top-1 min-w-5 text-center' : 'ml-auto'}`}
@@ -72,25 +71,18 @@ export function Sidebar({ isAdmin, counts, collapsed, onToggleCollapsed }: Sideb
                 const base = `relative flex items-center gap-3 rounded-lg py-2 text-sm ${collapsed ? 'justify-center px-2' : 'px-3'}`;
                 return (
                   <li key={item.to}>
-                    {item.soon ? (
-                      <span className={`${base} cursor-not-allowed text-white/35`} title={`${item.label} — bientôt disponible`} aria-disabled="true">
-                        {inner}
-                        <span className="sr-only">{collapsed ? `${item.label} ` : ''}(bientôt disponible)</span>
-                      </span>
-                    ) : (
-                      <Link
-                        to={item.to}
-                        title={collapsed ? item.label : undefined}
-                        aria-current={isActive(item) ? 'page' : undefined}
-                        className={`${base} font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-gold ${
-                          isActive(item) ? 'bg-white/10 text-gold' : 'text-white/80 hover:bg-white/5 hover:text-white'
-                        }`}
-                      >
-                        {inner}
-                        {collapsed && <span className="sr-only">{item.label}</span>}
-                        {count > 0 && <span className="sr-only"> ({count} nouvelle{count > 1 ? 's' : ''})</span>}
-                      </Link>
-                    )}
+                    <Link
+                      to={item.to}
+                      title={collapsed ? item.label : undefined}
+                      aria-current={isActive(item) ? 'page' : undefined}
+                      className={`${base} font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-gold ${
+                        isActive(item) ? 'bg-white/10 text-gold' : 'text-white/80 hover:bg-white/5 hover:text-white'
+                      }`}
+                    >
+                      {inner}
+                      {collapsed && <span className="sr-only">{item.label}</span>}
+                      {count > 0 && <span className="sr-only"> ({count} nouvelle{count > 1 ? 's' : ''})</span>}
+                    </Link>
                   </li>
                 );
               })}

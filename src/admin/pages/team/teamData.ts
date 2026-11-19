@@ -1,6 +1,7 @@
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { supabase } from '../../../lib/supabase';
 import type { Enums } from '../../../types/database';
+import { requireAdmin } from '../../auth';
 import { friendlyDbError } from '../../format';
 
 // Équipe (PRD § 6.8), administrateurs uniquement. Liste et invitation passent par l'Edge Function
@@ -39,21 +40,11 @@ async function functionError(error: unknown): Promise<FunctionBody> {
   return { error: 'Service de gestion de l’équipe indisponible. Vérifiez votre connexion et réessayez.' };
 }
 
-/** Rôle de la personne connectée, lu en base. */
-async function currentStaff() {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const { data } = await supabase.from('staff_profiles').select('user_id, role').eq('user_id', session?.user.id ?? '').maybeSingle();
-  return data;
-}
-
 export async function loader() {
-  const me = await currentStaff();
-  if (me?.role !== 'admin') throw new Response('Accès réservé aux administrateurs.', { status: 403 });
+  const me = await requireAdmin();
   const { data, error } = await supabase.functions.invoke<{ members: Member[] }>('admin-users', { body: { action: 'list' } });
   if (error || !data) throw new Error((await functionError(error)).error);
-  return { members: data.members, meId: me.user_id };
+  return { members: data.members, meId: me.userId };
 }
 
 export type TeamData = Awaited<ReturnType<typeof loader>>;

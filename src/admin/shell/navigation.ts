@@ -20,8 +20,6 @@ export type NavItem = {
   label: string;
   icon: LucideIcon;
   end?: boolean;
-  /** Module prévu dans une phase suivante (affiché, désactivé). */
-  soon?: boolean;
   /** Compteur affiché à droite (clé des compteurs chargés par la coque). */
   badge?: 'newInquiries' | 'newQuotes';
 };
@@ -61,7 +59,7 @@ export const NAV_GROUPS: NavGroup[] = [
     adminOnly: true,
     items: [
       { to: '/admin/equipe', label: 'Équipe', icon: Users },
-      { to: '/admin/journal', label: "Journal d'activité", icon: History, soon: true },
+      { to: '/admin/journal', label: "Journal d'activité", icon: History },
     ],
   },
 ];
@@ -78,5 +76,6 @@ export const SECTION_LABELS: Record<string, string> = {
   coordonnees: 'Coordonnées et réseaux',
   textes: 'Textes des pages',
   equipe: 'Équipe',
+  journal: "Journal d'activité",
   outils: 'Outils',
 };

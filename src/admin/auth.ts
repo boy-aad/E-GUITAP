@@ -41,3 +41,16 @@ export async function requireStaff(request: Request): Promise<AdminSession> {
 export function safeNext(value: string | null): string {
   return value && value.startsWith('/admin') && !value.startsWith('//') ? value : '/admin';
 }
+
+/**
+ * Garde des pages réservées aux administrateurs (Équipe, Journal) : rôle lu en base.
+ * La RLS reste la vraie protection ; la page affiche sinon une erreur 403 explicite.
+ */
+export async function requireAdmin(): Promise<{ userId: string }> {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const { data } = await supabase.from('staff_profiles').select('role, is_active').eq('user_id', session?.user.id ?? '').maybeSingle();
+  if (!session || !data?.is_active || data.role !== 'admin') throw new Response('Accès réservé aux administrateurs.', { status: 403 });
+  return { userId: session.user.id };
+}

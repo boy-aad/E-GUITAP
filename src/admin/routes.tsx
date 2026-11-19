@@ -36,6 +36,8 @@ export const adminRoutes: RouteObject = {
         { path: 'projets/nouveau', lazy: () => import('./pages/ProjectEditPage') },
         { path: 'projets/:id', lazy: () => import('./pages/ProjectEditPage') },
         { path: 'equipe', lazy: () => import('./pages/TeamPage') },
+        { path: 'journal', lazy: () => import('./pages/JournalPage') },
+        { path: 'journal/:id', lazy: () => import('./pages/JournalEntryPage') },
         // Outil de contrôle : déclaré seulement en développement (absent du build de production).
         ...(import.meta.env.DEV ? [{ path: 'outils/illustrations', lazy: () => import('./pages/IllustrationsPage') }] : []),
         { path: '*', element: <AdminError notFound /> },
