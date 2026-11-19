@@ -48,7 +48,7 @@ Supabase : projet `ddfanksdrhwmdiisuvpb` (eu-west-1). Types générés dans `src
 13. Aucune clé secrète (`service_role`, `sb_secret_…`, `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`) côté navigateur. Opérations privilégiées = Edge Function qui vérifie le JWT **et** le rôle.
 14. Code admin chargé en **lazy**, jamais importé par le site public. Loader public unique (`loadSiteContent`).
 15. Ne pas toucher au commentaire HMR de `vite.config.ts`, ni au dessin du `Logo`.
-16. Accessibilité : contrastes AA, focus visible, clavier, `aria-*` corrects, `prefers-reduced-motion` respecté partout. **Seule exception (validée par le propriétaire) : les compteurs de chiffres (`CountUp`)** s'animent au défilement même en mouvement réduit, car ils ne déplacent rien à l'écran.
+16. Accessibilité : contrastes AA, focus visible, clavier, `aria-*` corrects, `prefers-reduced-motion` respecté partout : en mouvement réduit, **aucun déplacement** (ni translation, ni zoom, ni carrousel automatique). Exceptions validées par le propriétaire, car elles ne déplacent rien : les apparitions au défilement (`Reveal`) deviennent un simple fondu, et les compteurs de chiffres (`CountUp`) s'animent.
 17. Performance (mobile guinéen) : WebP, `loading="lazy"` hors écran, dimensions explicites, image hero ≤ 250 Ko, aucune vidéo, pas de nouvelle police.
 18. Qualité : aucun `any` ajouté, pas de code mort, composants < 300 lignes (découper sinon).
 

@@ -48,56 +48,60 @@ export function OfferDetailPage() {
       <Container className="py-14 lg:py-20">
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <SmartImage image={image} ratio="16/9" priority sizes="(min-width: 1024px) 66vw, 100vw" className="rounded-xl" />
+            <Reveal variant="zoom">
+              <SmartImage image={image} ratio="16/9" priority sizes="(min-width: 1024px) 66vw, 100vw" className="rounded-xl" />
+            </Reveal>
             <div className="flex flex-wrap gap-2">
               {category && <Badge tone="marine">{category.title}</Badge>}
               {offer.availability === 'en_developpement' && <Badge tone="gold">En développement</Badge>}
               <Badge tone="neutral">Sur devis</Badge>
             </div>
             {paragraphs.length > 0 && (
-              <section className="space-y-4">
+              <Reveal as="section" className="space-y-4">
                 <h2 className="font-poppins text-2xl font-bold tracking-tight text-marine">Présentation</h2>
                 {paragraphs.map((p) => (
                   <p key={p} className="text-base leading-relaxed text-slate-text sm:text-lg">
                     {p}
                   </p>
                 ))}
-              </section>
+              </Reveal>
             )}
           </div>
 
           <aside className="self-start lg:sticky lg:top-28">
-            <Card className="space-y-5 p-7">
-              <h2 className="font-poppins text-lg font-bold text-marine">Votre projet</h2>
-              <p className="text-sm leading-relaxed text-slate-text">
-                Décrivez-nous votre besoin : nous vous répondons avec un devis adapté.
-              </p>
-              {offer.quoteEnabled && (
-                <Button
-                  fullWidth
-                  size="lg"
-                  onClick={() => openInquiry(`offer:${offer.slug}`)}
-                  iconRight={<ArrowUpRight className="h-4 w-4" aria-hidden="true" />}
-                >
-                  Demander un devis
-                </Button>
-              )}
-              {contacts.whatsapp && (
-                <Button
-                  fullWidth
-                  variant="whatsapp"
-                  href={whatsappUrl(contacts.whatsapp.raw, `${DEFAULT_WHATSAPP_MESSAGE} Offre : ${offer.title}.`)}
-                  icon={<MessageSquare className="h-4 w-4" aria-hidden="true" />}
-                >
-                  WhatsApp
-                </Button>
-              )}
-              {contacts.phone && (
-                <Button fullWidth variant="secondary" href={telUrl(contacts.phone.raw)} icon={<Phone className="h-4 w-4" aria-hidden="true" />}>
-                  {contacts.phone.value}
-                </Button>
-              )}
-            </Card>
+            <Reveal variant="right" delay={120}>
+              <Card className="space-y-5 p-7">
+                <h2 className="font-poppins text-lg font-bold text-marine">Votre projet</h2>
+                <p className="text-sm leading-relaxed text-slate-text">
+                  Décrivez-nous votre besoin : nous vous répondons avec un devis adapté.
+                </p>
+                {offer.quoteEnabled && (
+                  <Button
+                    fullWidth
+                    size="lg"
+                    onClick={() => openInquiry(`offer:${offer.slug}`)}
+                    iconRight={<ArrowUpRight className="h-4 w-4" aria-hidden="true" />}
+                  >
+                    Demander un devis
+                  </Button>
+                )}
+                {contacts.whatsapp && (
+                  <Button
+                    fullWidth
+                    variant="whatsapp"
+                    href={whatsappUrl(contacts.whatsapp.raw, `${DEFAULT_WHATSAPP_MESSAGE} Offre : ${offer.title}.`)}
+                    icon={<MessageSquare className="h-4 w-4" aria-hidden="true" />}
+                  >
+                    WhatsApp
+                  </Button>
+                )}
+                {contacts.phone && (
+                  <Button fullWidth variant="secondary" href={telUrl(contacts.phone.raw)} icon={<Phone className="h-4 w-4" aria-hidden="true" />}>
+                    {contacts.phone.value}
+                  </Button>
+                )}
+              </Card>
+            </Reveal>
           </aside>
         </div>
 

@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState, type CSSProperties, type ElementType, type ReactNode } from 'react';
-import { usePrefersReducedMotion } from '../../lib/motion';
 
 const OBSERVER_SUPPORTED = typeof IntersectionObserver !== 'undefined';
 
+/**
+ * Style d'apparition, à choisir selon le contenu :
+ * - `up` (défaut) : texte, cartes d'une grille ;
+ * - `left` / `right` : colonnes d'une mise en page en deux parties (chacune vient de son côté) ;
+ * - `zoom` : images, bandeaux, blocs mis en valeur ;
+ * - `fade` : grands blocs pleine largeur.
+ */
+export type RevealVariant = 'up' | 'left' | 'right' | 'zoom' | 'fade';
+
 type RevealProps = {
   children: ReactNode;
+  variant?: RevealVariant;
   /** Délai en millisecondes, pour échelonner les éléments d'une grille. */
   delay?: number;
   as?: ElementType;
@@ -12,18 +21,17 @@ type RevealProps = {
 };
 
 /**
- * Apparition au défilement (fondu + translation de 16 px, 500 ms).
- * Sans animation si l'utilisateur a demandé à réduire les mouvements ; le contenu
- * reste toujours dans le DOM et lisible par les lecteurs d'écran.
+ * Apparition au défilement (700 ms), déclenchée une fois quand l'élément entre à l'écran.
+ * Si l'utilisateur demande à réduire les animations : simple fondu, sans déplacement
+ * (CSS, index.css). Le contenu reste toujours dans le DOM, lisible par les lecteurs d'écran.
  */
-export function Reveal({ children, delay = 0, as: Tag = 'div', className = '' }: RevealProps) {
+export function Reveal({ children, variant = 'up', delay = 0, as: Tag = 'div', className = '' }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
-  const reduced = usePrefersReducedMotion();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || reduced || visible || !OBSERVER_SUPPORTED) return;
+    if (!el || visible || !OBSERVER_SUPPORTED) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -31,15 +39,16 @@ export function Reveal({ children, delay = 0, as: Tag = 'div', className = '' }:
           observer.disconnect();
         }
       },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+      // Déclenché dès que le haut de l'élément dépasse le bas de l'écran de 6 % : l'animation se voit.
+      { rootMargin: '0px 0px -6% 0px', threshold: 0.01 },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [reduced, visible]);
+  }, [visible]);
 
   const style: CSSProperties | undefined = delay ? { transitionDelay: `${delay}ms` } : undefined;
   return (
-    <Tag ref={ref} className={`reveal ${className}`} data-visible={reduced || visible || !OBSERVER_SUPPORTED ? '' : undefined} style={style}>
+    <Tag ref={ref} className={`reveal ${className}`} data-reveal={variant} data-visible={visible || !OBSERVER_SUPPORTED ? '' : undefined} style={style}>
       {children}
     </Tag>
   );

@@ -48,7 +48,7 @@ export function HomePage() {
       {/* Présentation */}
       <Section tone="paper" compact>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          <Reveal className="space-y-6">
+          <Reveal variant="left" className="space-y-6">
             <p className="flex items-center gap-2.5 font-inter text-xs font-semibold uppercase tracking-[0.15em] text-slate-text">
               <span className="h-0.5 w-6 bg-gold" aria-hidden="true" />
               L'entreprise
@@ -70,7 +70,7 @@ export function HomePage() {
               Découvrir l'entreprise
             </Button>
           </Reveal>
-          <Reveal delay={120}>
+          <Reveal variant="zoom" delay={150}>
             <SmartImage
               image={{ ...stockImage('pageEntreprise'), alt: '' }}
               ratio="4/3"
@@ -162,13 +162,13 @@ export function HomePage() {
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="space-y-8">
               {company.mission && (
-                <Reveal className="space-y-3 border-l-2 border-gold pl-6">
+                <Reveal variant="left" className="space-y-3 border-l-2 border-gold pl-6">
                   <h3 className="font-inter text-xs font-semibold uppercase tracking-[0.15em] text-gold">Mission</h3>
                   <p className="text-lg leading-relaxed text-white/90">{company.mission}</p>
                 </Reveal>
               )}
               {company.vision && (
-                <Reveal delay={100} className="space-y-3 border-l-2 border-gold pl-6">
+                <Reveal variant="left" delay={120} className="space-y-3 border-l-2 border-gold pl-6">
                   <h3 className="font-inter text-xs font-semibold uppercase tracking-[0.15em] text-gold">Vision</h3>
                   <p className="text-lg leading-relaxed text-white/90">{company.vision}</p>
                 </Reveal>

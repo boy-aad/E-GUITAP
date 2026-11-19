@@ -96,7 +96,7 @@ Non-objectifs (hors périmètre de cette itération) : paiement en ligne, espace
 12. Aucune clé secrète (`service_role`, `sb_secret_…`, `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`) côté navigateur. Les opérations privilégiées passent par une Edge Function qui vérifie le JWT **et** le rôle.
 13. Le code admin reste chargé en **lazy** (jamais importé par le site public). Le loader public reste unique (`loadSiteContent`), avec filtres `publication = 'publie'` répétés côté requête.
 14. Ne pas toucher au commentaire HMR de `vite.config.ts`, ni au dessin du `Logo`.
-15. Accessibilité : contrastes AA, focus visible, navigation clavier, `aria-*` corrects, `prefers-reduced-motion` respecté partout (aucune animation automatique si activé), **sauf les compteurs de chiffres clés** (exception validée par le propriétaire : ils ne déplacent rien à l'écran).
+15. Accessibilité : contrastes AA, focus visible, navigation clavier, `aria-*` corrects, `prefers-reduced-motion` respecté partout (aucun déplacement si activé) ; exceptions validées par le propriétaire, sans déplacement : apparitions en simple fondu et compteurs de chiffres clés.
 16. Performance (réseau mobile guinéen) : images en WebP, `loading="lazy"` hors écran, dimensions explicites (pas de CLS), image hero ≤ 250 Ko, aucune vidéo, polices déjà chargées réutilisées.
 
 ### 3.3 Méthode de travail
@@ -115,7 +115,7 @@ Non-objectifs (hors périmètre de cette itération) : paiement en ligne, espace
 - **Grille** : conteneur `max-w-7xl`, sections espacées (`py-20 lg:py-28`), alternance fonds paper / blanc / ivoire / marine pour rythmer la lecture.
 - **Typographie** : échelle claire (display 56–72 px desktop pour le hero, H2 36–44 px, H3 20–24 px), titres Poppins 700 avec `tracking-tight`, eyebrows Poppins 600 majuscules espacées en or, texte Inter 16–18 px `leading-relaxed`.
 - **Profondeur** : cartes avec bordure fine + ombre douce au survol (`shadow-[0_20px_50px_-20px_rgba(16,44,80,0.35)]`), coins `rounded-xl`, dégradés marine subtils, filets or.
-- **Mouvement** : apparition au défilement (fade + translate 16 px, 500 ms, échelonnée), survol des cartes (image zoom 1.05, élévation), compteurs animés pour les chiffres clés (au défilement), soulignements or animés sur les liens. Tout désactivé si `prefers-reduced-motion`, sauf les compteurs (exception validée).
+- **Mouvement** : apparition au défilement (fade + translate 16 px, 500 ms, échelonnée), survol des cartes (image zoom 1.05, élévation), compteurs animés pour les chiffres clés (au défilement), soulignements or animés sur les liens. Si `prefers-reduced-motion` : aucun déplacement ; les apparitions deviennent un simple fondu et les compteurs s'animent (exceptions validées).
 - **Iconographie** : `lucide-react` uniquement, trait 1.5–2, cohérent.
 - **Images** : ratio fixe par usage (cartes 4:3, hero 16:9 plein écran, bannières 21:9), overlay dégradé marine pour la lisibilité du texte.
 

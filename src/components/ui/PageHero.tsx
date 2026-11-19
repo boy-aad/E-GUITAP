@@ -56,7 +56,7 @@ export function PageHero({ eyebrow, title, children, crumbs, image }: PageHeroPr
       )}
       {/* Contenu centré verticalement, hauteur réglée par le contenu (pas de format imposé : pas de vide sous l'en-tête). */}
       <div className="relative mx-auto flex min-h-[280px] max-w-7xl flex-col justify-center px-4 py-12 sm:min-h-[320px] sm:px-6 lg:min-h-[380px] lg:px-8 lg:py-16">
-        <div className="max-w-3xl space-y-5">
+        <div className="hero-in max-w-3xl space-y-5">
           <Breadcrumbs items={trail} onDark />
           <Eyebrow tone="dark">{eyebrow}</Eyebrow>
           <h1 className="font-poppins text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.5rem]">{title}</h1>

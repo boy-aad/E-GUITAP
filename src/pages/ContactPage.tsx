@@ -6,6 +6,7 @@ import { useSiteContent } from '../data/useSiteContent';
 import { InquiryForm } from '../features/inquiry/InquiryForm';
 import { Section } from '../components/ui/Section';
 import { Card } from '../components/ui/Card';
+import { Reveal } from '../components/ui/Reveal';
 import { SocialLinks } from '../components/layout/SocialLinks';
 import { mailtoUrl, telUrl, whatsappUrl } from '../lib/contact';
 
@@ -48,7 +49,7 @@ export function ContactPage() {
             Coordonnées
           </h2>
           <ul className="space-y-3">
-            {channels.map(({ icon: Icon, label, value, href, external }) => {
+            {channels.map(({ icon: Icon, label, value, href, external }, i) => {
               const content = (
                 <>
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-marine text-gold">
@@ -62,7 +63,7 @@ export function ContactPage() {
               );
               const box = 'flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-5';
               return (
-                <li key={label}>
+                <Reveal as="li" variant="left" delay={i * 80} key={label}>
                   {href ? (
                     <a
                       href={href}
@@ -74,7 +75,7 @@ export function ContactPage() {
                   ) : (
                     <div className={box}>{content}</div>
                   )}
-                </li>
+                </Reveal>
               );
             })}
           </ul>
@@ -86,12 +87,14 @@ export function ContactPage() {
           )}
         </section>
 
-        <Card as="section" aria-labelledby="demande" className="p-6 sm:p-10 lg:col-span-3">
+        <Reveal variant="right" delay={120} className="lg:col-span-3">
+        <Card as="section" aria-labelledby="demande" className="p-6 sm:p-10">
           <h2 id="demande" className="mb-6 font-poppins text-xl font-bold text-marine">
             Demande de renseignements
           </h2>
           <InquiryForm />
         </Card>
+        </Reveal>
         </div>
       </Section>
     </>

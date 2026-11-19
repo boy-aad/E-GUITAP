@@ -41,7 +41,7 @@ export function ActivitiesPage() {
           {domains.map((domain, index) => {
             const Icon = DOMAIN_ICONS[domain.slug] ?? DEFAULT_DOMAIN_ICON;
             return (
-              <Reveal key={domain.slug}>
+              <Reveal key={domain.slug} variant={index % 2 === 0 ? 'left' : 'right'}>
                 <Card
                   as="section"
                   id={domain.slug}

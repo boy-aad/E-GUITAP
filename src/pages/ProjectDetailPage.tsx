@@ -49,15 +49,17 @@ export function ProjectDetailPage() {
 
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
-            <ProjectGallery project={project} />
-            <section className="space-y-3">
+            <Reveal variant="zoom">
+              <ProjectGallery project={project} />
+            </Reveal>
+            <Reveal as="section" className="space-y-3">
               <h2 className="font-poppins text-xl font-bold text-marine">Présentation</h2>
               <p className="leading-relaxed text-slate-text">{project.description}</p>
               {blocks['projects.intro']?.body && (
                 <p className="leading-relaxed text-slate-text">{blocks['projects.intro'].body}</p>
               )}
-            </section>
-            <section className="space-y-3">
+            </Reveal>
+            <Reveal as="section" delay={80} className="space-y-3">
               <h2 className="font-poppins text-xl font-bold text-marine">Potentiel de développement</h2>
               <ul className="grid gap-3 sm:grid-cols-2">
                 {project.objectives.map((o) => (
@@ -67,52 +69,54 @@ export function ProjectDetailPage() {
                   </li>
                 ))}
               </ul>
-            </section>
+            </Reveal>
             <ProjectMilestones milestones={project.milestones} />
           </div>
 
           <aside className="space-y-4 self-start lg:sticky lg:top-28">
-            <Card className="space-y-5 p-7">
-              <h2 className="font-poppins text-base font-bold text-marine">Informations</h2>
-              <dl className="space-y-3 text-sm">
-                <div className="flex gap-3">
-                  <Ruler className="mt-0.5 h-4 w-4 shrink-0 text-gold-hover" aria-hidden="true" />
-                  <div>
-                    <dt className="font-semibold text-marine">Superficie annoncée</dt>
-                    <dd className="text-slate-text">Environ {formatHectares(project.areaHa)}</dd>
-                  </div>
-                </div>
-                {project.prefecture && (
+            <Reveal variant="right" delay={120}>
+              <Card className="space-y-5 p-7">
+                <h2 className="font-poppins text-base font-bold text-marine">Informations</h2>
+                <dl className="space-y-3 text-sm">
                   <div className="flex gap-3">
-                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-hover" aria-hidden="true" />
+                    <Ruler className="mt-0.5 h-4 w-4 shrink-0 text-gold-hover" aria-hidden="true" />
                     <div>
-                      <dt className="font-semibold text-marine">Localisation</dt>
-                      <dd className="text-slate-text">{project.prefecture}</dd>
+                      <dt className="font-semibold text-marine">Superficie annoncée</dt>
+                      <dd className="text-slate-text">Environ {formatHectares(project.areaHa)}</dd>
                     </div>
                   </div>
-                )}
-                {project.developmentStatus && (
-                  <div>
-                    <dt className="font-semibold text-marine">État d'avancement</dt>
-                    <dd className="text-slate-text">{DEVELOPMENT_STATUS_LABELS[project.developmentStatus]}</dd>
-                  </div>
-                )}
-                {project.commercialStatus && (
-                  <div>
-                    <dt className="font-semibold text-marine">Commercialisation</dt>
-                    <dd className="text-slate-text">{COMMERCIAL_STATUS_LABELS[project.commercialStatus]}</dd>
-                  </div>
-                )}
-              </dl>
-              <Button
-                variant="dark"
-                fullWidth
-                onClick={() => openInquiry(`project:${project.slug}`)}
-                iconRight={<ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />}
-              >
-                Demander des renseignements
-              </Button>
-            </Card>
+                  {project.prefecture && (
+                    <div className="flex gap-3">
+                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-hover" aria-hidden="true" />
+                      <div>
+                        <dt className="font-semibold text-marine">Localisation</dt>
+                        <dd className="text-slate-text">{project.prefecture}</dd>
+                      </div>
+                    </div>
+                  )}
+                  {project.developmentStatus && (
+                    <div>
+                      <dt className="font-semibold text-marine">État d'avancement</dt>
+                      <dd className="text-slate-text">{DEVELOPMENT_STATUS_LABELS[project.developmentStatus]}</dd>
+                    </div>
+                  )}
+                  {project.commercialStatus && (
+                    <div>
+                      <dt className="font-semibold text-marine">Commercialisation</dt>
+                      <dd className="text-slate-text">{COMMERCIAL_STATUS_LABELS[project.commercialStatus]}</dd>
+                    </div>
+                  )}
+                </dl>
+                <Button
+                  variant="dark"
+                  fullWidth
+                  onClick={() => openInquiry(`project:${project.slug}`)}
+                  iconRight={<ArrowUpRight className="h-4 w-4 text-gold" aria-hidden="true" />}
+                >
+                  Demander des renseignements
+                </Button>
+              </Card>
+            </Reveal>
             <p className="flex gap-3 rounded-xl bg-ivory p-4 text-xs leading-relaxed text-slate-text">
               <Info className="h-4 w-4 shrink-0 text-marine" aria-hidden="true" />
               {LAND_DISCLAIMER}

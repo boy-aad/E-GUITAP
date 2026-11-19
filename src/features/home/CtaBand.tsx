@@ -24,7 +24,7 @@ export function CtaBand() {
       />
       <div className="absolute inset-0 -z-10 bg-marine-dark/80" aria-hidden="true" />
       <Container>
-        <Reveal className="mx-auto max-w-3xl space-y-6 text-center">
+        <Reveal variant="zoom" className="mx-auto max-w-3xl space-y-6 text-center">
           <h2 className="font-poppins text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
             {cta?.title ?? 'Un projet, une question ?'}
           </h2>

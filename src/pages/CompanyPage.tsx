@@ -36,7 +36,7 @@ export function CompanyPage() {
       {/* Présentation éditoriale : chapeau, colonne de lecture et repères. */}
       <Section tone="paper" eyebrow="Présentation" title="Une entreprise guinéenne multisectorielle">
         <div className="grid gap-12 lg:grid-cols-3">
-          <Reveal className="space-y-5 lg:col-span-2">
+          <Reveal variant="left" className="space-y-5 lg:col-span-2">
             {company.presentation.map((p, i) => (
               <p
                 key={p}
@@ -50,7 +50,7 @@ export function CompanyPage() {
               </p>
             ))}
           </Reveal>
-          <Reveal delay={120}>
+          <Reveal variant="right" delay={120}>
             <Card as="aside" className="space-y-5 p-7">
               <h2 className="font-poppins text-base font-bold text-marine">En bref</h2>
               <dl className="space-y-5 text-sm">
@@ -121,7 +121,7 @@ export function CompanyPage() {
       {/* Ambition et signatures. */}
       {(company.ambition || signatures.brand || signatures.institutional || signatures.sectoral) && (
         <Section tone="ivory" compact>
-          <Reveal className="mx-auto max-w-3xl space-y-8 text-center">
+          <Reveal variant="zoom" className="mx-auto max-w-3xl space-y-8 text-center">
             {company.ambition && (
               <div className="space-y-4">
                 <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-marine text-gold">
