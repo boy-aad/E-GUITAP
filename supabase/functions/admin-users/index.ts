@@ -3,6 +3,7 @@
 // Actions (POST JSON) :
 //   { action: 'list' }                                  membres + e-mail + dernière connexion
 //   { action: 'invite', email, fullName, role }         invitation par e-mail + profil d'équipe
+//                                                       (entrée du journal attribuée à l'administrateur)
 //
 // Le rôle et l'activation se modifient directement en base (RLS « admin modifie ») ;
 // le trigger private.ensure_active_admin empêche de retirer le dernier administrateur actif.
@@ -115,6 +116,16 @@ Deno.serve(async (req) => {
       await admin.auth.admin.deleteUser(invited.user.id);
       return json({ error: 'Le profil d’équipe n’a pas pu être créé ; invitation annulée.' }, 500, origin);
     }
+    // Journal : l'insertion faite avec la clé service_role n'a pas d'auteur ; on l'attribue à l'administrateur
+    // qui invite (sinon elle serait masquée dans le journal, qui n'affiche que les actions de l'équipe).
+    const { error: auditError } = await admin
+      .from('audit_log')
+      .update({ actor_id: caller.user.id })
+      .eq('table_name', 'staff_profiles')
+      .eq('row_id', invited.user.id)
+      .eq('action', 'INSERT')
+      .is('actor_id', null);
+    if (auditError) console.error('Attribution du journal impossible :', auditError.message);
     return json({ ok: true }, 200, origin);
   }
 
