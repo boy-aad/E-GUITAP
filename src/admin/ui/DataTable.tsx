@@ -133,8 +133,8 @@ export function DataTable<T extends { id: string }>({
         <EmptyState title={emptyTitle}>{emptyText}</EmptyState>
       ) : (
         <>
-          {/* Bureau : tableau. */}
-          <div className="hidden overflow-x-auto md:block">
+          {/* Bureau (≥ 1280 px, place suffisante à côté de la barre latérale) : tableau. Mobile et tablette : cartes, sans défilement horizontal. */}
+          <div className="hidden overflow-x-auto xl:block">
             <table className="w-full text-left text-sm">
               <caption className="sr-only">{caption}</caption>
               <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-600">
@@ -201,7 +201,7 @@ export function DataTable<T extends { id: string }>({
           </div>
 
           {/* Mobile : cartes. */}
-          <ul className="divide-y divide-slate-100 md:hidden" aria-label={caption}>
+          <ul className="divide-y divide-slate-100 xl:hidden" aria-label={caption}>
             {rows.map((row) => (
               <li key={row.id} className="flex gap-3 px-4 py-3">
                 {selectable && (

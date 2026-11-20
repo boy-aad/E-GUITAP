@@ -35,6 +35,15 @@
   h1, h2, h3 {
     text-wrap: balance;
   }
+  /* Responsive : un enfant de grille ne s'élargit jamais au-delà de sa colonne à cause
+     d'un contenu long (sinon la page déborde à droite sur mobile). */
+  .grid > * {
+    min-width: 0;
+  }
+  /* Mots et adresses très longs (e-mails, URL) : coupés plutôt que de déborder. */
+  body {
+    overflow-wrap: break-word;
+  }
 }
 
 body {

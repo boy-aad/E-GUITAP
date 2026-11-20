@@ -40,18 +40,15 @@ export function Chips<T extends string>({
   value,
   onChange,
   label,
-  nowrap,
 }: {
   options: ChipOption<T>[];
   value: T;
   onChange: (value: T) => void;
   /** Nom accessible du groupe. */
   label: string;
-  /** Une seule ligne (à placer dans un conteneur qui défile). */
-  nowrap?: boolean;
 }) {
   return (
-    <div role="group" aria-label={label} className={`flex gap-2 ${nowrap ? 'w-max' : 'flex-wrap'}`}>
+    <div role="group" aria-label={label} className="flex flex-wrap gap-2">
       {options.map((o) => {
         const active = o.value === value;
         return (

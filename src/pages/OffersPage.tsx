@@ -60,9 +60,7 @@ export function OffersPage() {
 
       <div className="z-20 material-bar-paper border-b border-slate-200 lg:sticky lg:top-[86px]">
         <Container className="flex flex-col gap-3 py-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="-mx-1 overflow-x-auto px-1 pb-1 lg:pb-0">
-            <Chips nowrap label="Catégories" options={categoryOptions} value={category} onChange={(v) => update('categorie', v)} />
-          </div>
+          <Chips label="Catégories" options={categoryOptions} value={category} onChange={(v) => update('categorie', v)} />
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             {hasDevelopment && (
               <Chips label="Disponibilité" options={AVAILABILITY_OPTIONS} value={availability} onChange={(v) => update('dispo', v)} />

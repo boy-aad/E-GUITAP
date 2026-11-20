@@ -121,32 +121,35 @@ export function StackedColumns({ series, points, height = 200, caption }: { seri
         </div>
       </div>
 
-      {/* Vue tableau (lecteurs d'écran) : toutes les valeurs. */}
-      <table className="sr-only">
-        <caption>{caption}</caption>
-        <thead>
-          <tr>
-            <th scope="col">Période</th>
-            {series.map((s) => (
-              <th key={s.key} scope="col">
-                {s.label}
-              </th>
-            ))}
-            <th scope="col">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {points.map((p, i) => (
-            <tr key={p.label}>
-              <th scope="row">{p.detail}</th>
+      {/* Vue tableau (lecteurs d'écran) : toutes les valeurs. Enveloppé dans un bloc masqué :
+          un <table> ne se réduit pas à 1 px et élargirait la page sur mobile. */}
+      <div className="sr-only">
+        <table>
+          <caption>{caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Période</th>
               {series.map((s) => (
-                <td key={s.key}>{p.values[s.key] ?? 0}</td>
+                <th key={s.key} scope="col">
+                  {s.label}
+                </th>
               ))}
-              <td>{totals[i]}</td>
+              <th scope="col">Total</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {points.map((p, i) => (
+              <tr key={p.label}>
+                <th scope="row">{p.detail}</th>
+                {series.map((s) => (
+                  <td key={s.key}>{p.values[s.key] ?? 0}</td>
+                ))}
+                <td>{totals[i]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   );
 }

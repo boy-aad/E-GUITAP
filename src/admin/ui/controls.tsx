@@ -24,7 +24,7 @@ export function FilterTabs({
     return qs ? `?${qs}` : '.';
   };
   return (
-    <nav aria-label={label} className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <nav aria-label={label} className="flex flex-wrap gap-1">
       {options.map((o) => {
         const active = current === o.value;
         return (

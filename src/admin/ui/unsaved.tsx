@@ -65,7 +65,8 @@ export function StickyActionBar({
             'Aucune modification en attente'
           )}
         </p>
-        <div className="flex items-center gap-2">
+        {/* Mobile : boutons sur toute la largeur, renvoyés à la ligne si besoin (aucun débordement). */}
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto [&>*]:flex-1 sm:[&>*]:flex-none">
           {extra}
           {onCancel && (
             <button type="button" className={secondaryButton} onClick={onCancel} disabled={!dirty || saving}>

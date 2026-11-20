@@ -45,7 +45,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               }`}
             >
               <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${t.tone === 'success' ? 'text-emerald-600' : 'text-red-700'}`} aria-hidden="true" />
-              <p className="flex-1">{t.message}</p>
+              <p className="min-w-0 flex-1 [overflow-wrap:anywhere]">{t.message}</p>
               <button type="button" onClick={() => dismiss(t.id)} className="press rounded p-0.5 text-slate-500 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-gold" aria-label="Fermer le message">
                 <X className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
