@@ -77,7 +77,7 @@ export function ActivitiesPage() {
                         <li key={service.slug}>
                           <Link
                             to={`/offres/${service.slug}`}
-                            className="group flex h-full gap-3 rounded-lg bg-paper px-4 py-3.5 text-sm text-marine ring-1 ring-transparent transition hover:bg-white hover:ring-gold/50 focus-visible:outline-2 focus-visible:outline-gold"
+                            className="press press-soft group flex h-full gap-3 rounded-lg bg-paper px-4 py-3.5 text-sm text-marine ring-1 ring-transparent hover:bg-white hover:ring-gold/50 focus-visible:outline-2 focus-visible:outline-gold"
                           >
                             <Check className="mt-0.5 h-4 w-4 shrink-0 text-gn-green" aria-hidden="true" />
                             <span className="flex-1">

@@ -26,7 +26,7 @@ export function SocialLinks({ links }: { links: SocialLink[] }) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 transition-colors hover:border-gold hover:bg-gold hover:text-marine focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              className="press flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/80 hover:border-gold hover:bg-gold hover:text-marine focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
               aria-label={`${label || SOCIAL_NETWORK_NAMES[network]} (nouvel onglet)`}
             >
               <Icon className="h-4 w-4" aria-hidden="true" />

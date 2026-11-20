@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
 
 export type TabItem = { id: string; label: string; /** Pastille d'alerte (ex. champ en erreur). */ flagged?: boolean };
 
@@ -29,6 +29,21 @@ type TabsState = ReturnType<typeof useTabs>;
 export function Tabs({ items, state, label }: { items: TabItem[]; state: TabsState; label: string }) {
   const listRef = useRef<HTMLDivElement>(null);
   const { base, current, setCurrent } = state;
+  // Indicateur glissant : position et largeur de l'onglet courant, suivies au redimensionnement.
+  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    const tab = document.getElementById(`${base}-tab-${current}`);
+    if (!list || !tab) return;
+    const measure = () => setIndicator({ left: tab.offsetLeft, width: tab.offsetWidth });
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(list);
+    observer.observe(tab);
+    return () => observer.disconnect();
+  }, [base, current]);
 
   // Barre défilante sur mobile : l'onglet courant reste visible (y compris ouvert par programme).
   useEffect(() => {
@@ -51,7 +66,7 @@ export function Tabs({ items, state, label }: { items: TabItem[]; state: TabsSta
       ref={listRef}
       role="tablist"
       aria-label={label}
-      className="-mx-1 flex gap-1 overflow-x-auto border-b border-slate-200 px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="relative -mx-1 flex gap-1 overflow-x-auto border-b border-slate-200 px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {items.map((t) => {
         const selected = t.id === current;
@@ -66,8 +81,8 @@ export function Tabs({ items, state, label }: { items: TabItem[]; state: TabsSta
             tabIndex={selected ? 0 : -1}
             onClick={() => setCurrent(t.id)}
             onKeyDown={onKeyDown}
-            className={`-mb-px inline-flex shrink-0 items-center gap-1.5 border-b-2 px-3 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-gold ${
-              selected ? 'border-marine text-marine' : 'border-transparent text-slate-600 hover:text-marine'
+            className={`press inline-flex shrink-0 items-center gap-1.5 px-3 py-2.5 text-sm font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold ${
+              selected ? 'text-marine' : 'text-slate-600 hover:text-marine'
             }`}
           >
             {t.label}
@@ -80,6 +95,11 @@ export function Tabs({ items, state, label }: { items: TabItem[]; state: TabsSta
           </button>
         );
       })}
+      <span
+        aria-hidden="true"
+        className="tab-indicator pointer-events-none absolute bottom-0 left-0 h-0.5 rounded-full bg-marine"
+        style={indicator ? { translate: `${indicator.left}px 0`, width: indicator.width } : { opacity: 0 }}
+      />
     </div>
   );
 }

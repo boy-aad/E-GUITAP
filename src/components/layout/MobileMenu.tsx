@@ -37,7 +37,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
               to={item.to}
               end={item.to === '/'}
               className={({ isActive }) =>
-                `flex items-center justify-between border-b border-slate-100 px-2 py-4 font-poppins text-xl font-bold transition-colors focus-visible:outline-2 focus-visible:outline-gold ${
+                `press press-row flex items-center justify-between rounded-md border-b border-slate-100 px-2 py-4 font-poppins text-xl font-bold focus-visible:outline-2 focus-visible:outline-gold ${
                   isActive ? 'text-marine' : 'text-marine/70 hover:text-marine'
                 }`
               }

@@ -36,7 +36,7 @@ export function PublishSwitch({ defaultValue, name = 'publication' }: { defaultV
           <label key={value} className="cursor-pointer">
             <input type="radio" name={name} value={value} defaultChecked={value === defaultValue} className="peer sr-only" />
             <span
-              className={`block rounded-md px-3 py-1.5 text-sm font-semibold text-slate-600 ring-inset transition peer-checked:ring-1 peer-focus-visible:outline-2 peer-focus-visible:outline-gold ${SWITCH_ACTIVE[value]}`}
+              className={`press block rounded-md px-3 py-1.5 text-sm font-semibold text-slate-600 ring-inset peer-checked:ring-1 peer-focus-visible:outline-2 peer-focus-visible:outline-gold ${SWITCH_ACTIVE[value]}`}
             >
               {PUBLICATION_LABELS[value]}
             </span>

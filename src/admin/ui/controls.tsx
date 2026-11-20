@@ -32,7 +32,7 @@ export function FilterTabs({
             key={o.label}
             to={hrefFor(o.value)}
             aria-current={active ? 'page' : undefined}
-            className={`inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-gold ${
+            className={`press inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-gold ${
               active ? 'bg-marine text-white' : 'text-slate-700 hover:bg-slate-100'
             }`}
           >
@@ -108,7 +108,7 @@ export function StatCard({
   );
   const cls = `${cardClass} flex items-center gap-4 p-5`;
   return to ? (
-    <Link to={to} className={`${cls} transition-colors hover:border-gold focus-visible:outline-2 focus-visible:outline-gold`}>
+    <Link to={to} className={`${cls} press press-soft hover:border-gold focus-visible:outline-2 focus-visible:outline-gold`}>
       {body}
     </Link>
   ) : (

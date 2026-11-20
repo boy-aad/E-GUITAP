@@ -60,7 +60,7 @@ export function Chips<T extends string>({
             type="button"
             aria-pressed={active}
             onClick={() => onChange(o.value)}
-            className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
+            className={`press inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
               active ? 'border-marine bg-marine text-white' : 'border-slate-200 bg-white text-marine hover:border-gold'
             }`}
           >
@@ -107,7 +107,7 @@ export function SearchInput({
         <button
           type="button"
           onClick={() => onChange('')}
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-slate-text hover:bg-slate-100 hover:text-marine focus-visible:outline-2 focus-visible:outline-gold"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-slate-text transition-colors hover:text-marine active:bg-slate-200 hover:bg-slate-100 hover:text-marine focus-visible:outline-2 focus-visible:outline-gold"
           aria-label="Effacer la recherche"
         >
           <X className="h-3.5 w-3.5" aria-hidden="true" />

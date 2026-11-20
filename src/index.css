@@ -204,14 +204,31 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 /* ---------------------------------------------------------------------------
    Retour à l'appui : la réponse part au contact (pointer-down), pas au relâchement.
    L'enfoncement est quasi instantané, le retour suit le ressort.
+   Échelle selon la taille de l'élément (plus la surface est grande, plus l'effet est discret) :
+   `.press` (boutons, puces, icônes) 0,97 ; `.press-soft` (cartes, tuiles) 0,985 ;
+   `.press-row` (lignes pleine largeur) aucune échelle, simple teinte de fond.
    Mouvement réduit : léger assombrissement, sans changement d'échelle.
    --------------------------------------------------------------------------- */
 .press {
+  --press-scale: 0.97;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  transition-property: color, background-color, border-color, box-shadow, filter;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+.press-soft {
+  --press-scale: 0.985;
+}
+.press-row {
+  --press-scale: 1;
 }
 .press:active:not(:disabled) {
   filter: brightness(0.94);
+  transition-duration: 80ms;
+}
+.press-row:active {
+  background-color: rgb(16 44 80 / 0.05);
 }
 @media (prefers-reduced-motion: no-preference) {
   .press {
@@ -220,10 +237,53 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     transition-timing-function: ease-out, ease-out, ease-out, ease-out, ease-out, var(--ease-spring);
   }
   .press:active:not(:disabled) {
-    transform: scale(0.97);
+    transform: scale(var(--press-scale));
     filter: none;
     transition-duration: 80ms;
     transition-timing-function: ease-out;
+  }
+}
+
+/* Indicateur d'onglet : glisse d'un onglet à l'autre (ressort), part toujours de sa
+   position affichée. Mouvement réduit : il change de place sans glisser. */
+.tab-indicator {
+  transition: opacity 200ms ease-out;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tab-indicator {
+    transition:
+      opacity 200ms ease-out,
+      translate 500ms var(--ease-spring),
+      width 500ms var(--ease-spring);
+  }
+}
+
+/* Messages courts (admin) : montent depuis le bas et repartent par le bas.
+   Mouvement réduit : fondu seul. */
+.toast {
+  transition: opacity 200ms ease-out;
+}
+.toast[data-leaving] {
+  opacity: 0;
+}
+@starting-style {
+  .toast {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .toast {
+    transition:
+      opacity 200ms ease-out,
+      transform 500ms var(--ease-spring);
+  }
+  .toast[data-leaving] {
+    transform: translate3d(0, 12px, 0);
+  }
+  @starting-style {
+    .toast {
+      transform: translate3d(0, 12px, 0);
+    }
   }
 }
 

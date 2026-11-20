@@ -59,7 +59,7 @@ export function QuickContact() {
                 <a
                   href={href}
                   {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className={`${box} transition-[border-color,background-color,box-shadow] duration-300 hover:border-gold hover:bg-white hover:shadow-[0_20px_50px_-20px_rgba(16,44,80,0.35)] focus-visible:outline-2 focus-visible:outline-gold`}
+                  className={`${box} press press-soft hover:border-gold hover:bg-white hover:shadow-[0_20px_50px_-20px_rgba(16,44,80,0.35)] focus-visible:outline-2 focus-visible:outline-gold`}
                 >
                   {body}
                 </a>
