@@ -48,7 +48,11 @@ Supabase : projet `ddfanksdrhwmdiisuvpb` (eu-west-1). Types générés dans `src
 13. Aucune clé secrète (`service_role`, `sb_secret_…`, `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`) côté navigateur. Opérations privilégiées = Edge Function qui vérifie le JWT **et** le rôle.
 14. Code admin chargé en **lazy**, jamais importé par le site public. Loader public unique (`loadSiteContent`).
 15. Ne pas toucher au commentaire HMR de `vite.config.ts`, ni au dessin du `Logo`.
-16. Accessibilité : contrastes AA, focus visible, clavier, `aria-*` corrects, `prefers-reduced-motion` respecté partout : en mouvement réduit, **aucun déplacement** (ni translation, ni zoom, ni carrousel automatique). Exceptions validées par le propriétaire, car elles ne déplacent rien : les apparitions au défilement (`Reveal`) deviennent un simple fondu, et les compteurs de chiffres (`CountUp`) s'animent.
+16. **Design et mouvement : référence Apple Design** (skill `apple-design`). Interactions et animations suivent ses principes : retour immédiat à l'appui, animations interruptibles qui partent de la valeur affichée, ressorts (amortissement 1 par défaut, rebond seulement après un geste avec élan), cohérence spatiale, matériaux translucides et profondeur avec retenue, typographie soignée. Dans la limite des règles 8, 9 et 17 : CSS et code maison d'abord ; une librairie de ressorts n'entre qu'avec sa justification écrite.
+    Accessibilité, toujours : contrastes AA, focus visible, clavier, `aria-*` corrects. Préférences système respectées partout :
+    - `prefers-reduced-motion` : **aucun déplacement** (ni translation, ni zoom, ni ressort, ni parallaxe, ni carrousel automatique) ; on les remplace par de courts fondus d'opacité. Les apparitions au défilement (`Reveal`) deviennent un simple fondu, et les compteurs de chiffres (`CountUp`) s'animent (exceptions validées par le propriétaire, car elles ne déplacent rien).
+    - `prefers-reduced-transparency` : surfaces translucides rendues opaques, sans flou.
+    - `prefers-contrast: more` : fonds quasi pleins et bordures contrastées.
 17. Performance (mobile guinéen) : WebP, `loading="lazy"` hors écran, dimensions explicites, image hero ≤ 250 Ko, aucune vidéo, pas de nouvelle police.
 18. Qualité : aucun `any` ajouté, pas de code mort, composants < 300 lignes (découper sinon).
 

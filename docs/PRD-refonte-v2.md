@@ -96,7 +96,7 @@ Non-objectifs (hors périmètre de cette itération) : paiement en ligne, espace
 12. Aucune clé secrète (`service_role`, `sb_secret_…`, `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`) côté navigateur. Les opérations privilégiées passent par une Edge Function qui vérifie le JWT **et** le rôle.
 13. Le code admin reste chargé en **lazy** (jamais importé par le site public). Le loader public reste unique (`loadSiteContent`), avec filtres `publication = 'publie'` répétés côté requête.
 14. Ne pas toucher au commentaire HMR de `vite.config.ts`, ni au dessin du `Logo`.
-15. Accessibilité : contrastes AA, focus visible, navigation clavier, `aria-*` corrects, `prefers-reduced-motion` respecté partout (aucun déplacement si activé) ; exceptions validées par le propriétaire, sans déplacement : apparitions en simple fondu et compteurs de chiffres clés.
+15. Design et mouvement selon Apple Design (skill `apple-design`, détail dans la règle 16 de `CLAUDE.md`), dans la limite des règles sur la stack, les dépendances et la performance. Accessibilité : contrastes AA, focus visible, navigation clavier, `aria-*` corrects, `prefers-reduced-motion` respecté partout (aucun déplacement si activé, fondus à la place) ; exceptions validées par le propriétaire, sans déplacement : apparitions en simple fondu et compteurs de chiffres clés. `prefers-reduced-transparency` et `prefers-contrast` également respectés.
 16. Performance (réseau mobile guinéen) : images en WebP, `loading="lazy"` hors écran, dimensions explicites (pas de CLS), image hero ≤ 250 Ko, aucune vidéo, polices déjà chargées réutilisées.
 
 ### 3.3 Méthode de travail
