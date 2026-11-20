@@ -12,7 +12,7 @@ Document de référence de l'itération en cours : [`docs/PRD-refonte-v2.md`](do
 | `npm run check` | `tsc --noEmit` (strict) + `oxlint` — doit rester vert |
 | `npm run build` | Build de production (`dist/`) — doit rester vert, sans warning nouveau |
 
-Avertissement connu (préexistant) : le chunk public dépasse 500 kB minifié (≈ 179 kB gzip) — à traiter, ne pas en ajouter d'autres.
+Le build ne produit plus d'avertissement de taille : plus gros chunk ≈ 304 kB minifié (≈ 96 kB gzip), JS public initial ≈ 190 kB gzip. Ne pas dépasser 500 kB par chunk.
 
 Supabase : projet `ddfanksdrhwmdiisuvpb` (eu-west-1). Types générés dans `src/types/database.ts`.
 
