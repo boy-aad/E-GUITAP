@@ -15,7 +15,7 @@ export function Card({ children, as: Tag = 'div', interactive, className = '', .
       {...rest}
       className={`relative overflow-hidden rounded-xl border border-slate-200 bg-white ${
         interactive
-          ? 'group transition-all duration-300 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_20px_50px_-20px_rgba(16,44,80,0.35)] motion-reduce:transform-none motion-reduce:transition-none'
+          ? 'group transition-[border-color,box-shadow,translate] duration-500 ease-spring hover:border-gold/50 hover:shadow-[0_20px_50px_-20px_rgba(16,44,80,0.35)] motion-safe:hover:-translate-y-1'
           : ''
       } ${className}`}
     >

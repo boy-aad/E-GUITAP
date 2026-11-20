@@ -40,7 +40,7 @@ function ConfirmDialog({ pending, onClose }: { pending: Pending | null; onClose:
         e.preventDefault();
         onClose(false);
       }}
-      className="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
+      className="dialog-anim m-auto w-[calc(100%-2rem)] max-w-md rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
     >
       {pending && (
         <div className="p-6">

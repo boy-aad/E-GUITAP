@@ -103,7 +103,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
         onClose();
       }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
-      className="mx-auto mt-[12vh] w-[calc(100%-2rem)] max-w-xl rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
+      className="dialog-anim mx-auto mt-[12vh] w-[calc(100%-2rem)] max-w-xl rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
     >
       <div className="flex items-center gap-3 border-b border-slate-200 px-4">
         {loading ? <Loader2 className="h-4 w-4 animate-spin text-slate-400" aria-hidden="true" /> : <Search className="h-4 w-4 text-slate-400" aria-hidden="true" />}

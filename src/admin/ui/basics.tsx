@@ -57,7 +57,7 @@ export function Notice({ tone, children }: { tone: 'success' | 'error' | 'warnin
 }
 
 const buttonBase =
-  'inline-flex items-center justify-center gap-2 rounded-md px-3.5 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:cursor-not-allowed disabled:opacity-60';
+  'press inline-flex items-center justify-center gap-2 rounded-md px-3.5 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:cursor-not-allowed disabled:opacity-60';
 export const primaryButton = `${buttonBase} bg-marine text-white hover:bg-marine-dark`;
 export const secondaryButton = `${buttonBase} border border-slate-300 bg-white text-slate-800 hover:bg-slate-50`;
 export const dangerButton = `${buttonBase} border border-red-300 bg-white text-red-700 hover:bg-red-50`;
@@ -66,7 +66,7 @@ export const ghostButton = `${buttonBase} text-slate-700 hover:bg-slate-100`;
 
 /** Petit bouton icône (monter, descendre, dupliquer…) ; toujours avec aria-label. */
 export const iconButton =
-  'rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-marine disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-gold';
+  'press rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-marine disabled:cursor-not-allowed disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-gold';
 
 export const cardClass = 'rounded-xl border border-slate-200 bg-white';
 

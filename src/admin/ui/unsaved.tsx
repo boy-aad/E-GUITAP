@@ -53,7 +53,7 @@ export function StickyActionBar({
   saveLabel?: string;
 }) {
   return (
-    <div className="sticky bottom-0 z-20 -mx-4 mt-8 border-t border-slate-200 bg-white/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10">
+    <div className="sticky bottom-0 z-20 -mx-4 mt-8 material-bar border-t border-slate-200 px-4 py-3 sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-slate-600" aria-live="polite">
           {saving ? 'Enregistrement en cours…' : dirty ? (

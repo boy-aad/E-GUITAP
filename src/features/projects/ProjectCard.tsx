@@ -17,7 +17,7 @@ export function ProjectCard({ project }: { project: LandProject }) {
           ratio="16/9"
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           noticePosition="top-left"
-          imgClassName="transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+          imgClassName="transition-transform duration-700 ease-spring motion-safe:group-hover:scale-105"
           fallback={<BrandPanel className="h-full" />}
         />
         <Badge tone="light" className="absolute right-4 top-4 font-poppins text-sm">
@@ -43,7 +43,7 @@ export function ProjectCard({ project }: { project: LandProject }) {
         {project.developmentStatus && <Badge tone="gold">{DEVELOPMENT_STATUS_LABELS[project.developmentStatus]}</Badge>}
         <span className="mt-auto inline-flex items-center gap-1.5 pt-2 font-poppins text-xs font-bold uppercase tracking-wider text-marine transition-colors group-hover:text-gold-hover">
           Voir le projet
-          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 ease-spring motion-safe:group-hover:translate-x-1" aria-hidden="true" />
         </span>
       </div>
     </Card>

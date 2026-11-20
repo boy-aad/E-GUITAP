@@ -27,6 +27,7 @@ Supabase : projet `ddfanksdrhwmdiisuvpb` (eu-west-1). Types générés dans `src
 - `supabase/migrations/` : 7 migrations appliquées ; `supabase/functions/submit-inquiry` (`verify_jwt: false`, se protège seule : origine, Turnstile, validation, 3 demandes/h/numéro, Resend).
 - Autorisation SQL : `private.is_staff()`, `private.is_admin()` ; RLS sur toutes les tables.
 - Charte : tokens dans `src/index.css` (marine `#102C50`, or `#C6A15B`, ivoire `#F5F1E8`, paper `#FAFAF7`, tricolore Guinée) ; Poppins (titres), Inter (texte), Lora italique (signatures). Signature : « Construire • Échanger • Développer ».
+- Mouvement et matériaux (`src/index.css`) : `--ease-spring` (ressort amorti critique, utilitaire `ease-spring`, ~600 ms), `.press` (retour à l'appui), `.dialog-anim` / `.dialog-drawer` (modales et tiroir, entrée et sortie symétriques), `.material-bar` / `.material-bar-paper` (barres translucides, repli opaque si transparence réduite ou contraste renforcé), `.reveal`, `.mobile-menu`. Mouvement réduit : chaque déplacement est conditionné à `prefers-reduced-motion: no-preference`, les fondus restent actifs.
 
 ## Règles permanentes (non négociables)
 

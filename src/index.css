@@ -21,6 +21,20 @@
   --color-gn-green-hover: #007A4F;
   /* Vert des boutons WhatsApp : texte blanc lisible (contraste 5,4:1, AA). */
   --color-gn-green-dark: #006B45;
+
+  /* Ressort amorti critique (amortissement 1, réponse 0,4 s), à utiliser avec ~600 ms :
+     aucun rebond, arrivée douce. Utilitaire Tailwind : `ease-spring`. */
+  --ease-spring: linear(0, 0.0596 4.2%, 0.186 8.3%, 0.3294 12.5%, 0.4656 16.7%, 0.584 20.8%, 0.6819 25%, 0.7601 29.2%, 0.821 33.3%, 0.8677 37.5%, 0.9029 41.7%, 0.9292 45.8%, 0.9487 50%, 0.963 54.2%, 0.9734 58.3%, 0.9809 62.5%, 0.9864 66.7%, 0.9903 70.8%, 0.9931 75%, 0.9951 79.2%, 0.9966 83.3%, 0.9976 87.5%, 0.9983 91.7%, 0.9988 95.8%, 1);
+}
+
+/* Typographie : titres avec approche resserrée à grande taille, lignes équilibrées. */
+@layer base {
+  h1, h2 {
+    letter-spacing: -0.015em;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
 }
 
 body {
@@ -69,10 +83,11 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   opacity: 0;
 }
 @media (prefers-reduced-motion: no-preference) {
+  /* Transition CSS (et non @keyframes) : interruptible, repart toujours de la valeur affichée. */
   .reveal {
     transition:
-      opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 600ms ease-out,
+      transform 700ms var(--ease-spring);
   }
   /* Côtés : déplacement horizontal sur grand écran seulement (sur mobile, montée : aucun débordement). */
   .reveal:is([data-reveal='up'], [data-reveal='left'], [data-reveal='right']):not([data-visible]) {
@@ -123,7 +138,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-in > * {
-    animation: hero-in 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: hero-in 750ms var(--ease-spring) both;
   }
 }
 .hero-in > :nth-child(2) {
@@ -150,41 +165,206 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   background-size: 100% 2px;
 }
 
-/* Menu mobile plein écran. */
-@keyframes menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
+/* Menu mobile plein écran : entre depuis le haut et repart par le même chemin.
+   Transitions (et non @keyframes) : un appui pendant l'ouverture inverse le mouvement
+   à partir de la position affichée. */
+.mobile-menu {
+  transition:
+    opacity 200ms ease-out,
+    visibility 0s linear 0s;
+}
+.mobile-menu:not([data-open]) {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 180ms ease-in,
+    visibility 0s linear 200ms;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-menu,
+  .mobile-menu-item {
+    transition-property: opacity, transform, visibility;
+    transition-duration: 200ms, 600ms, 0s;
+    transition-timing-function: ease-out, var(--ease-spring), linear;
   }
-  to {
-    opacity: 1;
-    transform: none;
+  .mobile-menu:not([data-open]) {
+    transform: translate3d(0, -8px, 0);
+  }
+  .mobile-menu:not([data-open]) .mobile-menu-item {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0);
+  }
+  .mobile-menu[data-open] .mobile-menu-item:nth-child(2) { transition-delay: 30ms; }
+  .mobile-menu[data-open] .mobile-menu-item:nth-child(3) { transition-delay: 60ms; }
+  .mobile-menu[data-open] .mobile-menu-item:nth-child(4) { transition-delay: 90ms; }
+  .mobile-menu[data-open] .mobile-menu-item:nth-child(5) { transition-delay: 120ms; }
+  .mobile-menu[data-open] .mobile-menu-item:nth-child(6) { transition-delay: 150ms; }
+}
+
+/* ---------------------------------------------------------------------------
+   Retour à l'appui : la réponse part au contact (pointer-down), pas au relâchement.
+   L'enfoncement est quasi instantané, le retour suit le ressort.
+   Mouvement réduit : léger assombrissement, sans changement d'échelle.
+   --------------------------------------------------------------------------- */
+.press {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.press:active:not(:disabled) {
+  filter: brightness(0.94);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .press {
+    transition-property: color, background-color, border-color, box-shadow, filter, transform;
+    transition-duration: 200ms, 200ms, 200ms, 200ms, 200ms, 500ms;
+    transition-timing-function: ease-out, ease-out, ease-out, ease-out, ease-out, var(--ease-spring);
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.97);
+    filter: none;
+    transition-duration: 80ms;
+    transition-timing-function: ease-out;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Fenêtres modales (<dialog>) : matérialisation (fondu + légère échelle) à l'ouverture
+   et à la fermeture, fond assombri en fondu. Navigateurs sans @starting-style :
+   apparition directe, sans perte de fonctionnalité.
+   --------------------------------------------------------------------------- */
+.dialog-anim,
+.dialog-anim::backdrop {
+  opacity: 0;
+  transition:
+    opacity 200ms ease-out,
+    overlay 200ms allow-discrete,
+    display 200ms allow-discrete;
+}
+.dialog-anim[open],
+.dialog-anim[open]::backdrop {
+  opacity: 1;
+}
+@starting-style {
+  .dialog-anim[open],
+  .dialog-anim[open]::backdrop {
+    opacity: 0;
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .animate-menu-in {
-    animation: menu-in 250ms ease-out both;
+  .dialog-anim {
+    transform: scale(0.96);
+    transition:
+      opacity 200ms ease-out,
+      transform 500ms var(--ease-spring),
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
   }
-  .animate-menu-in > * > * {
-    animation: menu-in 300ms ease-out both;
+  .dialog-anim[open] {
+    transform: none;
   }
-  .animate-menu-in > * > *:nth-child(2) { animation-delay: 30ms; }
-  .animate-menu-in > * > *:nth-child(3) { animation-delay: 60ms; }
-  .animate-menu-in > * > *:nth-child(4) { animation-delay: 90ms; }
-  .animate-menu-in > * > *:nth-child(5) { animation-delay: 120ms; }
-  .animate-menu-in > * > *:nth-child(6) { animation-delay: 150ms; }
+  @starting-style {
+    .dialog-anim[open] {
+      transform: scale(0.96);
+    }
+  }
 }
 
+/* Tiroir latéral (navigation mobile de l'administration) : entre par la gauche
+   et repart par la gauche. Mouvement réduit : fondu seul. */
+.dialog-drawer,
+.dialog-drawer::backdrop {
+  opacity: 0;
+  transition:
+    opacity 200ms ease-out,
+    overlay 300ms allow-discrete,
+    display 300ms allow-discrete;
+}
+.dialog-drawer[open],
+.dialog-drawer[open]::backdrop {
+  opacity: 1;
+}
+@starting-style {
+  .dialog-drawer[open],
+  .dialog-drawer[open]::backdrop {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dialog-drawer {
+    opacity: 1;
+    transform: translate3d(-100%, 0, 0);
+    transition:
+      transform 300ms var(--ease-spring),
+      overlay 300ms allow-discrete,
+      display 300ms allow-discrete;
+  }
+  .dialog-drawer[open] {
+    transform: none;
+  }
+  @starting-style {
+    .dialog-drawer[open] {
+      opacity: 1;
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Matériau translucide des barres flottantes (en-tête, barres collantes) : le contenu
+   défile dessous. Transparence réduite : surface opaque, sans flou.
+   Contraste renforcé : fond plein et bordure marquée.
+   --------------------------------------------------------------------------- */
+.material-bar {
+  background-color: rgb(255 255 255 / 0.78);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+.material-bar-paper {
+  background-color: rgb(250 250 247 / 0.8);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .material-bar,
+  .material-bar-paper {
+    background-color: rgb(255 255 255 / 0.97);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .material-bar,
+  .material-bar-paper {
+    background-color: var(--color-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .material-bar {
+    background-color: #fff;
+  }
+  .dialog-anim::backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  .material-bar,
+  .material-bar-paper {
+    background-color: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom: 1px solid var(--color-marine) !important;
+  }
+}
+
+/* Mouvement réduit : plus de défilement animé ni d'icône en rotation ou en rebond
+   (le libellé « Chargement… » ou l'état du bouton suffit). Les fondus restent. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .animate-spin,
+  .animate-bounce,
+  .animate-ping {
+    animation: none !important;
   }
 }
 
@@ -224,7 +404,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 @media (prefers-reduced-motion: no-preference) {
   .ken-burns { animation: ken-burns 12s ease-out both; }
-  .hero-text-in { animation: hero-text-in 700ms ease-out both; }
+  .hero-text-in { animation: hero-text-in 700ms var(--ease-spring) both; }
   .hero-scene-far { animation: skyline-drift 240s linear infinite; }
   .hero-scene-mid { animation: skyline-drift 160s linear infinite; }
   .hero-scene-near { animation: skyline-drift 100s linear infinite; }

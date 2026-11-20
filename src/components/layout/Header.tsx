@@ -58,9 +58,9 @@ export function Header() {
     <div className={`${isHome ? 'fixed' : 'sticky'} inset-x-0 top-0 z-40`}>
       <TricolorBand className="relative h-[3.5px]" />
       <header
-        className={`w-full transition-[background-color,box-shadow,padding] duration-300 ${
+        className={`w-full transition-[background-color,box-shadow,padding,border-color] duration-500 ease-spring ${
           solid
-            ? 'border-b border-ivory bg-white/95 shadow-[0_8px_30px_-12px_rgba(16,44,80,0.25)] backdrop-blur-md'
+            ? 'material-bar border-b border-ivory/70 shadow-[0_8px_30px_-12px_rgba(16,44,80,0.25)]'
             : 'border-b border-transparent bg-transparent'
         } ${isScrolled ? 'py-2' : 'py-3 sm:py-4'}`}
       >
@@ -109,7 +109,7 @@ export function Header() {
               ref={toggleRef}
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
-              className={`rounded p-2 focus-visible:outline-2 focus-visible:outline-gold lg:hidden ${
+              className={`press rounded p-2 focus-visible:outline-2 focus-visible:outline-gold lg:hidden ${
                 solid ? 'text-marine hover:bg-ivory' : 'text-white hover:bg-white/10'
               }`}
               aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
@@ -122,7 +122,7 @@ export function Header() {
         </div>
       </header>
 
-      {menuOpen && <MobileMenu onClose={() => setMenuOpen(false)} />}
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 }

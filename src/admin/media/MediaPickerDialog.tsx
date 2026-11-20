@@ -72,7 +72,7 @@ export function MediaPickerDialog({ open, onClose, onPick, selectedIds = [], tit
         e.preventDefault();
         onClose();
       }}
-      className="m-auto w-[calc(100%-2rem)] max-w-4xl rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
+      className="dialog-anim m-auto w-[calc(100%-2rem)] max-w-4xl rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
     >
       {open && (
         <div className="flex max-h-[88vh] flex-col">

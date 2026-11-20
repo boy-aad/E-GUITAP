@@ -58,7 +58,7 @@ export function OffersPage() {
         </p>
       </PageHero>
 
-      <div className="z-20 border-b border-slate-200 bg-paper/95 backdrop-blur lg:sticky lg:top-[86px]">
+      <div className="z-20 material-bar-paper border-b border-slate-200 lg:sticky lg:top-[86px]">
         <Container className="flex flex-col gap-3 py-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="-mx-1 overflow-x-auto px-1 pb-1 lg:pb-0">
             <Chips nowrap label="Catégories" options={categoryOptions} value={category} onChange={(v) => update('categorie', v)} />

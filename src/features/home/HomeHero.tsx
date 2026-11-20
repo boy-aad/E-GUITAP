@@ -135,7 +135,7 @@ export function HomeHero() {
             <button
               type="button"
               onClick={carousel.togglePause}
-              className="rounded-full border border-white/30 p-2 text-white/90 transition-colors hover:border-gold hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
+              className="press rounded-full border border-white/30 p-2 text-white/90 hover:border-gold hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
               aria-label={carousel.autoplay ? 'Mettre en pause le défilement' : 'Reprendre le défilement'}
             >
               {carousel.autoplay ? <Pause className="h-4 w-4" aria-hidden="true" /> : <Play className="h-4 w-4" aria-hidden="true" />}
@@ -144,7 +144,7 @@ export function HomeHero() {
           <button
             type="button"
             onClick={carousel.prev}
-            className="rounded-full border border-white/30 p-2 text-white/90 transition-colors hover:border-gold hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
+            className="press rounded-full border border-white/30 p-2 text-white/90 hover:border-gold hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
             aria-label="Diapositive précédente"
           >
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -155,7 +155,7 @@ export function HomeHero() {
                 key={i}
                 type="button"
                 onClick={() => carousel.go(i)}
-                className={`h-2 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
+                className={`h-2 rounded-full transition-[width,background-color] duration-500 ease-spring focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
                   i === carousel.index ? 'w-7 bg-gold' : 'w-2 bg-white/50 hover:bg-white'
                 }`}
                 aria-label={`Afficher la diapositive ${i + 1}`}
@@ -166,7 +166,7 @@ export function HomeHero() {
           <button
             type="button"
             onClick={carousel.next}
-            className="rounded-full border border-white/30 p-2 text-white/90 transition-colors hover:border-gold hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
+            className="press rounded-full border border-white/30 p-2 text-white/90 hover:border-gold hover:text-gold focus-visible:outline-2 focus-visible:outline-gold"
             aria-label="Diapositive suivante"
           >
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
@@ -185,7 +185,7 @@ export function HomeHero() {
         className="absolute bottom-20 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/75 transition-colors hover:text-gold sm:flex"
       >
         Découvrir
-        <ChevronDown className="h-5 w-5 motion-safe:animate-bounce" aria-hidden="true" />
+        <ChevronDown className="h-5 w-5" aria-hidden="true" />
       </a>
       <TricolorBand className="relative h-1" />
     </section>

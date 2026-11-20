@@ -7,23 +7,29 @@ import { useInquiry } from '../../features/inquiry/InquiryContext';
 import { DEFAULT_WHATSAPP_MESSAGE, telUrl, whatsappUrl } from '../../lib/contact';
 import { NAV_ITEMS } from './navigation';
 
-/** Menu mobile plein écran, sous la barre d'en-tête (fermeture : bouton, Échap ou navigation). */
-export function MobileMenu({ onClose }: { onClose: () => void }) {
+/**
+ * Menu mobile plein écran, sous la barre d'en-tête (fermeture : bouton, Échap ou navigation).
+ * Toujours monté : il entre et repart par le même chemin, et un appui pendant la transition
+ * l'inverse depuis l'état affiché. Fermé, il est masqué et inerte (ni focus, ni lecteur d'écran).
+ */
+export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { company, contacts, domains } = useSiteContent();
   const { openInquiry } = useInquiry();
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    firstLinkRef.current?.focus();
-  }, []);
+    if (open) firstLinkRef.current?.focus();
+  }, [open]);
 
   return (
     <div
       id="mobile-menu"
-      className="animate-menu-in fixed inset-0 -z-10 flex flex-col overflow-y-auto bg-white pt-[78px] sm:pt-[90px] lg:hidden"
+      data-open={open ? '' : undefined}
+      inert={!open}
+      className="mobile-menu fixed inset-0 -z-10 flex flex-col overflow-y-auto bg-white pt-[78px] sm:pt-[90px] lg:hidden"
     >
       <div className="flex flex-1 flex-col">
-        <nav aria-label="Navigation principale" className="space-y-1 px-4 py-6 sm:px-6">
+        <nav aria-label="Navigation principale" className="mobile-menu-item space-y-1 px-4 py-6 sm:px-6">
           {NAV_ITEMS.map((item, i) => (
             <NavLink
               key={item.to}
@@ -47,13 +53,13 @@ export function MobileMenu({ onClose }: { onClose: () => void }) {
         </nav>
 
         {domains.length > 0 && (
-          <div className="px-4 pb-6 sm:px-6">
+          <div className="mobile-menu-item px-4 pb-6 sm:px-6">
             <p className="mb-3 px-2 font-inter text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-text">
               Nos domaines
             </p>
             <div className="grid grid-cols-2 gap-2 text-sm font-medium text-marine">
               {domains.map((d) => (
-                <Link key={d.slug} to={`/activites#${d.slug}`} className="truncate rounded-lg bg-ivory/70 p-3 hover:bg-ivory">
+                <Link key={d.slug} to={`/activites#${d.slug}`} className="press truncate rounded-lg bg-ivory/70 p-3 hover:bg-ivory">
                   {d.letter}. {d.shortTitle}
                 </Link>
               ))}
@@ -61,7 +67,7 @@ export function MobileMenu({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        <div className="mt-auto space-y-4 border-t border-slate-200 bg-paper px-4 py-6 sm:px-6">
+        <div className="mobile-menu-item mt-auto space-y-4 border-t border-slate-200 bg-paper px-4 py-6 sm:px-6">
           <Button
             fullWidth
             size="lg"

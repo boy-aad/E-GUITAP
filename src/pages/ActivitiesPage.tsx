@@ -86,7 +86,7 @@ export function ActivitiesPage() {
                                 <span className="ml-2 text-xs text-slate-text">(en développement)</span>
                               )}
                             </span>
-                            <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-gold-hover" aria-hidden="true" />
+                            <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-slate-300 transition duration-500 ease-spring motion-safe:group-hover:translate-x-0.5 group-hover:text-gold-hover" aria-hidden="true" />
                           </Link>
                         </li>
                       ))}

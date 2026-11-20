@@ -22,7 +22,7 @@ export function OfferCard({ offer, compact }: { offer: Offer; compact?: boolean 
           image={resolveOfferImage(offer)}
           ratio="4/3"
           sizes="(min-width: 1536px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          imgClassName="transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+          imgClassName="transition-transform duration-700 ease-spring motion-safe:group-hover:scale-105"
         />
         {category && (
           <Badge tone="light" className="absolute left-3 top-3">

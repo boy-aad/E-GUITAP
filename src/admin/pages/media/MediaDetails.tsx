@@ -41,7 +41,7 @@ export function MediaDetails({ media, usages, isAdmin, onClose }: { media: Media
         e.preventDefault();
         onClose();
       }}
-      className="m-auto w-[calc(100%-2rem)] max-w-3xl rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
+      className="dialog-anim m-auto w-[calc(100%-2rem)] max-w-3xl rounded-xl border border-slate-200 bg-white p-0 shadow-2xl backdrop:bg-slate-900/50"
     >
       {media && (
         <div className="grid max-h-[90vh] overflow-y-auto md:grid-cols-[1.2fr_1fr]">

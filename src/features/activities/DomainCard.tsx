@@ -18,7 +18,7 @@ export function DomainCard({ domain }: { domain: ActivityDomain }) {
           ratio="4/3"
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
           fallback={<BrandPanel className="h-full" />}
-          imgClassName="transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+          imgClassName="transition-transform duration-700 ease-spring motion-safe:group-hover:scale-105"
         />
         <span className="absolute -bottom-6 left-6 flex h-12 w-12 items-center justify-center rounded-xl bg-marine text-gold shadow-lg ring-4 ring-white transition-colors group-hover:bg-gold group-hover:text-marine">
           <Icon className="h-6 w-6" strokeWidth={1.75} aria-hidden="true" />
@@ -48,7 +48,7 @@ export function DomainCard({ domain }: { domain: ActivityDomain }) {
         </ul>
         <span className="mt-5 inline-flex items-center gap-1.5 font-poppins text-xs font-bold uppercase tracking-wider text-marine transition-colors group-hover:text-gold-hover">
           Découvrir le domaine
-          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 ease-spring motion-safe:group-hover:translate-x-1" aria-hidden="true" />
         </span>
       </div>
     </Card>

@@ -91,7 +91,7 @@ export function Component() {
           </a>
 
           {/* Bureau : barre latérale fixe, repliable. */}
-          <aside className={`sticky top-0 hidden h-screen shrink-0 transition-[width] duration-200 lg:block ${collapsed ? 'w-[72px]' : 'w-64'}`}>
+          <aside className={`sticky top-0 hidden h-screen shrink-0 transition-[width] duration-500 ease-spring motion-reduce:transition-none lg:block ${collapsed ? 'w-[72px]' : 'w-64'}`}>
             <Sidebar
               isAdmin={isAdmin}
               counts={counts}
@@ -112,7 +112,7 @@ export function Component() {
             aria-label="Menu de l'administration"
             onClose={() => setMenuOpen(false)}
             onClick={(e) => e.target === e.currentTarget && setMenuOpen(false)}
-            className="m-0 h-full max-h-none w-72 max-w-[85vw] p-0 backdrop:bg-slate-900/50 lg:hidden"
+            className="dialog-drawer m-0 h-full max-h-none w-72 max-w-[85vw] p-0 backdrop:bg-slate-900/50 lg:hidden"
           >
             <div className="relative h-full">
               <Sidebar isAdmin={isAdmin} counts={counts} collapsed={false} />

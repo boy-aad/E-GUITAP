@@ -48,7 +48,7 @@ export function Modal({ open, onClose, title, eyebrow, children, size = 'lg' }: 
         // Clic sur le fond (en dehors du contenu) : fermeture.
         if (e.target === e.currentTarget) onClose();
       }}
-      className={`m-auto w-[calc(100%-1.5rem)] ${size === 'lg' ? 'max-w-2xl' : 'max-w-lg'} max-h-[92vh] p-0 rounded-lg border border-gold/30 bg-white shadow-2xl backdrop:bg-marine/80 backdrop:backdrop-blur-sm`}
+      className={`dialog-anim m-auto w-[calc(100%-1.5rem)] ${size === 'lg' ? 'max-w-2xl' : 'max-w-lg'} max-h-[92vh] p-0 rounded-lg border border-gold/30 bg-white shadow-2xl backdrop:bg-marine/80 backdrop:backdrop-blur-sm`}
     >
       <div className="flex max-h-[92vh] flex-col">
         <div className="flex shrink-0 items-start justify-between gap-4 border-b border-gold/40 bg-marine px-4 py-4 text-white sm:px-6">
@@ -65,7 +65,7 @@ export function Modal({ open, onClose, title, eyebrow, children, size = 'lg' }: 
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1.5 text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-gold"
+            className="press rounded-full p-1.5 text-white/80 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-gold"
             aria-label="Fermer"
           >
             <X className="h-5 w-5" aria-hidden="true" />

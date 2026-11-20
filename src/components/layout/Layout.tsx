@@ -43,7 +43,7 @@ export function Layout() {
           href={whatsappUrl(contacts.whatsapp.raw, DEFAULT_WHATSAPP_MESSAGE)}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-30 flex items-center gap-2.5 rounded-full border-2 border-white bg-gn-green-hover p-3 text-white shadow-lg transition-all hover:bg-gn-green-dark hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gn-green sm:px-4"
+          className="fixed bottom-6 right-6 z-30 flex items-center gap-2.5 rounded-full border-2 border-white bg-gn-green-hover p-3 text-white press shadow-lg hover:bg-gn-green-dark hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gn-green sm:px-4"
           aria-label="Écrire à E-GUITAP sur WhatsApp"
         >
           <MessageSquare className="h-5 w-5" aria-hidden="true" />
